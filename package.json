@@ -1,0 +1,15 @@
+{
+  "name": "callcentertimeform",
+  "version": "1.0.0",
+  "description": "Formulario interactivo para registrar actividades del equipo de call center y medir el tiempo que tardan en completar cada campo. Desarrollado en HTML y JavaScript para analizar la eficiencia del proceso de llenado.",
+  "main": "index.js",
+  "scripts": {
+    "start": "serve src",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Cynthia",
+  "license": "ISC",
+  "devDependencies": {
+    "serve": "^14.2.3"
+  }
+}

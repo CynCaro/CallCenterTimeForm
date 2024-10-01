@@ -1,0 +1,11 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.background-image {
+    width: 100%; /* Escala al 100% del ancho del contenedor */
+    height: auto; /* Mantiene la proporción de la imagen */
+    max-width: 1920px; /* Limita el tamaño máximo de la imagen */
+}
