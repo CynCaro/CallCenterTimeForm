@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
     <!-- CSS -->
     <link rel="stylesheet" href="./css/styles.css">
     <title>Call Center Time Form</title>
@@ -12,7 +17,206 @@
     <main>
         <section>
             <img src="img/AP-Manager.png" alt="background AP Manager" class="background-image">
+            <section class="form">
+                <header>
+                    <nav>
+                        <ul>
+                            <li>Captura actividad</li>
+                            <li>Histórico actividades</li>
+                            <li>WhatsApp</li>
+                            <li>Preferencias del interesado</li>
+                            <li>Correos electrónicos</li>
+                            <li>Histórico de cambios</li>
+                            <li>Asignaciones</li>
+                            <li>Suceso Histórico</li>
+                            <li>Consulta Original</li>
+                        </ul>
+                    </nav>
+                </header>
+                <p>Registrar nueva actividad</p>
+
+                <hr>
+
+                <form>
+                    <div class="form-row">
+                        <!-- Canal de comunicación -->
+                        <div class="form-group-column">
+                            <label for="canaldecomunicacion">Canal de comunicación *</label>
+                            <div class="custom-select">
+                                <select id="canaldecomunicacion" name="canaldecomunicacion">
+                                    <option value="" disabled selected>Selecciona</option> <!-- Opción por defecto -->
+                                    <option value="in_call">1- In Call</option>
+                                    <option value="out_call">2- Out Call</option>
+                                    <option value="in_wa_g">3- In Wa G</option>
+                                    <option value="in_wa_p">4- In Wa P</option>
+                                    <option value="out_wa_g">5- Out Wa G</option>
+                                    <option value="out_wa_p">6- Out Wa P</option>
+                                    <option value="in_mail">7- In Mail</option>
+                                    <option value="out_mail">8- Out Mail</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Resultado 1 -->
+                        <div class="form-group-column">
+                            <label for="resultado1">Resultado 1 *</label>
+                            <div class="custom-select">
+                                <select id="resultado1" name="resultado1">
+                                    <option value="" disabled selected>Selecciona</option> <!-- Opción por defecto -->
+                                    <option value="contactado">Contactado</option>
+                                    <option value="no_contactado">No contactado</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Tipo de contacto -->
+                        <div class="form-group-column">
+                            <label for="tipocontacto">Tipo de contacto *</label>
+                            <div class="custom-select">
+                                <select id="tipocontacto" name="tipocontacto">
+                                    <option value="" disabled selected>Selecciona</option> <!-- Opción por defecto -->
+                                    <option value="primer_contacto">Primer contacto</option>
+                                    <option value="seguimiento">Seguimiento</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <!-- Resultado 2 -->
+                        <div class="form-group-column">
+                            <label for="resultado2">Resultado 2 *</label>
+                            <div class="custom-select">
+                                <select id="resultado2" name="resultado2">
+                                    <option value="" disabled selected>Seleciona</option> <!-- Opción por defecto -->
+                                    <option value="interesado">Interesado</option>
+                                    <option value="no_efectivo">No efectivo</option>
+                                    <option value="no_interesado">No interesado</option>
+                                    <option value="aplico_en_universidad">Aplicó en Universidad</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Tificicación - N1 -->
+                        <div class="form-group-column">
+                            <label for="tipificacionn1">Tipificación - N1 *</label>
+                            <div class="custom-select">
+                                <select id="tipificacionn1" name="tipificacionn1">
+                                    <option value="" disabled selected>Selecciona</option> <!-- Opción por defecto -->
+                                    <option value="agenda_para_sig_ciclo">Agenda para siguiente ciclo - Lost / Hold</option>
+                                    <option value="evaluando_propuesta">Evaluando propuesta - Open</option>
+                                    <option value="referido">Referido - Open</option>
+                                    <option value="llamada_cortada">Llamada cortada / Fallas en audio - Open</option>
+                                    <option value="lead_repetido">Lead repetido - Lost</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Tipificación - N2 -->
+                        <div class="form-group-column">
+                            <label for="tipificacionn2">Tipificación - N2 *</label>
+                            <div class="custom-select">
+                                <select id="tipificacionn2" name="tipificacionn2">
+                                    <option value="" disabled selected>Selecciona</option> <!-- Opción por defecto -->
+                                    <option value="proximo_ciclo">Próximo ciclo</option>
+                                    <option value="2_ciclos_post_o_mas">2 ciclos posteriores o más</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <!-- Tipificación - N3 -->
+                        <div class="form-group-column">
+                            <label for="tipificacionn3">Tipificación - N3 *</label>
+                            <div class="custom-select">
+                                <select id="tipificacionn3" name="tipificacionn3">
+                                    <option value="" disabled selected>Selecciona</option> <!-- Opción por defecto -->
+                                    <option value="trimestre1">Trimestre 1 (ene, feb, mar)</option>
+                                    <option value="trimestre2">Trimestre 2 (abril, mayo, jun)</option>
+                                    <option value="trimestre3">Trimestre 3 (jul, ago, sep)</option>
+                                    <option value="trimestre4">Trimestre 4 (oct, nov, dic)</option>
+                                    <option value="no_especifica">No especifica</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Documentos -->
+                        <div class="form-group-column">
+                            <label for="estadofinal">Documentos</label>
+                            <div>
+                                <input type="text" id="documentos" name="documentos" required>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <!-- Status Final -->
+                        <div class="form-group-column">
+                            <label for="statusfinal">Status Final *</label>
+                            <div>
+                                <input type="text" id="statusfinal" name="statusfinal" required>
+                                    <!-- <option value="interesado">Interesado</option> -->
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Interés -->
+                        <div class="form-group-column">
+                            <label for="tipificacionn1">Interés *</label>
+                            <div class="custom-select">
+                                <select id="interés" name="interés">
+                                    <option value="" disabled selected>Selecciona</option> <!-- Opción por defecto -->
+                                    <option value="alto">Alto</option>
+                                    <option value="medio">Medio</option>
+                                    <option value="bajo">Bajo</option>
+                                    <option value="na">N/A</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Estado Final -->
+                        <div class="form-group-column">
+                            <label for="estadofinal">Estado Final *</label>
+                            <div>
+                                <input type="text" id="estadofinal" name="estadofinal" required>
+                                    <!-- <option value="interesado">Interesado</option> -->
+                                </select>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <div class="form-row">
+                        <!-- Próxima actividad -->
+                        <div class="form-group-column">
+                            <label for="proximaactividad">Próxima actividad *</label>
+                            <div class="custom-select">
+                                <select id="proximaactividad" name="proximaactividad">
+                                    <option value="" disabled selected>Selecciona</option> <!-- Opción por defecto -->
+                                    <option value="out_call">1- Out Call</option>
+                                    <option value="out_wa_p">2- Out Wa P</option>
+                                    <option value="out_wa_g">3- Out Wa G</option>
+                                    <option value="out_mail">4- Out mail</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Fecha próxima actividad -->
+                        <div class="form-group-column">
+                            <label for="fechaproxact">Fecha próxima actividad *</label>
+                            <div class="custom-date">
+                                <input type="date" id="fechaproxact" name="fechaproxact" required>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+
+            </section>
         </section>
     </main>
 </body>
+
 </html>

@@ -1,11 +1,186 @@
 * {
+    font-family: 'Manrope', sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+p {
+    font-size: 1rem; /* Tamaño de la fuente */
+    color: #000000;  /* Color del texto */
+    line-height: 1.6; /* Espaciado entre líneas */
+    padding: 20px;
+}
+
+hr {
+    margin: 0 20px 20px;
+    width: auto; 
+    background-color: #dfdfdf; 
+    height: 1px;
+    border: none; /* Elimina el borde predeterminado de la línea */
+}
+
+/* Contenedor para la imagen de fondo */
 .background-image {
+    position: relative; /* Necesario para que el formulario pueda ser posicionado encima */
     width: 100%; /* Escala al 100% del ancho del contenedor */
     height: auto; /* Mantiene la proporción de la imagen */
     max-width: 1920px; /* Limita el tamaño máximo de la imagen */
+    }
+
+nav {
+    display: flex;
+    align-items: center;
+}
+
+/* Estilos del menú */
+header {
+    width: 100%;
+    background-color: #2f4169;
+    height: 60px;
+    padding: .5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 5px solid #f16315;
+}
+
+header nav ul {
+    display: flex;
+    /* gap: 2rem; */
+    align-items: center;
+}
+
+ul {
+    list-style: none; /* Elimina los estilos de viñetas predeterminados */
+    /* padding: 0;
+    margin: 0; */
+}
+
+li {
+    display: inline-block; /* Hace que los elementos de la lista sean en línea */
+    color: white; /* Cambia el color de la tipografía a blanco */
+    font-size: 0.75rem; /* Equivale 14px */
+    padding: 0.5rem 1rem; /* Ajusta el espacio alrededor del texto */
+    text-align: center;
+}
+
+/* Añadir un hover */
+li:hover {
+    background-color: #536394;
+    height: 55px;
+    display: flex;
+    align-items: center; 
+}
+
+.form {
+    position: absolute; /* Posiciona el formulario encima de la imagen */
+    width: 65%;
+    margin-left: auto;
+    background-color: #FAFAFA;
+    top: 14%; /* Ajusta la posición vertical del formulario */
+    left: 66.3%;
+    transform: translateX(-50%); /* Ajusta para centrar el formulario */
+    background-color:#f5f5f5;
+    /* padding: 20px; */
+    /* border-radius: 8px; */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Añade una sombra ligera */
+    z-index: 10; /* Asegura que el formulario esté por encima de la imagen */
+}
+
+/* Contenedor general que pone todos los divs en una fila */
+.form-row {
+    display: flex;
+    justify-content: space-between; /* Añade espacio entre las columnas */
+    margin: 0 20px 25px; /* Espaciado alrededor de los grupos */
+}
+
+/* Flexbox en columna para el label y el select */
+.form-group-column {
+    display: flex;
+    flex-direction: column; /* Coloca el label arriba del select */
+    width: 30%; /* Ajusta el ancho de cada columna */
+}
+
+/* ------------ SELECT PERSONALIZACIÓN --------------*/
+/* label {
+    margin-bottom: 5px; /* Espacio entre label y select
+} */
+
+.custom-select {
+    position: relative;
+    width: 100%;
+}
+
+select {
+    width: 100%;
+    height: 34px;
+    padding-left: 10px;
+    border: 1px solid #666666;
+    border-radius: 4px;
+    font-size: 1rem;
+    color: #666666;
+    background-color: white;
+    cursor: pointer;
+    margin-top: 10px;
+
+    /* Elimina la apariencia predeterminada */
+    -webkit-appearance: none; /* Safari y Chrome */
+    -moz-appearance: none; /* Firefox */
+    appearance: none; /* Estilo estándar */
+}
+
+.custom-select::after {
+    content: '\02EF'; /* Flecha hacia abajo */
+    position: absolute;
+    right: 10px;
+    top: 30%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 2rem;
+    color: #666666;
+}
+
+option {
+    padding: 10px;
+    background-color: white;
+    color: #666666;
+}
+
+/* Aplica los mismos estilos al input[type="date"] y al input[type="text"] */
+input[type="date"], input[type="text"] {
+    width: 100%;
+    height: 34px;
+    padding-left: 10px;
+    border: 1px solid #666666;
+    border-radius: 4px;
+    font-size: 1rem;
+    color: #666666;
+    background-color: white;
+    cursor: pointer;
+    margin-top: 10px;
+
+    /* Elimina la apariencia predeterminada */
+    -webkit-appearance: none; /* Safari y Chrome */
+    -moz-appearance: none; /* Firefox */
+    appearance: none; /* Estilo estándar */
+    position: relative;
+}
+
+/* Contenedor para el ícono personalizado del calendario */
+.custom-date {
+    position: relative;
+    width: 100%;
+}
+
+/* Estilos para el ícono del calendario */
+.custom-date::after {
+    content: '\1F4C5'; /* Icono de calendario (📅) */
+    font-size: 1.5rem;
+    color: #666666;
+    position: absolute;
+    right: 10px;
+    top: 61%;
+    transform: translateY(-50%);
+    pointer-events: none; /* Hace que el ícono sea clickeable */
 }
