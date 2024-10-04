@@ -98,28 +98,21 @@
                         </div>
 
                         <!-- Tificicación - N1 -->
-                        <div class="form-group-column">
+                        <div class="form-group-column" id="tipificacionn1-container" style="display: none;">
                             <label for="tipificacionn1">Tipificación - N1 *</label>
                             <div class="custom-select">
                                 <select id="tipificacionn1" name="tipificacionn1">
                                     <option value="" disabled selected>Selecciona</option> <!-- Opción por defecto -->
-                                    <option value="agenda_para_sig_ciclo">Agenda para siguiente ciclo - Lost / Hold</option>
-                                    <option value="evaluando_propuesta">Evaluando propuesta - Open</option>
-                                    <option value="referido">Referido - Open</option>
-                                    <option value="llamada_cortada">Llamada cortada / Fallas en audio - Open</option>
-                                    <option value="lead_repetido">Lead repetido - Lost</option>
                                 </select>
                             </div>
                         </div>
 
                         <!-- Tipificación - N2 -->
-                        <div class="form-group-column">
+                        <div class="form-group-column" id="tipificacionn2-container" style="display: none;">
                             <label for="tipificacionn2">Tipificación - N2 *</label>
                             <div class="custom-select">
                                 <select id="tipificacionn2" name="tipificacionn2">
                                     <option value="" disabled selected>Selecciona</option> <!-- Opción por defecto -->
-                                    <option value="proximo_ciclo">Próximo ciclo</option>
-                                    <option value="2_ciclos_post_o_mas">2 ciclos posteriores o más</option>
                                 </select>
                             </div>
                         </div>
@@ -127,26 +120,37 @@
 
                     <div class="form-row">
                         <!-- Tipificación - N3 -->
-                        <div class="form-group-column">
+                        <div class="form-group-column" id="tipificacionn3-container" style="display: none;">
                             <label for="tipificacionn3">Tipificación - N3 *</label>
                             <div class="custom-select">
                                 <select id="tipificacionn3" name="tipificacionn3">
                                     <option value="" disabled selected>Selecciona</option> <!-- Opción por defecto -->
-                                    <option value="trimestre1">Trimestre 1 (ene, feb, mar)</option>
-                                    <option value="trimestre2">Trimestre 2 (abril, mayo, jun)</option>
-                                    <option value="trimestre3">Trimestre 3 (jul, ago, sep)</option>
-                                    <option value="trimestre4">Trimestre 4 (oct, nov, dic)</option>
-                                    <option value="no_especifica">No especifica</option>
                                 </select>
                             </div>
                         </div>
 
-                        <!-- Documentos -->
-                        <div class="form-group-column">
-                            <label for="estadofinal">Documentos</label>
+                        <!-- Popup de Documentos -->
+                        <div id="documentos-popup" style="display: none;">
+                            <label for="documentosrequeridos">Documentos requeridos</label>
+                            <h5>Selecciona documentos faltantes:</h5>
+                            <!-- <label>Documentos requeridos:</label> -->
                             <div>
-                                <input type="text" id="documentos" name="documentos" required>
-                                </select>
+                                <input type="checkbox" id="acta_nacimiento" value="&#183 Acta de nacimiento"> Acta de nacimiento<br>
+                                <input type="checkbox" id="certificado_licenciatura" value="&#183 Certificado de licenciatura">Certificado de licenciatura<br>
+                                <input type="checkbox" id="titulo" value="&#183 Título"> Título<br>
+                                <input type="checkbox" id="cedula_profesional" value="&#183 Cédula profesional">Cédula profesional<br>
+                                <input type="checkbox" id="curp" value="&#183 Curp"> CURP<br>
+                            </div>
+                            <button id="guardar-documentos">Guardar</button>
+                        </div>
+
+                        <!-- Documentos faltantes -->
+                        <div id="documentos-container" class="form-group-column" style="display: none;">
+                            <label for="documentosfaltantes">Documentos faltantes</label>
+                            <div>
+                                <ul id="documentos-seleccionados"></ul>
+                                <button id="editar-documentos">Editar</button>
+                                <!-- <input type="text" id="documentos" name="documentos" required readonly> -->
                             </div>
                         </div>
                     </div>
@@ -157,7 +161,7 @@
                             <label for="statusfinal">Status Final *</label>
                             <div>
                                 <input type="text" id="statusfinal" name="statusfinal" required>
-                                    <!-- <option value="interesado">Interesado</option> -->
+                                <!-- <option value="interesado">Interesado</option> -->
                                 </select>
                             </div>
                         </div>
@@ -167,7 +171,8 @@
                             <label for="tipificacionn1">Interés *</label>
                             <div class="custom-select">
                                 <select id="interés" name="interés">
-                                    <option value="" disabled selected>Selecciona</option> <!-- Opción por defecto -->
+                                    <option value="" disabled selected>Selecciona</option>
+                                    <!-- Opción por defecto -->
                                     <option value="alto">Alto</option>
                                     <option value="medio">Medio</option>
                                     <option value="bajo">Bajo</option>
@@ -181,11 +186,11 @@
                             <label for="estadofinal">Estado Final *</label>
                             <div>
                                 <input type="text" id="estadofinal" name="estadofinal" required>
-                                    <!-- <option value="interesado">Interesado</option> -->
+                                <!-- <option value="interesado">Interesado</option> -->
                                 </select>
                             </div>
                         </div>
-                        
+
                     </div>
 
                     <div class="form-row">
@@ -194,7 +199,8 @@
                             <label for="proximaactividad">Próxima actividad *</label>
                             <div class="custom-select">
                                 <select id="proximaactividad" name="proximaactividad">
-                                    <option value="" disabled selected>Selecciona</option> <!-- Opción por defecto -->
+                                    <option value="" disabled selected>Selecciona</option>
+                                    <!-- Opción por defecto -->
                                     <option value="out_call">1- Out Call</option>
                                     <option value="out_wa_p">2- Out Wa P</option>
                                     <option value="out_wa_g">3- Out Wa G</option>
@@ -217,6 +223,7 @@
             </section>
         </section>
     </main>
+    <script src="index.js"></script>
 </body>
 
 </html>

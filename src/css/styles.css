@@ -91,8 +91,9 @@ li:hover {
 /* Contenedor general que pone todos los divs en una fila */
 .form-row {
     display: flex;
-    justify-content: space-between; /* Añade espacio entre las columnas */
+    justify-content: flex-start; /* Alinea los select a la izquierda */
     margin: 0 20px 25px; /* Espaciado alrededor de los grupos */
+    gap: 20px; /* Añade espacio entre los select */
 }
 
 /* Flexbox en columna para el label y el select */
@@ -175,7 +176,7 @@ input[type="date"], input[type="text"] {
 
 /* Estilos para el ícono del calendario */
 .custom-date::after {
-    content: '\1F4C5'; /* Icono de calendario (📅) */
+    /* content: '\1F4C5'; Icono de calendario */
     font-size: 1.5rem;
     color: #666666;
     position: absolute;
@@ -183,4 +184,42 @@ input[type="date"], input[type="text"] {
     top: 61%;
     transform: translateY(-50%);
     pointer-events: none; /* Hace que el ícono sea clickeable */
+}
+
+/* Estilos para popup y listas */
+#documentos-popup {
+    /* background-color: #f9f9f9; */
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: .75rem;
+    /* position: fixed; */
+    /* top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000; */
+}
+
+input[type="checkbox"], h5 {
+    margin-top: .75rem;
+    margin-right: .75rem;
+}
+
+button {
+    padding: 5px 10px;
+    margin-top: .75rem;
+}
+
+ul#documentos-seleccionados li {
+    font-size: 1rem;
+    color: #666666;
+    display: block;
+    text-align: left;
+    padding: 5px 10px;
+}
+
+ul#documentos-seleccionados li:hover {
+    background-color: inherit;
+    color: #666666;
+    height: fit-content;
 }
