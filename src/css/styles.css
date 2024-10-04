@@ -9,11 +9,11 @@ p {
     font-size: 1rem; /* Tamaño de la fuente */
     color: #000000;  /* Color del texto */
     line-height: 1.6; /* Espaciado entre líneas */
-    padding: 20px;
+    padding: 20px 45px;
 }
 
 hr {
-    margin: 0 20px 20px;
+    margin: 0 43px 20px 43px;
     width: auto; 
     background-color: #dfdfdf; 
     height: 1px;
@@ -92,7 +92,7 @@ li:hover {
 .form-row {
     display: flex;
     justify-content: flex-start; /* Alinea los select a la izquierda */
-    margin: 0 20px 25px; /* Espaciado alrededor de los grupos */
+    margin: 0 0 25px 45px; /* Espaciado alrededor de los grupos */
     gap: 20px; /* Añade espacio entre los select */
 }
 
