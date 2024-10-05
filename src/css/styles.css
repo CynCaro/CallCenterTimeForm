@@ -187,12 +187,25 @@ input[type="date"], input[type="text"] {
 }
 
 /* Estilos para popup y listas */
+#documentos-popup label[for="documentosrequeridos"],
+#documentos-container label[for="documentosfaltantes"] {
+    font-weight: bold;
+}
+
+#documentos-popup p {
+    padding: 0;
+    padding-top: 5px;
+    font-size: 1rem; /* Reduce el tamaño de la tipografía */
+    color: #f16315;
+}
+
 #documentos-popup {
-    /* background-color: #f9f9f9; */
+    background-color: #f9f9f9;
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 4px;
     margin-bottom: .75rem;
+    width: 30%;
     /* position: fixed; */
     /* top: 50%;
     left: 50%;
@@ -200,9 +213,9 @@ input[type="date"], input[type="text"] {
     z-index: 1000; */
 }
 
-input[type="checkbox"], h5 {
+input[type="checkbox"] {
     margin-top: .75rem;
-    margin-right: .75rem;
+    margin-right: .5rem;
 }
 
 button {
