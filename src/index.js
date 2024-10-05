@@ -58,7 +58,7 @@ document.getElementById('tipificacionn1').addEventListener('change', function ()
             <option value="otro">Otro</option>
             <option value="interesado_potencial">Interesado potencial</option>
         `;
-    } 
+    }
     // Condición para "Agenda para siguiente ciclo"
     else if (tipificacionn1Value === 'agenda_sig_ciclo') {
         tipificacionn2Container.style.display = 'block';
@@ -93,9 +93,9 @@ document.getElementById('tipificacionn2').addEventListener('change', function ()
     const documentosPopup = document.getElementById('documentos-popup');
 
     // Ocultar el campo "Documentos" al cambiar la selección de Tipificación N2
-    documentosContainer.style.display = 'none';
-    documentosPopup.style.display = 'none';
-    document.getElementById('documentos-seleccionados').value = ''; // Limpiar el campo "Documentos"
+    documentosContainer.style.display = 'none'; // Ocultar documentos container al inicio
+    documentosPopup.style.display = 'none'; // Ocultar el popup de documentos al inicio
+    document.getElementById('documentos-seleccionados').innerHTML = ''; // Limpiar el campo "Documentos"
 
     if (tipificacionn2Value === '2_ciclos_post') {
         // Mostrar Tipificación N3 con las opciones correspondientes
@@ -122,7 +122,6 @@ document.getElementById('tipificacionn2').addEventListener('change', function ()
             <option value="otro">Otro</option>
         `;
     }
-
     // Nueva condición: Mostrar opciones si el valor de Tipificación N2 es "Comparación con otras Universidades"
     else if (tipificacionn2Value === 'comparacion_universidades') {
         tipificacionn3Container.style.display = 'block';
@@ -136,7 +135,6 @@ document.getElementById('tipificacionn2').addEventListener('change', function ()
             <option value="otro">Otro</option>
         `;
     }
-
     // Nueva condición: Mostrar opciones si el valor de Tipificación N2 es "Interesado potencial"
     else if (tipificacionn2Value === 'interesado_potencial') {
         tipificacionn3Container.style.display = 'block';
@@ -148,7 +146,13 @@ document.getElementById('tipificacionn2').addEventListener('change', function ()
             <option value="promesa_de_pago">Promesa de pago</option>
         `;
     }
-
+    // Si se selecciona "Documento en trámite"
+    else if (tipificacionn2Value === 'documento_tramite') {
+        // Ocultar Tipificación N3 y mostrar solo el popup
+        tipificacionn3Container.style.display = 'none'; // Ocultar Tipificación N3
+        documentosPopup.style.display = 'block'; // Muestra el popup de documentos
+        documentosContainer.style.display = 'none'; // Asegúrate de ocultar el contenedor de documentos
+    }
     // Ocultar Tipificación N3 si no se selecciona "2 ciclos post" ni "Presupuesto"
     else {
         tipificacionn3Container.style.display = 'none';
@@ -156,50 +160,66 @@ document.getElementById('tipificacionn2').addEventListener('change', function ()
 
     // Lógica para mostrar documentos si es necesario
     if (tipificacionn2Value === 'documento_tramite') {
-        documentosContainer.style.display = 'block';
         documentosPopup.style.display = 'block'; // Muestra el popup de documentos
-    } else {
-        documentosContainer.style.display = 'none'; // Oculta documentos si no aplica
-        documentosPopup.style.display = 'none'; // Oculta el popup de documentos
     }
 });
 
-// Evento para guardar los documentos seleccionados
-document.getElementById('guardar-documentos').addEventListener('click', function () {
-    const documentosSeleccionados = [];
+// Referencias a los elementos relevantes
+const guardarDocumentosBtn = document.getElementById('guardar-documentos');
+const documentosContainer = document.getElementById('documentos-container');
+const documentosPopup = document.getElementById('documentos-popup');
+const documentosSeleccionadosList = document.getElementById('documentos-seleccionados');
+const editarDocumentosBtn = document.getElementById('editar-documentos');
 
-    // Obtener el estado de cada checkbox
-    const documentosCheckboxes = document.querySelectorAll('#documentos-popup input[type="checkbox"]');
-    documentosCheckboxes.forEach(checkbox => {
-        if (checkbox.checked) {
-            documentosSeleccionados.push(checkbox.value); // Añadir documento seleccionado
-        }
-    });
+// Almacenar los documentos seleccionados
+let documentosSeleccionados = [];
 
-    // Mostrar los documentos seleccionados en la lista
-    const documentosLista = document.getElementById('documentos-seleccionados');
-    documentosLista.innerHTML = ''; // Limpiar la lista antes de añadir los documentos
+// Función para agregar un elemento a la lista de documentos
+function agregarDocumentoALista(texto) {
+    const listItem = document.createElement('li');
+    listItem.textContent = texto;
+    documentosSeleccionadosList.appendChild(listItem);
+}
 
-    if (documentosSeleccionados.length > 0) {
-        documentosSeleccionados.forEach(documento => {
-            const listItem = document.createElement('li');
-            listItem.textContent = documento;
-            documentosLista.appendChild(listItem); // Añadir cada documento seleccionado como un <li>
+// Evento para el botón Guardar
+guardarDocumentosBtn.addEventListener('click', function(event) {
+    event.preventDefault(); // Evita el comportamiento predeterminado de envío de formulario
+
+    // Obtener todos los checkboxes seleccionados
+    const selectedCheckboxes = document.querySelectorAll('#documentos-popup input[type="checkbox"]:checked');
+    
+    // Limpiar la lista anterior antes de agregar nuevos elementos
+    documentosSeleccionadosList.innerHTML = '';
+    documentosSeleccionados = []; // Vaciar la lista de documentos seleccionados
+
+    // Si no se selecciona ningún documento, muestra un mensaje
+    if (selectedCheckboxes.length === 0) {
+        agregarDocumentoALista('No se seleccionaron documentos.');
+    } else {
+        // Recorrer los checkboxes seleccionados y agregarlos a la lista de documentos seleccionados
+        selectedCheckboxes.forEach(checkbox => {
+            documentosSeleccionados.push(checkbox.id); // Almacenar el ID del checkbox seleccionado
+            agregarDocumentoALista(checkbox.value); // Utiliza la función para añadir documentos
         });
-    } else {
-        const listItem = document.createElement('li');
-        listItem.textContent = 'No se seleccionaron documentos.';
-        documentosLista.appendChild(listItem);
     }
 
-    // Ocultar el popup y mostrar la lista de documentos seleccionados
-    document.getElementById('documentos-popup').style.display = 'none';
-    document.getElementById('documentos-container').style.display = 'block';
+    // Ocultar el popup de documentos
+    documentosPopup.style.display = 'none';
+
+    // Mostrar el contenedor de documentos seleccionados
+    documentosContainer.style.display = 'block';
 });
 
-// Evento para editar los documentos (volver a mostrar el popup)
-document.getElementById('editar-documentos').addEventListener('click', function () {
-    // Mostrar el popup y ocultar la lista de documentos
-    document.getElementById('documentos-popup').style.display = 'block';
-    document.getElementById('documentos-container').style.display = 'none';
+// Evento para el botón "Editar" que permite modificar los documentos seleccionados
+editarDocumentosBtn.addEventListener('click', function(event) {
+    event.preventDefault(); 
+    // Mostrar el popup para reseleccionar documentos
+    documentosContainer.style.display = 'none';
+    documentosPopup.style.display = 'block';
+
+    // Restaurar las selecciones anteriores en los checkboxes
+    const allCheckboxes = document.querySelectorAll('#documentos-popup input[type="checkbox"]');
+    allCheckboxes.forEach(checkbox => {
+        checkbox.checked = documentosSeleccionados.includes(checkbox.id); // Restaurar los checkboxes seleccionados
+    });
 });
