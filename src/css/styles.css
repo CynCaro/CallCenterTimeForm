@@ -188,18 +188,20 @@ input[type="date"], input[type="text"] {
 
 /* Estilos para popup y listas */
 #documentos-popup label[for="documentosrequeridos"],
-#documentos-container label[for="documentosfaltantes"] {
+#documentos-container label[for="documentosfaltantes"],
+#seguimiento-popup label[for="seguimiento"],
+#seguimiento-container label[for="metodo"] {
     font-weight: bold;
 }
 
-#documentos-popup p {
+#documentos-popup p, #seguimiento-popup p {
     padding: 0;
     padding-top: 5px;
     font-size: 1rem; /* Reduce el tamaño de la tipografía */
     color: #f16315;
 }
 
-#documentos-popup {
+#documentos-popup, #seguimiento-popup {
     background-color: #f9f9f9;
     padding: 20px;
     border: 1px solid #ddd;
@@ -213,7 +215,7 @@ input[type="date"], input[type="text"] {
     z-index: 1000; */
 }
 
-input[type="checkbox"] {
+input[type="checkbox"], input[type="radio"] {
     margin-top: .75rem;
     margin-right: .5rem;
 }
@@ -223,7 +225,7 @@ button {
     margin-top: .75rem;
 }
 
-ul#documentos-seleccionados li {
+ul#documentos-seleccionados li, ul#metodo-seleccionado li {
     font-size: 1rem;
     color: #666666;
     display: block;
@@ -231,7 +233,7 @@ ul#documentos-seleccionados li {
     padding: 5px 10px;
 }
 
-ul#documentos-seleccionados li:hover {
+ul#documentos-seleccionados li:hover, ul#metodo-seleccionado li:hover {
     background-color: inherit;
     color: #666666;
     height: fit-content;

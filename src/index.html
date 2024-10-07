@@ -148,10 +148,39 @@
 
                         <!-- Documentos faltantes -->
                         <div id="documentos-container" class="form-group-column" style="display: none;">
-                            <label for="documentosfaltantes">Documentos faltantes</label>
+                            <label for="documentosfaltantes">Documentos faltantes:</label>
                             <div>
                                 <ul id="documentos-seleccionados"></ul>
                                 <button id="editar-documentos">Editar</button>
+                            </div>
+                        </div>
+
+                        <!-- Popup de Seguimiento -->
+                        <div id="seguimiento-popup" style="display: none;">
+                            <label for="seguimiento">Método de seguimiento</label>
+                            <p>Selecciona el método utilizado:</p>
+                            <div>
+                                <input type="radio" id="llamada" name="metodo_seguimiento" value="&#183 Llamada">
+                                <label for="llamada">Llamada</label><br>
+
+                                <input type="radio" id="whatsapp" name="metodo_seguimiento" value="&#183 WhatsApp">
+                                <label for="whatsapp">WhatsApp</label><br>
+
+                                <input type="radio" id="correo" name="metodo_seguimiento" value="&#183 Correo">
+                                <label for="correo">Correo</label><br>
+
+                                <input type="radio" id="no_especifica" name="metodo_seguimiento" value="&#183 No especifica">
+                                <label for="no_especifica">No especifica</label><br>
+                            </div>
+                            <button id="guardar-seguimiento">Aceptar</button>
+                        </div>
+
+                        <!-- Método de Seguimiento -->
+                        <div id="seguimiento-container" class="form-group-column" style="display: none;">
+                            <label for="metodo">Método de seguimiento:</label>
+                            <div>
+                                <ul id="metodo-seleccionado"></ul>
+                                <button id="editar-seguimiento">Editar</button>
                             </div>
                         </div>
                     </div>
