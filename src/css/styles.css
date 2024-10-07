@@ -223,7 +223,7 @@ button {
     margin-top: .75rem;
 }
 
-ul#documentos-seleccionados li {
+ul#documentos-seleccionados li, ul#metodo-seleccionado li {
     font-size: 1rem;
     color: #666666;
     display: block;
@@ -231,7 +231,7 @@ ul#documentos-seleccionados li {
     padding: 5px 10px;
 }
 
-ul#documentos-seleccionados li:hover {
+ul#documentos-seleccionados li:hover, ul#metodo-seleccionado li:hover {
     background-color: inherit;
     color: #666666;
     height: fit-content;
