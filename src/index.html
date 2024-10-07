@@ -131,14 +131,16 @@
 
                         <!-- Popup de Documentos -->
                         <div id="documentos-popup" style="display: none;">
-                            <label for="documentosrequeridos">Documentos requeridos</label>
-                            <h5>Selecciona documentos faltantes:</h5>
-                            <!-- <label>Documentos requeridos:</label> -->
+                            <label for="documentosrequeridos">Documentos faltantes</label>
+                            <p>Selecciona los documentos que el aspirante NO tiene:</p>
                             <div>
-                                <input type="checkbox" id="acta_nacimiento" value="&#183 Acta de nacimiento"> Acta de nacimiento<br>
-                                <input type="checkbox" id="certificado_licenciatura" value="&#183 Certificado de licenciatura">Certificado de licenciatura<br>
+                                <input type="checkbox" id="acta_nacimiento" value="&#183 Acta de nacimiento">Acta de
+                                nacimiento<br>
+                                <input type="checkbox" id="certificado_licenciatura"
+                                    value="&#183 Certificado de licenciatura">Certificado de licenciatura<br>
                                 <input type="checkbox" id="titulo" value="&#183 Título"> Título<br>
-                                <input type="checkbox" id="cedula_profesional" value="&#183 Cédula profesional">Cédula profesional<br>
+                                <input type="checkbox" id="cedula_profesional" value="&#183 Cédula profesional">Cédula
+                                profesional<br>
                                 <input type="checkbox" id="curp" value="&#183 Curp"> CURP<br>
                             </div>
                             <button id="guardar-documentos">Guardar</button>
@@ -146,25 +148,52 @@
 
                         <!-- Documentos faltantes -->
                         <div id="documentos-container" class="form-group-column" style="display: none;">
-                            <label for="documentosfaltantes">Documentos faltantes</label>
+                            <label for="documentosfaltantes">Documentos faltantes:</label>
                             <div>
                                 <ul id="documentos-seleccionados"></ul>
                                 <button id="editar-documentos">Editar</button>
-                                <!-- <input type="text" id="documentos" name="documentos" required readonly> -->
+                            </div>
+                        </div>
+
+                        <!-- Popup de Seguimiento -->
+                        <div id="seguimiento-popup" style="display: none;">
+                            <label for="seguimiento">Método de seguimiento</label>
+                            <p>Selecciona el método utilizado:</p>
+                            <div>
+                                <input type="radio" id="llamada" name="metodo_seguimiento" value="&#183 Llamada">
+                                <label for="llamada">Llamada</label><br>
+
+                                <input type="radio" id="whatsapp" name="metodo_seguimiento" value="&#183 WhatsApp">
+                                <label for="whatsapp">WhatsApp</label><br>
+
+                                <input type="radio" id="correo" name="metodo_seguimiento" value="&#183 Correo">
+                                <label for="correo">Correo</label><br>
+
+                                <input type="radio" id="no_especifica" name="metodo_seguimiento" value="&#183 No especifica">
+                                <label for="no_especifica">No especifica</label><br>
+                            </div>
+                            <button id="guardar-seguimiento">Aceptar</button>
+                        </div>
+
+                        <!-- Método de Seguimiento -->
+                        <div id="seguimiento-container" class="form-group-column" style="display: none;">
+                            <label for="metodo">Método de seguimiento:</label>
+                            <div>
+                                <ul id="metodo-seleccionado"></ul>
+                                <button id="editar-seguimiento">Editar</button>
                             </div>
                         </div>
                     </div>
 
                     <div class="form-row">
-                        <!-- Status Final -->
+                        <!-- Status Final
                         <div class="form-group-column">
                             <label for="statusfinal">Status Final *</label>
                             <div>
                                 <input type="text" id="statusfinal" name="statusfinal" required>
-                                <!-- <option value="interesado">Interesado</option> -->
                                 </select>
                             </div>
-                        </div>
+                        </div> -->
 
                         <!-- Interés -->
                         <div class="form-group-column">
@@ -181,19 +210,15 @@
                             </div>
                         </div>
 
-                        <!-- Estado Final -->
+                        <!-- Estado Final
                         <div class="form-group-column">
                             <label for="estadofinal">Estado Final *</label>
                             <div>
                                 <input type="text" id="estadofinal" name="estadofinal" required>
-                                <!-- <option value="interesado">Interesado</option> -->
                                 </select>
                             </div>
-                        </div>
+                        </div> -->
 
-                    </div>
-
-                    <div class="form-row">
                         <!-- Próxima actividad -->
                         <div class="form-group-column">
                             <label for="proximaactividad">Próxima actividad *</label>
@@ -213,9 +238,11 @@
                         <div class="form-group-column">
                             <label for="fechaproxact">Fecha próxima actividad *</label>
                             <div class="custom-date">
-                                <input type="date" id="fechaproxact" name="fechaproxact" required>
+                                <input type="date" id="fechaproxact" name="fechaproxact">
                             </div>
                         </div>
+
+                    </div>
                     </div>
 
                 </form>
