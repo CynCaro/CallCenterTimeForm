@@ -188,20 +188,18 @@ input[type="date"], input[type="text"] {
 
 /* Estilos para popup y listas */
 #documentos-popup label[for="documentosrequeridos"],
-#documentos-container label[for="documentosfaltantes"],
-#seguimiento-popup label[for="seguimiento"],
-#seguimiento-container label[for="metodo"] {
+#documentos-container label[for="documentosfaltantes"] {
     font-weight: bold;
 }
 
-#documentos-popup p, #seguimiento-popup p {
+#documentos-popup p {
     padding: 0;
     padding-top: 5px;
     font-size: 1rem; /* Reduce el tamaño de la tipografía */
     color: #f16315;
 }
 
-#documentos-popup, #seguimiento-popup {
+#documentos-popup {
     background-color: #f9f9f9;
     padding: 20px;
     border: 1px solid #ddd;
@@ -215,7 +213,7 @@ input[type="date"], input[type="text"] {
     z-index: 1000; */
 }
 
-input[type="checkbox"], input[type="radio"] {
+input[type="checkbox"] {
     margin-top: .75rem;
     margin-right: .5rem;
 }

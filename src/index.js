@@ -201,7 +201,8 @@ document.getElementById('tipificacionn2').addEventListener('change', function ()
             <option value="otro">Otro</option>
         `;
     }
-    // Condición: Mostrar opciones si el valor de Tipificación N2 es "Comparación con otras Universidades"
+
+    // Nueva condición: Mostrar opciones si el valor de Tipificación N2 es "Comparación con otras Universidades"
     else if (tipificacionn2Value === 'comparacion_universidades') {
         tipificacionn3Container.style.display = 'block';
         tipificacionn3.innerHTML = `
@@ -225,19 +226,15 @@ document.getElementById('tipificacionn2').addEventListener('change', function ()
             <option value="promesa_de_pago">Promesa de pago</option>
         `;
     }
-    // Condición si se selecciona "Documento en trámite"
+
+    // Si se selecciona "Documento en trámite"
     else if (tipificacionn2Value === 'documento_tramite') {
         // Ocultar Tipificación N3 y mostrar solo el popup
         tipificacionn3Container.style.display = 'none'; // Ocultar Tipificación N3
         documentosPopup.style.display = 'block'; // Muestra el popup de documentos
         documentosContainer.style.display = 'none'; // Asegúrate de ocultar el contenedor de documentos
     }
-    // Condición si se selecciona "Seguimiento"
-    else if (tipificacionn2Value === 'seguimiento') {
-        // Ocultar Tipificación N3 y mostrar solo el popup
-        tipificacionn3Container.style.display = 'none';
-        seguimientoPopup.style.display = 'block';
-    }
+
     // Ocultar Tipificación N3 si no se selecciona "2 ciclos post" ni "Presupuesto"
     else {
         tipificacionn3Container.style.display = 'none';
@@ -247,9 +244,15 @@ document.getElementById('tipificacionn2').addEventListener('change', function ()
     if (tipificacionn2Value === 'documento_tramite') {
         documentosPopup.style.display = 'block'; // Muestra el popup de documentos
     }
+
+    // Ocultar el popup de documentos
+    documentosPopup.style.display = 'none';
+
+    // Mostrar el contenedor de documentos seleccionados
+    documentosContainer.style.display = 'block';
 });
 
-// Comportamiento para "POPUP DOCUMENTOS"
+// Referencias a los elementos relevantes
 const guardarDocumentosBtn = document.getElementById('guardar-documentos');
 const documentosContainer = document.getElementById('documentos-container');
 const documentosPopup = document.getElementById('documentos-popup');
@@ -267,12 +270,12 @@ function agregarDocumentoALista(texto) {
 }
 
 // Evento para el botón Guardar
-guardarDocumentosBtn.addEventListener('click', function (event) {
+guardarDocumentosBtn.addEventListener('click', function(event) {
     event.preventDefault(); // Evita el comportamiento predeterminado de envío de formulario
 
     // Obtener todos los checkboxes seleccionados
     const selectedCheckboxes = document.querySelectorAll('#documentos-popup input[type="checkbox"]:checked');
-
+    
     // Limpiar la lista anterior antes de agregar nuevos elementos
     documentosSeleccionadosList.innerHTML = '';
     documentosSeleccionados = []; // Vaciar la lista de documentos seleccionados
@@ -296,8 +299,8 @@ guardarDocumentosBtn.addEventListener('click', function (event) {
 });
 
 // Evento para el botón "Editar" que permite modificar los documentos seleccionados
-editarDocumentosBtn.addEventListener('click', function (event) {
-    event.preventDefault();
+editarDocumentosBtn.addEventListener('click', function(event) {
+    event.preventDefault(); 
     // Mostrar el popup para reseleccionar documentos
     documentosContainer.style.display = 'none';
     documentosPopup.style.display = 'block';
@@ -306,64 +309,5 @@ editarDocumentosBtn.addEventListener('click', function (event) {
     const allCheckboxes = document.querySelectorAll('#documentos-popup input[type="checkbox"]');
     allCheckboxes.forEach(checkbox => {
         checkbox.checked = documentosSeleccionados.includes(checkbox.id); // Restaurar los checkboxes seleccionados
-    });
-});
-
-
-// Comportamiento para "POPUP SEGUIMIENTO"
-const guardarSeguimientoBtn = document.getElementById('guardar-seguimiento');
-const seguimientoContainer = document.getElementById('seguimiento-container');
-const seguimientoPopup = document.getElementById('seguimiento-popup');
-const metodoSeleccionadoList = document.getElementById('metodo-seleccionado');
-const editarSeguimientoBtn = document.getElementById('editar-seguimiento');
-
-// Almacenar el método de seguimiento seleccionado
-let metodoSeleccionado = '';
-
-// Función para mostrar el método de seguimiento en la lista
-function agregarMetodoALista(texto) {
-    const listItem = document.createElement('li');
-    listItem.textContent = texto;
-    metodoSeleccionadoList.appendChild(listItem);
-}
-
-// Evento para el botón Guardar Seguimiento
-guardarSeguimientoBtn.addEventListener('click', function (event) {
-    event.preventDefault(); // Evita el comportamiento predeterminado de envío de formulario
-
-    // Obtener el radio seleccionado
-    const selectedRadio = document.querySelector('input[name="metodo_seguimiento"]:checked');
-
-    // Limpiar la lista anterior antes de agregar el nuevo método
-    metodoSeleccionadoList.innerHTML = '';
-    metodoSeleccionado = ''; // Vaciar la variable de método seleccionado
-
-    // Si no se selecciona ningún método, muestra un mensaje
-    if (!selectedRadio) {
-        agregarMetodoALista('No se seleccionó ninguno.');
-    } else {
-        // Guardar el valor del radio seleccionado y mostrarlo en la lista
-        metodoSeleccionado = selectedRadio.value;
-        agregarMetodoALista(selectedRadio.value); // Utiliza la función para añadir el método
-    }
-
-    // Ocultar el popup de seguimiento
-    seguimientoPopup.style.display = 'none';
-
-    // Mostrar el contenedor de seguimiento seleccionado
-    seguimientoContainer.style.display = 'block';
-});
-
-// Evento para el botón "Editar" que permite modificar el método de seguimiento
-editarSeguimientoBtn.addEventListener('click', function (event) {
-    event.preventDefault();
-    // Mostrar el popup para reseleccionar el método
-    seguimientoContainer.style.display = 'none';
-    seguimientoPopup.style.display = 'block';
-
-    // Restaurar la selección anterior en el radio button
-    const allRadios = document.querySelectorAll('input[name="metodo_seguimiento"]');
-    allRadios.forEach(radio => {
-        radio.checked = (radio.value === metodoSeleccionado); // Restaurar la selección del radio seleccionado
     });
 });
