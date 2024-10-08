@@ -1,3 +1,14 @@
+// Función para ocultar y limpiar campos comunes
+const ocultarElementosComunes = () => {
+    document.getElementById('metodo-seleccionado').value = '';
+    document.getElementById('documentos-seleccionados').value = '';
+    document.getElementById('documentos-container').style.display = 'none';
+    document.getElementById('documentos-popup').style.display = 'none';
+    document.getElementById('seguimiento-container').style.display = 'none';
+    document.getElementById('seguimiento-popup').style.display = 'none';
+};
+
+// Listener para la selección de resultado2
 document.getElementById('resultado2').addEventListener('change', function () {
     const resultado2Value = this.value;
     const tipificacionn1Container = document.getElementById('tipificacionn1-container');
@@ -7,14 +18,18 @@ document.getElementById('resultado2').addEventListener('change', function () {
     const tipificacionn3Container = document.getElementById('tipificacionn3-container');
     const tipificacionn3 = document.getElementById('tipificacionn3');
 
-    // Ocultar Tipificación N2 y N3 y limpiar sus opciones cada vez que se cambie "Resultado 2*"
+    // Ocultar Tipificación N2, N3
     tipificacionn2Container.style.display = 'none';
-    tipificacionn2.innerHTML = ''; // Limpia el contenido de Tipificación N2
-    tipificacionn3Container.style.display = 'none'; // Ocultar Tipificación N3
-    tipificacionn3.innerHTML = ''; // Limpiar Tipificación N3
+    tipificacionn2.innerHTML = '';
+    tipificacionn3Container.style.display = 'none';
+    tipificacionn3.innerHTML = '';
 
+    // Limpiar Tipificación N1
+    tipificacionn1.innerHTML = '';
+    tipificacionn1Container.style.display = 'none';
+
+    // Lógica de Tipificación N1 según el valor de Resultado 2
     if (resultado2Value === 'interesado') {
-        // Mostrar Tipificación N1 y agregar las opciones correspondientes para "Interesado"
         tipificacionn1Container.style.display = 'block';
         tipificacionn1.innerHTML = `
             <option value="" disabled selected>Selecciona</option>
@@ -24,8 +39,25 @@ document.getElementById('resultado2').addEventListener('change', function () {
             <option value="llamada_cortada">Llamada cortada / Fallas en audio - Open</option>
             <option value="lead_repetido">Lead repetido - Lost</option>
         `;
+    } else if (resultado2Value === 'no_interesado') {
+        tipificacionn1Container.style.display = 'block';
+        tipificacionn1.innerHTML = `
+            <option value="" disabled selected>Selecciona</option>
+            <option value="plan_no_interes">El plan de estudios / programa no es de su interés - Lost / Hold</option>
+            <option value="lead_repetido">Lead Repetido - Lost</option>
+            <option value="sin_capacidad_pago">No tiene capacidad de pago - Lost / Hold</option>
+            <option value="interesado_otra_modalidad">Interesado en otra modalidad - Lost / Hold</option>
+            <option value="no_cumple_requisitos">No cumple con requisitos académicos - Lost / Hold</option>
+            <option value="no_acuerdo_proceso">No está de acuerdo con el proceso de equivalencia/revalidación - Lost / Hold</option>
+            <option value="solo_informacion">Solo buscaba información - Lost / Hold</option>
+            <option value="inscripto_otro">Ya se inscribió en otra institución - Lost / Hold</option>
+            <option value="sin_disponibilidad_tiempo">Sin disponibilidad de tiempo - Lost / Hold</option>
+            <option value="pide_no_marcacion">Pide no se le marque de nuevo - Lost / Hold</option>
+            <option value="pensado_gratis">Pensó que era gratis - Lost / Hold</option>
+            <option value="alternativas_pago_insuficientes">Alternativas de pago insuficientes - Lost / Hold</option>
+            <option value="llamada_cortada">Llamada cortada / Fallas en audio - Open</option>
+        `;
     } else if (resultado2Value === 'no_efectivo') {
-        // Mostrar Tipificación N1 con las opciones para "No efectivo"
         tipificacionn1Container.style.display = 'block';
         tipificacionn1.innerHTML = `
             <option value="" disabled selected>Selecciona</option>
@@ -37,333 +69,468 @@ document.getElementById('resultado2').addEventListener('change', function () {
             <option value="lead_repetido">Lead repetido - Lost</option>
             <option value="no_se_registro">No se registró - Lost / Hold</option>
         `;
-    } else {
-        // Ocultar Tipificación N1 si no es "Interesado" ni "No efectivo"
-        tipificacionn1Container.style.display = 'none';
-        document.getElementById('tipificacionn2-container').style.display = 'none';
-        document.getElementById('tipificacionn3-container').style.display = 'none';
     }
-    // Siempre oculta el popup y la lista de documentos cuando cambia "Resultado 2*"
-    if (resultado2Value !== '') {
-        document.getElementById('documentos-popup').style.display = 'none';
-        document.getElementById('documentos-container').style.display = 'none';
-
-        // También oculta Tipificación N3 cuando cambia el valor de Resultado 2
-        document.getElementById('tipificacionn3-container').style.display = 'none';
-        document.getElementById('tipificacionn3').innerHTML = ''; // Limpia Tipificación N3 si es necesario
-
-        // También oculta el popup y método de seguimiento cuando cambia "Resultado 2*"
-        document.getElementById('seguimiento-popup').style.display = 'none';
-        document.getElementById('seguimiento-container').style.display = 'none';
-    }
+    // Ocultar elementos adicionales
+    ocultarElementosComunes();
 });
 
-// Evento para Tipificación N1 (nivel 1)
+// // Ocultar popups y otros elementos no relacionados
+// document.getElementById('documentos-popup').style.display = 'none';
+// document.getElementById('documentos-container').style.display = 'none';
+// document.getElementById('seguimiento-popup').style.display = 'none';
+// document.getElementById('seguimiento-container').style.display = 'none';
+// document.getElementById('documentos-sin-apostillar-popup').style.display = 'none';
+// document.getElementById('documentos-sin-apostillar-container').style.display = 'none';
+// document.getElementById('documentos-sin-documento-popup').style.display = 'none';
+// document.getElementById('documentos-sin-documento-container').style.display = 'none';
+
+// Listener para la selección de tipificacionn1
 document.getElementById('tipificacionn1').addEventListener('change', function () {
     const tipificacionn1Value = this.value;
     const tipificacionn2Container = document.getElementById('tipificacionn2-container');
     const tipificacionn2 = document.getElementById('tipificacionn2');
-    const documentosContainer = document.getElementById('documentos-container');
-    const documentosPopup = document.getElementById('documentos-popup');
-    const tipificacionn3Container = document.getElementById('tipificacionn3-container'); // Para ocultar Tipificación N3
-
-    // Ocultar el campo "Seguimiento" y Tipificación N3 al cambiar la selección de Tipificación N1
-    seguimientoContainer.style.display = 'none';
-    seguimientoPopup.style.display = 'none';
-    document.getElementById('metodo-seleccionado').value = '';
-
-    // Ocultar el campo "Documentos" y Tipificación N3 al cambiar la selección de Tipificación N1
-    documentosContainer.style.display = 'none'; // Oculta el contenedor de Documentos
-    documentosPopup.style.display = 'none'; // Oculta el popup de Documentos
-    document.getElementById('documentos-seleccionados').value = ''; // Limpia el campo "Documentos"
-
-    // Ocultar Tipificación N3 y limpiar su contenido
-    tipificacionn3Container.style.display = 'none'; // Oculta Tipificación N3
-    tipificacionn3.innerHTML = ''; // Limpia Tipificación N3
-
-    // Limpiar Tipificación N2 al cambiar la selección de Tipificación N1
-    tipificacionn2.innerHTML = ''; // Limpia Tipificación N2 por si se ha seleccionado otra opción antes
-
-    // Condición para "Evaluando propuesta"
-    if (tipificacionn1Value === 'evaluando_propuesta') {
-        tipificacionn2Container.style.display = 'block';
-        tipificacionn2.innerHTML = `
-            <option value="" disabled selected>Selecciona</option>
-            <option value="presupuesto">Presupuesto</option>
-            <option value="comparacion_universidades">Comparación con otras Universidades</option>
-            <option value="documento_tramite">Documento en trámite</option>
-            <option value="plan_estudios">Plan de estudios / programa si es de su interés</option>
-            <option value="duracion_programa">Duración del programa</option>
-            <option value="otra_persona">El programa es para otra persona</option>
-            <option value="revalidacion_equivalencia">Busca revalidación/equivalencia</option>
-            <option value="otro">Otro</option>
-            <option value="interesado_potencial">Interesado potencial</option>
-        `;
-    }
-    // Condición para "Agenda para siguiente ciclo"
-    else if (tipificacionn1Value === 'agenda_sig_ciclo') {
-        tipificacionn2Container.style.display = 'block';
-        tipificacionn2.innerHTML = `
-            <option value="" disabled selected>Selecciona</option>
-            <option value="proximo_ciclo">Próximo ciclo</option>
-            <option value="2_ciclos_post">2 ciclos posteriores o más</option>
-        `;
-    }
-    // Condición para "Referido - Open"
-    else if (tipificacionn1Value === 'referido') {
-        tipificacionn2Container.style.display = 'block';
-        tipificacionn2.innerHTML = `
-            <option value="" disabled selected>Selecciona</option>
-            <option value="universidad">Universidad</option>
-            <option value="amigo_familiar">Amigo / Familiar</option>
-            <option value="empresa">Empresa</option>
-        `;
-    }
-    // Condición para "Se agenda a peticición del aspirante - Open"
-    else if (tipificacionn1Value === 'agenda_peticion_aspirante') {
-        tipificacionn2Container.style.display = 'block';
-        tipificacionn2.innerHTML = `
-            <option value="" disabled selected>Selecciona</option>
-            <option value="seguimiento">Seguimiento</option>
-        `;
-    }
-    // Condición para "Número equivocado - Lost / Hold"
-    else if (tipificacionn1Value === 'numero_equivocado') {
-        tipificacionn2Container.style.display = 'block';
-        tipificacionn2.innerHTML = `
-            <option value="" disabled selected>Selecciona</option>
-            <option value="no_lo_conocen">No lo conocen</option>
-            <option value="familiar_amigo">Es familiar / amigo</option>
-            <option value="no_especifica">No especifica</option>
-        `;
-    }
-    // Condición para "Lead Repetido - Lost"
-    else if (tipificacionn1Value === 'lead_repetido') {
-        tipificacionn2Container.style.display = 'block';
-        tipificacionn2.innerHTML = `
-            <option value="" disabled selected>Selecciona</option>
-            <option value="atencion_otro_lead">Atención en otro lead / más de un registro</option>
-        `;
-    }
-    // Nueva condición para "No se registró - Lost / Hold"
-    else if (tipificacionn1Value === 'no_se_registro') {
-        tipificacionn2Container.style.display = 'block';
-        tipificacionn2.innerHTML = `
-            <option value="" disabled selected>Selecciona</option>
-            <option value="vio_tik_tok">Vió un tik tok</option>
-            <option value="busca_trabajo">Busca trabajo</option>
-            <option value="publicidad_enganosa">Publicidad engañosa</option>
-            <option value="otro">Otro</option>
-        `;
-    }
-    // Si no es ninguna de las opciones relevantes, ocultar Tipificación N2
-    else {
-        tipificacionn2Container.style.display = 'none';
-    }
-});
-
-// Evento para Tipificación N2 (nivel 2)
-document.getElementById('tipificacionn2').addEventListener('change', function () {
-    const tipificacionn2Value = this.value;
     const tipificacionn3Container = document.getElementById('tipificacionn3-container');
-    const tipificacionn3 = document.getElementById('tipificacionn3');
-    const documentosContainer = document.getElementById('documentos-container');
-    const documentosPopup = document.getElementById('documentos-popup');
-    const seguimientoPopup = document.getElementById('seguimiento-popup');
+    // const documentosContainer = document.getElementById('documentos-container');
+    // const documentosPopup = document.getElementById('documentos-popup');
 
-    // Ocultar el campo "Documentos" al cambiar la selección de Tipificación N2
-    documentosContainer.style.display = 'none'; // Ocultar documentos container al inicio
-    documentosPopup.style.display = 'none'; // Ocultar el popup de documentos al inicio
-    document.getElementById('documentos-seleccionados').innerHTML = ''; // Limpiar el campo "Documentos"
+    // Limpiar y ocultar N2, N3
+    tipificacionn2.innerHTML = '';
+    tipificacionn3Container.style.display = 'none';
 
-    if (tipificacionn2Value === '2_ciclos_post') {
-        // Mostrar Tipificación N3 con las opciones correspondientes
-        tipificacionn3Container.style.display = 'block';
-        tipificacionn3.innerHTML = `
-            <option value="" disabled selected>Selecciona</option>
-            <option value="trimestre_1">Trimestre 1 (ene, feb, mar)</option>
-            <option value="trimestre_2">Trimestre 2 (abril, mayo, jun)</option>
-            <option value="trimestre_3">Trimestre 3 (jul, ago, sep)</option>
-            <option value="trimestre_4">Trimestre 4 (oct, nov, dic)</option>
-            <option value="no_especifica">No especifica</option>
-        `;
-    }
-    // Condición: Mostrar opciones específicas si el valor de Tipificación N2 es "Presupuesto"
-    else if (tipificacionn2Value === 'presupuesto') {
-        tipificacionn3Container.style.display = 'block';
-        tipificacionn3.innerHTML = `
-            <option value="" disabled selected>Selecciona</option>
-            <option value="meses_sin_intereses">Busca meses sin intereses</option>
-            <option value="busca_financiamiento">Busca financiamiento / Convenio con la universidad</option>
-            <option value="empresa_apoya">Lo apoyará su empresa</option>
-            <option value="espera_credito">En espera que le aprueben un crédito</option>
-            <option value="tercero_apoya">Lo apoyará un tercero / Tercero toma decisión</option>
-            <option value="otro">Otro</option>
-        `;
-    }
-    // Condición: Mostrar opciones si el valor de Tipificación N2 es "Comparación con otras Universidades"
-    else if (tipificacionn2Value === 'comparacion_universidades') {
-        tipificacionn3Container.style.display = 'block';
-        tipificacionn3.innerHTML = `
-            <option value="" disabled selected>Selecciona</option>
-            <option value="tec">TEC</option>
-            <option value="itam">ITAM</option>
-            <option value="uvm">UVM</option>
-            <option value="panamericana">Panamericana</option>
-            <option value="ibero">IBERO</option>
-            <option value="otro">Otro</option>
-        `;
-    }
-    // Nueva condición: Mostrar opciones si el valor de Tipificación N2 es "Interesado potencial"
-    else if (tipificacionn2Value === 'interesado_potencial') {
-        tipificacionn3Container.style.display = 'block';
-        tipificacionn3.innerHTML = `
-            <option value="" disabled selected>Selecciona</option>
-            <option value="evaluando_costos">Evaluando costos</option>
-            <option value="espera_fecha_aplicar">En espera de fecha para aplicar solicitud</option>
-            <option value="evaluando_otras_opciones">Evaluando otras opciones</option>
-            <option value="promesa_de_pago">Promesa de pago</option>
-        `;
-    }
-    // Condición si se selecciona "Documento en trámite"
-    else if (tipificacionn2Value === 'documento_tramite') {
-        // Ocultar Tipificación N3 y mostrar solo el popup
-        tipificacionn3Container.style.display = 'none'; // Ocultar Tipificación N3
-        documentosPopup.style.display = 'block'; // Muestra el popup de documentos
-        documentosContainer.style.display = 'none'; // Asegúrate de ocultar el contenedor de documentos
-    }
-    // Condición si se selecciona "Seguimiento"
-    else if (tipificacionn2Value === 'seguimiento') {
-        // Ocultar Tipificación N3 y mostrar solo el popup
-        tipificacionn3Container.style.display = 'none';
-        seguimientoPopup.style.display = 'block';
-    }
-    // Ocultar Tipificación N3 si no se selecciona "2 ciclos post" ni "Presupuesto"
-    else {
-        tipificacionn3Container.style.display = 'none';
-    }
+    const mostrarOpcionesTipificacion2 = (opciones) => {
+        tipificacionn2Container.style.display = 'block';
+        tipificacionn2.innerHTML = `<option value="" disabled selected>Selecciona</option>${opciones}`;
+    };
 
-    // Lógica para mostrar documentos si es necesario
-    if (tipificacionn2Value === 'documento_tramite') {
-        documentosPopup.style.display = 'block'; // Muestra el popup de documentos
+    // Función para ocultar y limpiar
+    // const ocultarElementos = () => {
+    //     document.getElementById('metodo-seleccionado').value = '';
+    //     document.getElementById('documentos-seleccionados').value = '';
+    //     tipificacionn2.innerHTML = '';
+    //     tipificacionn3Container.style.display = 'none';
+    //     documentosContainer.style.display = 'none';
+    //     documentosPopup.style.display = 'none';
+    // };
+
+    // const mostrarOpciones = (opciones) => {
+    //     tipificacionn2Container.style.display = 'block';
+    //     tipificacionn2.innerHTML = `<option value="" disabled selected>Selecciona</option>${opciones}`;
+    // };
+
+    // ocultarElementos();
+
+    // Lógica para Tipificación N2 basado en la selección de N1
+    switch (tipificacionn1Value) {
+        case 'evaluando_propuesta':
+            mostrarOpcionesTipificacion2(`
+                <option value="presupuesto">Presupuesto</option>
+                <option value="comparacion_universidades">Comparación con otras Universidades</option>
+                <option value="documento_tramite">Documento en trámite</option>
+                <option value="plan_estudios">Plan de estudios / programa si es de su interés</option>
+                <option value="duracion_programa">Duración del programa</option>
+                <option value="otra_persona">El programa es para otra persona</option>
+                <option value="revalidacion_equivalencia">Busca revalidación/equivalencia</option>
+                <option value="otro">Otro</option>
+                <option value="interesado_potencial">Interesado potencial</option>
+            `);
+            break;
+        case 'agenda_sig_ciclo':
+            mostrarOpcionesTipificacion2(`
+                <option value="proximo_ciclo">Próximo ciclo</option>
+                <option value="2_ciclos_post">2 ciclos posteriores o más</option>
+            `);
+            break;
+        case 'referido':
+            mostrarOpcionesTipificacion2(`
+                <option value="universidad">Universidad</option>
+                <option value="amigo_familiar">Amigo / Familiar</option>
+                <option value="empresa">Empresa</option>
+            `);
+            break;
+        case 'agenda_peticion_aspirante':
+            mostrarOpcionesTipificacion2(`
+                <option value="seguimiento">Seguimiento</option>
+            `);
+            break;
+        case 'numero_equivocado':
+            mostrarOpcionesTipificacion2(`
+                <option value="no_lo_conocen">No lo conocen</option>
+                <option value="familiar_amigo">Es familiar / amigo</option>
+                <option value="no_especifica">No especifica</option>
+            `);
+            break;
+        case 'no_se_registro':
+            mostrarOpcionesTipificacion2(`
+                <option value="vio_tik_tok">Vió un tik tok</option>
+                <option value="busca_trabajo">Busca trabajo</option>
+                <option value="publicidad_enganosa">Publicidad engañosa</option>
+                <option value="otro">Otro</option>
+            `);
+            break;
+        case 'plan_no_interes':
+            mostrarOpcionesTipificacion2(`
+                <option value="busca_otro_contenido">Busca otro contenido / Programa</option>
+                <option value="busca_curso">Busca curso</option>
+                <option value="busca_diplomado">Busca Diplomado</option>
+                <option value="busca_licenciatura">Busca Licenciatura</option>
+                <option value="busca_maestria">Busca maestría</option>
+                <option value="busca_doctorado">Busca doctorado</option>
+                <option value="no_especifica">No especifíca</option>
+            `);
+            break;
+        case 'lead_repetido':
+            mostrarOpcionesTipificacion2(`
+                <option value="atencion_otro_lead">Atención en otro lead / más de un registro</option>
+            `);
+            break;
+        case 'sin_capacidad_pago':
+            mostrarOpcionesTipificacion2(`
+                <option value="no_entra_presupuesto">No entra en su presupuesto</option>
+                <option value="no_autorizaron_creidto">No le autorizaron el crédito en el banco</option>
+                <option value="no_autorizaron_financiamiento">No le autorizaron el crédito / Financiamento en su empresa</option>
+                <option value="tercero_no_apoya">Tercero no le puede apoyar</option>
+                <option value="tuvo_percance">Tuvo un percance</option>
+                <option value="busca_convenio_universidad">Busca financiamiento / convenio con la Universidad</option>
+                <option value="busca_meses">Busca meses sin interesese</option>
+                <option value="no_empleo">No tiene empleo por el momento</option>
+                <option value="otro">Otro</option>
+            `);
+            break;
+        case 'interesado_otra_modalidad':
+            mostrarOpcionesTipificacion2(`
+                <option value="presencial">Presencial</option>
+                <option value="hibrido">Híbrido</option>
+            `);
+            break;
+        case 'sin_disponibilidad_tiempo':
+            mostrarOpcionesTipificacion2(`
+                <option value="actualmente_estudia">Actualmente estudia</option>
+                <option value="temas_laborales">Temas laborales</option>
+                <option value="temas_personales">Temas personales</option>
+                <option value="tema_salud">Tema salud</option>
+            `);
+            break;
+        case 'inscripto_otro':
+            mostrarOpcionesTipificacion2(`
+                    <option value="tec">TEC</option>
+                    <option value="itam">ITAM</option>
+                    <option value="uvm">UVM</option>
+                    <option value="panamericana">Panamericana</option>
+                    <option value="ibero">IBERO</option>
+                    <option value="otro">Otro</option>
+                `);
+            break;
+        default:
+            tipificacionn2Container.style.display = 'none';
+            break;
+        case 'evaluando_propuesta':
+            mostrarOpcionesTipificacion2(`
+                    <option value="presupuesto">Presupuesto</option>
+                    <option value="comparacion_universidades">Comparación con otras Universidades</option>
+                    <option value="documento_tramite">Documento en trámite</option>
+                    <option value="plan_estudios">Plan de estudios / programa si es de su interés</option>
+                    <option value="duracion_programa">Duración del programa</option>
+                    <option value="otra_persona">El programa es para otra persona</option>
+                    <option value="revalidacion_equivalencia">Busca revalidación/equivalencia</option>
+                    <option value="otro">Otro</option>
+                    <option value="interesado_potencial">Interesado potencial</option>
+                `);
+            break;
+        case 'no_cumple_requisitos':
+            mostrarOpcionesTipificacion2(`
+                        <option value="estudios_cursando">Estudios en curso</option>
+                        <option value="graduado_sin_documento">Graduado sin documento</option>
+                        <option value="documento_tramite">Documento en trámite</option>
+                        <option value="carrera_tecnica">Tiene carrera técnica</option>
+                        <option value="no_afin">Carrera no es afín</option>
+                        <option value="es_extyranjero">Es extranjero</option>
+                        <option value="sin_licenciatura">No cuenta con licenciatura</option>
+                    `);
+            break;
     }
+    ocultarElementosComunes();
 });
 
-// Comportamiento para "POPUP DOCUMENTOS"
+// Manejo del cambio para Tipificación N2 y N3
+['tipificacionn2', 'tipificacionn3'].forEach(id => {
+    document.getElementById(id).addEventListener('change', function () {
+        if (id === 'tipificacionn2') handleTipificacionN2(this.value);
+        else handleTipificacionN3(this.value);
+    });
+});
+
+// Comportamiento dinámico según Tipificación N2
+function handleTipificacionN2(value) {
+    const elementsToHide = ['documentos-container', 'documentos-popup', 'seguimiento-popup', 'tipificacionn3-container', 'informacion-popup', 'informacion-container'];
+    elementsToHide.forEach(id => document.getElementById(id).style.display = 'none');
+
+    const tipificacionn3 = document.getElementById('tipificacionn3');
+    tipificacionn3.innerHTML = ''; // Limpiar Tipificación N3
+
+    // Opciones comunes N3
+    const opcionesN2 = {
+        'busca_curso': ['Modalidad', 'Contenido / plan de estudios', 'Otro programa'],
+        '2_ciclos_post': ['Trimestre 1 (ene, feb, mar)', 'Trimestre 2 (abr, may, jun)', 'Trimestre 3 (jul, ago, sep)', 'Trimestre 4 (oct, nov, dic)', 'No especifica'],
+        'presupuesto': ['Busca meses sin intereses', 'Busca financiamiento', 'Apoyo empresa', 'Esperando crédito', 'Apoyo tercero', 'Otro'],
+        'comparacion_universidades': ['TEC', 'ITAM', 'UVM', 'Panamericana', 'IBERO', 'Otro'],
+        'interesado_potencial': ['Evaluando costos', 'Esperando aplicar', 'Evaluando otras opciones', 'Promesa de pago'],
+        'no_entra_presupuesto': ['Menos de 3 mil', '3 a 4 mil mensuales', '4 a 5 mil mensuales', 'Más de 5 mil mensuales'],
+        'tuvo_percance': ['Personal', 'Familiar', 'Salud', 'Otro'],
+        'estudios_curso': ['Bachillerato', 'Licenciatura', 'Servicio Social', 'Otro'],
+        // 'graduado_sin_documento': [], // Debe mostrar el popup
+        // 'documento_tramite': [], // Debe mostrar el popup
+        'carrera_no_afin': ['Con experiencia', 'Sin experiencia'],
+        'es_extranjero': ['Documento sin apostillar', 'Sin documento'],
+        'actualmente_estudia': ['Curso /Seminario', 'Diplomado', 'Licenciatura', 'Maestría', 'Doctorado', 'Especialidad']
+    }; 
+
+    if (opcionesN2[value]) {
+        mostrarOpcionesN3(opcionesN2[value]);
+        document.getElementById('tipificacionn3-container').style.display = 'block'; // Mostrar Tipificación N3 si hay opciones
+    } else {
+        switch (value) {
+            case 'graduado_sin_documento':
+            case 'documento_tramite':
+                document.getElementById('documentos-popup').style.display = 'block';
+                break;
+            case 'es_extranjero':
+                mostrarOpcionesN3(opcionesN2['es_extranjero']);
+                document.getElementById('tipificacionn3-container').style.display = 'block';
+                break;
+            // Otros casos como 'estudios_curso', 'carrera_no_afin'
+            case 'estudios_curso':
+            case 'carrera_no_afin':
+                document.getElementById('tipificacionn3-container').style.display = 'block';
+                break;
+            default:
+                // Manejar otros casos si es necesario
+                break;
+        }
+    }
+}
+
+
+// Eventos para resetear Resultado 4
+['tipificacionn1', 'tipificacionn2', 'resultado2'].forEach(id => {
+    document.getElementById(id).addEventListener('change', resetResultado4);
+});
+
+// Función para resetear Resultado 4
+function resetResultado4() {
+    const statusFinalInput = document.getElementById('statusfinal');
+    statusFinalInput.value = ''; // Limpiar valor
+    document.getElementById('statusfinal-container').style.display = 'none'; // Ocultar
+}
+
+// Maneja el cambio de Tipificación N3 (nivel 3)
+function handleTipificacionN3(tipificacionn3Value) {
+    const statusFinalContainer = document.getElementById('statusfinal-container');
+    const statusFinalInput = document.getElementById('statusfinal');
+    const documentosSinApostillarContainer = document.getElementById('documentos-sin-apostillar-container');
+    const documentosSinDocumentoContainer = document.getElementById('documentos-sin-documento-container');
+
+    const resetDocumentos = () => {
+        ocultarPopup('documentos-sin-apostillar-popup');
+        ocultarPopup('documentos-sin-documento-popup');
+        documentosSinApostillarContainer.style.display = 'none';
+        documentosSinDocumentoContainer.style.display = 'none';
+    };
+
+    resetResultado4();
+    resetDocumentos();
+
+    if (tipificacionn3Value === 'con_experiencia') {
+        statusFinalInput.value = 'Aplica en otro programa';
+        statusFinalContainer.style.display = 'block';
+    } else if (tipificacionn3Value === 'documento_sin_apostillar') {
+        mostrarPopup('documentos-sin-apostillar-popup');
+    } else if (tipificacionn3Value === 'sin_documento') {
+        mostrarPopup('documentos-sin-documento-popup');
+    }
+}
+
+// Muestra un popup
+function mostrarPopup(popupId) {
+    document.getElementById(popupId).style.display = 'block';
+}
+
+// Oculta un popup
+function ocultarPopup(popupId) {
+    document.getElementById(popupId).style.display = 'none';
+}
+
+// Muestra opciones de Tipificación N3 (nivel 3)
+function mostrarOpcionesN3(opciones) {
+    const tipificacionn3 = document.getElementById('tipificacionn3');
+    document.getElementById('tipificacionn3-container').style.display = 'block';
+    tipificacionn3.innerHTML = '<option value="" disabled selected>Selecciona</option>';
+
+    opciones.forEach(opcion => {
+        const optionElement = document.createElement('option');
+        optionElement.value = opcion.toLowerCase().replace(/ /g, '_');
+        optionElement.textContent = opcion;
+        tipificacionn3.appendChild(optionElement);
+    });
+}
+
+// Evento de cambio para Tipificación N3
+document.getElementById('tipificacionn3').addEventListener('change', function (event) {
+    handleTipificacionN3(event.target.value);
+});
+
+// Muestra opciones de Tipificación N3 (nivel 3)
+function mostrarOpcionesN3(opciones) {
+    const tipificacionn3 = document.getElementById('tipificacionn3');
+    const tipificacionn3Container = document.getElementById('tipificacionn3-container');
+
+    if (tipificacionn3 && tipificacionn3Container) {
+        tipificacionn3Container.style.display = 'block'; // Mostrar el contenedor del select
+        tipificacionn3.innerHTML = '<option value="" disabled selected>Selecciona</option>'; // Resetear opciones
+
+        // Añadir cada opción al select
+        opciones.forEach(opcion => {
+            const optionElement = document.createElement('option');
+            optionElement.value = opcion.toLowerCase().replace(/ /g, '_');
+            optionElement.textContent = opcion;
+            tipificacionn3.appendChild(optionElement);
+        });
+    }
+}
+
+
+
+// Reutilización para manejo de popup de selección y edición
+function manejarPopup(guardarBtn, popup, contenedor, listaSeleccionados, obtenerSeleccionados, mensajeVacio) {
+    guardarBtn.addEventListener('click', function (event) {
+        event.preventDefault();
+        const seleccionados = obtenerSeleccionados();
+        listaSeleccionados.innerHTML = '';
+
+        if (seleccionados.length === 0) {
+            agregarALista(listaSeleccionados, mensajeVacio);
+        } else {
+            seleccionados.forEach(seleccion => agregarALista(listaSeleccionados, seleccion.text));
+        }
+
+        // Ocultar popup y mostrar contenedor
+        popup.style.display = 'none';
+        contenedor.style.display = 'block';
+
+        // Mostrar el botón de editar
+        const editarBtn = contenedor.querySelector('button[id^="editar-"]'); // Selecciona el botón de editar
+        if (editarBtn) {
+            editarBtn.style.display = 'block'; // Mostrar el botón de editar
+        }
+    });
+}
+
+function editarPopup(editarBtn, popup, contenedor, checkboxes, seleccionados) {
+    editarBtn.addEventListener('click', function (event) {
+        event.preventDefault();
+        contenedor.style.display = 'none';
+        popup.style.display = 'block';
+
+        checkboxes.forEach(checkbox => {
+            // Marcar la casilla si el ID está en la lista de seleccionados
+            checkbox.checked = seleccionados.includes(checkbox.id);
+        });
+    });
+}
+
+function agregarALista(lista, texto) {
+    const listItem = document.createElement('li');
+    listItem.textContent = texto;
+    lista.appendChild(listItem);
+}
+
+// Implementación para "Documentos"
 const guardarDocumentosBtn = document.getElementById('guardar-documentos');
-const documentosContainer = document.getElementById('documentos-container');
 const documentosPopup = document.getElementById('documentos-popup');
+const documentosContainer = document.getElementById('documentos-container');
 const documentosSeleccionadosList = document.getElementById('documentos-seleccionados');
 const editarDocumentosBtn = document.getElementById('editar-documentos');
 
-// Almacenar los documentos seleccionados
 let documentosSeleccionados = [];
 
-// Función para agregar un elemento a la lista de documentos
-function agregarDocumentoALista(texto) {
-    const listItem = document.createElement('li');
-    listItem.textContent = texto;
-    documentosSeleccionadosList.appendChild(listItem);
-}
-
-// Evento para el botón Guardar
-guardarDocumentosBtn.addEventListener('click', function (event) {
-    event.preventDefault(); // Evita el comportamiento predeterminado de envío de formulario
-
-    // Obtener todos los checkboxes seleccionados
+const obtenerDocumentosSeleccionados = () => {
     const selectedCheckboxes = document.querySelectorAll('#documentos-popup input[type="checkbox"]:checked');
+    documentosSeleccionados = [...selectedCheckboxes].map(checkbox => ({ id: checkbox.id, text: checkbox.value }));
+    return documentosSeleccionados;
+};
 
-    // Limpiar la lista anterior antes de agregar nuevos elementos
-    documentosSeleccionadosList.innerHTML = '';
-    documentosSeleccionados = []; // Vaciar la lista de documentos seleccionados
+manejarPopup(guardarDocumentosBtn, documentosPopup, documentosContainer, documentosSeleccionadosList, obtenerDocumentosSeleccionados, 'No se seleccionaron documentos.');
+editarPopup(editarDocumentosBtn, documentosPopup, documentosContainer, document.querySelectorAll('#documentos-popup input[type="checkbox"]'), documentosSeleccionados.map(doc => doc.id));
 
-    // Si no se selecciona ningún documento, muestra un mensaje
-    if (selectedCheckboxes.length === 0) {
-        agregarDocumentoALista('No se seleccionaron documentos.');
-    } else {
-        // Recorrer los checkboxes seleccionados y agregarlos a la lista de documentos seleccionados
-        selectedCheckboxes.forEach(checkbox => {
-            documentosSeleccionados.push(checkbox.id); // Almacenar el ID del checkbox seleccionado
-            agregarDocumentoALista(checkbox.value); // Utiliza la función para añadir documentos
-        });
-    }
-
-    // Ocultar el popup de documentos
-    documentosPopup.style.display = 'none';
-
-    // Mostrar el contenedor de documentos seleccionados
-    documentosContainer.style.display = 'block';
-});
-
-// Evento para el botón "Editar" que permite modificar los documentos seleccionados
-editarDocumentosBtn.addEventListener('click', function (event) {
-    event.preventDefault();
-    // Mostrar el popup para reseleccionar documentos
-    documentosContainer.style.display = 'none';
-    documentosPopup.style.display = 'block';
-
-    // Restaurar las selecciones anteriores en los checkboxes
-    const allCheckboxes = document.querySelectorAll('#documentos-popup input[type="checkbox"]');
-    allCheckboxes.forEach(checkbox => {
-        checkbox.checked = documentosSeleccionados.includes(checkbox.id); // Restaurar los checkboxes seleccionados
-    });
-});
-
-
-// Comportamiento para "POPUP SEGUIMIENTO"
+// Implementación para "Seguimiento"
 const guardarSeguimientoBtn = document.getElementById('guardar-seguimiento');
-const seguimientoContainer = document.getElementById('seguimiento-container');
 const seguimientoPopup = document.getElementById('seguimiento-popup');
-const metodoSeleccionadoList = document.getElementById('metodo-seleccionado');
+const seguimientoContainer = document.getElementById('seguimiento-container');
+const seguimientoSeleccionadosList = document.getElementById('metodo-seleccionado');
 const editarSeguimientoBtn = document.getElementById('editar-seguimiento');
 
-// Almacenar el método de seguimiento seleccionado
-let metodoSeleccionado = '';
+let seguimientoSeleccionados = [];
 
-// Función para mostrar el método de seguimiento en la lista
-function agregarMetodoALista(texto) {
-    const listItem = document.createElement('li');
-    listItem.textContent = texto;
-    metodoSeleccionadoList.appendChild(listItem);
-}
+const obtenerSeguimientoSeleccionados = () => {
+    const selectedCheckboxes = document.querySelectorAll('#seguimiento-popup input[type="checkbox"]:checked');
+    seguimientoSeleccionados = [...selectedCheckboxes].map(checkbox => ({ id: checkbox.id, text: checkbox.value }));
+    return seguimientoSeleccionados;
+};
 
-// Evento para el botón Guardar Seguimiento
-guardarSeguimientoBtn.addEventListener('click', function (event) {
-    event.preventDefault(); // Evita el comportamiento predeterminado de envío de formulario
+manejarPopup(guardarSeguimientoBtn, seguimientoPopup, seguimientoContainer, seguimientoSeleccionadosList, obtenerSeguimientoSeleccionados, 'No se seleccionaron seguimientos.');
+editarPopup(editarSeguimientoBtn, seguimientoPopup, seguimientoContainer, document.querySelectorAll('#seguimiento-popup input[type="checkbox"]'), seguimientoSeleccionados.map(item => item.id));
 
-    // Obtener el radio seleccionado
-    const selectedRadio = document.querySelector('input[name="metodo_seguimiento"]:checked');
+// Implementación para "Documentos sin apostillar"
+const guardarDocumentosSinApostillarBtn = document.getElementById('guardar-documentos-sin-apostillar');
+const documentosSinApostillarPopup = document.getElementById('documentos-sin-apostillar-popup');
+const documentosSinApostillarContainer = document.getElementById('documentos-sin-apostillar-container');
+const documentosSeleccionadosSinApostillarList = document.getElementById('documentos-seleccionados-sin-apostillar');
+const editarDocumentosSinApostillarBtn = document.getElementById('editar-documentos-sin-apostillar');
 
-    // Limpiar la lista anterior antes de agregar el nuevo método
-    metodoSeleccionadoList.innerHTML = '';
-    metodoSeleccionado = ''; // Vaciar la variable de método seleccionado
+let documentosSinApostillarSeleccionados = [];
 
-    // Si no se selecciona ningún método, muestra un mensaje
-    if (!selectedRadio) {
-        agregarMetodoALista('No se seleccionó ninguno.');
-    } else {
-        // Guardar el valor del radio seleccionado y mostrarlo en la lista
-        metodoSeleccionado = selectedRadio.value;
-        agregarMetodoALista(selectedRadio.value); // Utiliza la función para añadir el método
-    }
+const obtenerDocumentosSinApostillarSeleccionados = () => {
+    const selectedCheckboxes = document.querySelectorAll('#documentos-sin-apostillar-popup input[type="checkbox"]:checked');
+    documentosSinApostillarSeleccionados = [...selectedCheckboxes].map(checkbox => ({ id: checkbox.id, text: checkbox.value }));
+    return documentosSinApostillarSeleccionados;
+};
 
-    // Ocultar el popup de seguimiento
-    seguimientoPopup.style.display = 'none';
+manejarPopup(guardarDocumentosSinApostillarBtn, documentosSinApostillarPopup, documentosSinApostillarContainer, documentosSeleccionadosSinApostillarList, obtenerDocumentosSinApostillarSeleccionados, 'No se seleccionaron documentos sin apostillar.');
+editarPopup(editarDocumentosSinApostillarBtn, documentosSinApostillarPopup, documentosSinApostillarContainer, document.querySelectorAll('#documentos-sin-apostillar-popup input[type="checkbox"]'), documentosSinApostillarSeleccionados.map(doc => doc.id));
 
-    // Mostrar el contenedor de seguimiento seleccionado
-    seguimientoContainer.style.display = 'block';
-});
+// Implementación para "Documentos Sin Documento"
+const guardarDocumentosSinDocumentoBtn = document.getElementById('guardar-documentos-sin-documento');
+const documentosSinDocumentoPopup = document.getElementById('documentos-sin-documento-popup');
+const documentosSinDocumentoContainer = document.getElementById('documentos-sin-documento-container');
+const documentosSeleccionadosSinDocumentoList = document.getElementById('documentos-seleccionados-sin-documento');
+const editarDocumentosSinDocumentoBtn = document.getElementById('editar-documentos-sin-documento');
 
-// Evento para el botón "Editar" que permite modificar el método de seguimiento
-editarSeguimientoBtn.addEventListener('click', function (event) {
-    event.preventDefault();
-    // Mostrar el popup para reseleccionar el método
-    seguimientoContainer.style.display = 'none';
-    seguimientoPopup.style.display = 'block';
+let documentosSinDocumentoSeleccionados = [];
 
-    // Restaurar la selección anterior en el radio button
-    const allRadios = document.querySelectorAll('input[name="metodo_seguimiento"]');
-    allRadios.forEach(radio => {
-        radio.checked = (radio.value === metodoSeleccionado); // Restaurar la selección del radio seleccionado
-    });
-});
+const obtenerDocumentosSinDocumentoSeleccionados = () => {
+    const selectedCheckboxes = document.querySelectorAll('#documentos-sin-documento-popup input[type="checkbox"]:checked');
+    documentosSinDocumentoSeleccionados = [...selectedCheckboxes].map(checkbox => ({ id: checkbox.id, text: checkbox.value }));
+    return documentosSinDocumentoSeleccionados;
+};
+
+manejarPopup(guardarDocumentosSinDocumentoBtn, documentosSinDocumentoPopup, documentosSinDocumentoContainer, documentosSeleccionadosSinDocumentoList, obtenerDocumentosSinDocumentoSeleccionados, 'No se seleccionaron documentos sin documento.');
+editarPopup(editarDocumentosSinDocumentoBtn, documentosSinDocumentoPopup, documentosSinDocumentoContainer, document.querySelectorAll('#documentos-sin-documento-popup input[type="checkbox"]'), documentosSinDocumentoSeleccionados.map(doc => doc.id));
+
+// Implementación para "Solo buscaba información"
+const guardarSoloInfoBtn = document.getElementById('guardar-solo-info');
+const soloInfoPopup = document.getElementById('solo-info-popup');
+const soloInfoContainer = document.getElementById('solo-info-container');
+const soloInfoSeleccionadosList = document.getElementById('solo-info-seleccionados');
+const editarSoloInfoBtn = document.getElementById('editar-solo-info');
+
+let soloInfoSeleccionados = [];
+
+// Función para obtener los checkboxes seleccionados del popup
+const obtenerSoloInfoSeleccionados = () => {
+    const selectedCheckboxes = document.querySelectorAll('#solo-info-popup input[type="checkbox"]:checked');
+    soloInfoSeleccionados = [...selectedCheckboxes].map(checkbox => ({ id: checkbox.id, text: checkbox.value }));
+    return soloInfoSeleccionados;
+};
+
+// Usar las funciones manejarPopup y editarPopup para "Solo buscaba información"
+manejarPopup(guardarSoloInfoBtn, soloInfoPopup, soloInfoContainer, soloInfoSeleccionadosList, obtenerSoloInfoSeleccionados, 'No se seleccionó ninguna información.');
+editarPopup(editarSoloInfoBtn, soloInfoPopup, soloInfoContainer, document.querySelectorAll('#solo-info-popup input[type="checkbox"]'), soloInfoSeleccionados.map(info => info.id));
