@@ -108,34 +108,37 @@
                         </div>
 
                         <!-- Popup de Solo buscaba información -->
-<div id="informacion-popup" style="display: none;">
-    <label for="informacion-requerida">Solo buscaba información</label>
-    <p>Selecciona el motivo por el cual el aspirante solo buscaba información:</p>
-    <div>
-        <input type="checkbox" id="contenido_programa" value="&#183 Contenido del programa"> Contenido del programa<br>
-        <input type="checkbox" id="costos" value="&#183 Costos"> Costos<br>
-        <input type="checkbox" id="becas" value="&#183 Becas"> Becas<br>
-        <input type="checkbox" id="fechas_inicio" value="&#183 Fechas de inicio"> Fechas de inicio<br>
-        <input type="checkbox" id="modalidad" value="&#183 Busca otra modalidad"> Busca otra modalidad<br>
-        <input type="checkbox" id="otro" value="&#183 Otro"> Otro<br>
-    </div>
-    <button id="guardar-informacion">Aceptar</button>
-</div>
+                        <div id="informacion-popup" style="display: none;">
+                            <label for="informacion-requerida">Solo buscaba información</label>
+                            <p>Selecciona el motivo:</p>
+                            <div>
+                                <input type="checkbox" id="contenido_programa" value="&#183 Contenido del programa">
+                                Contenido del programa<br>
+                                <input type="checkbox" id="costos" value="&#183 Costos"> Costos<br>
+                                <input type="checkbox" id="becas" value="&#183 Becas"> Becas<br>
+                                <input type="checkbox" id="fechas_inicio" value="&#183 Fechas de inicio"> Fechas de
+                                inicio<br>
+                                <input type="checkbox" id="modalidad" value="&#183 Busca otra modalidad"> Busca otra
+                                modalidad<br>
+                                <input type="checkbox" id="otro" value="&#183 Otro"> Otro<br>
+                            </div>
+                            <button id="guardar-informacion">Aceptar</button>
+                        </div>
 
-<!-- Contenedor de la selección -->
-<div id="informacion-container" class="form-group-column" style="display: none;">
-    <label for="informacion-seleccionada">Información seleccionada:</label>
-    <div>
-        <ul id="informacion-seleccionados"></ul>
-        <button id="editar-informacion">Editar</button>
-    </div>
-</div>
+                        <!-- Contenedor de la selección -->
+                        <div id="informacion-container" class="form-group-column" style="display: none;">
+                            <label for="informacion-seleccionada">Motivo seleccionado:</label>
+                            <div>
+                                <ul id="informacion-seleccionados"></ul>
+                                <button id="editar-informacion">Editar</button>
+                            </div>
+                        </div> 
 
 
                         <!-- Tipificación - N2 -->
                         <div class="form-group-column" id="tipificacionn2-container" style="display: none;">
                             <label for="tipificacionn2">Tipificación - N2 *</label>
-                            <div class="custom-select" style="max-height: 150px; overflow-y: auto;">
+                            <div class="custom-select">
                                 <select id="tipificacionn2" name="tipificacionn2">
                                     <option value="" disabled selected>Selecciona</option> <!-- Opción por defecto -->
                                     <!-- Aquí se llenarán las opciones dinámicamente -->
