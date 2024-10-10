@@ -206,6 +206,17 @@ document.getElementById('resultado2').addEventListener('change', function () {
         `;
     }
 
+    // Mostramos las opciones correspondientes en Tipificación N1 para "Aplicó en Universidad"
+    else if (resultado2Value === 'aplico_en_universidad') {
+        tipificacionn1Container.style.display = 'block';
+        tipificacionn1.innerHTML = `
+            <option value="" disabled selected>Selecciona</option>
+            <option value="interesado">Interesado</option>
+            <option value="no_interesado">No interesado</option>
+            <option value="aplico_universidad">Aplicó en Universidad</option>
+        `;
+    }
+
     // Si no hay opción válida, ocultamos las tipificaciones
     else {
         tipificacionn1Container.style.display = 'none';
@@ -225,6 +236,17 @@ const opcionesComunesTipificacionN3 = [
     { value: 'modalidad', text: 'Modalidad' },
     { value: 'contenido', text: 'Contenido / plan de estudios' },
     { value: 'otro_programa', text: 'Otro programa' }
+];
+
+// Opciones aplico en Universidad para Tipificación N3
+const aplicoUniversidadTipificacionN3 = [
+    { value: 'se_agenda', text: 'Se agenda a peticición del aspirante-Open' },
+    { value: 'no_se_encuentra', text: 'No se encuentra el aspirante - Open' },
+    { value: 'contesta_cuelga', text: 'Contesta y cuelga - Open' },
+    { value: 'num_equivocado', text: 'Número equivocado - Lost / Hold' },
+    { value: 'llamada_cortada', text: 'Llamada cortada / Fallas en audio - Open' },
+    { value: 'lead_repetido', text: 'Lead Repetido - Lost' }, 
+    { value: 'no_registro', text: 'No se registro - Lost / Hold' }
 ];
 
 // Opciones dinámicas para Tipificación N1 y N2
@@ -321,6 +343,10 @@ const opcionesTipificacionN1 = {
         { value: 'temas_laborales', text: 'Temas laborales' },
         { value: 'temas_personales', text: 'Temas personales' },
         { value: 'temas_salud', text: 'Tema salud' }
+    ],
+    'aplico_universidad': [
+        { value: 'espera_de_pago', text: 'En espera de pago - Open' },
+        { value: 'llamada_cortada', text: 'Llamada cortada / Fallas en audio - Open' }
     ]
 };
 
@@ -346,7 +372,9 @@ const opcionesTipificacionN2 = {
     'busca_licenciatura': opcionesComunesTipificacionN3, // Reutilización de opciones comunes
     'busca_maestria': opcionesComunesTipificacionN3,     // Reutilización de opciones comunes
     'busca_doctorado': opcionesComunesTipificacionN3     // Reutilización de opciones comunes
-
+    ,
+    'espera_de_pago': aplicoUniversidadTipificacionN3,
+    'llamada_cortada': aplicoUniversidadTipificacionN3
 };
 
 // Opciones dinámicas para Tipificación N3
@@ -420,7 +448,9 @@ const opcionesTipificacionN3 = {
         { value: 'maestria', text: 'Maestría' },
         { value: 'doctorado', text: 'Doctorado' },
         { value: 'especialidad', text: 'Especialidad' }
-    ]
+    ],
+    'espera_de_pago': aplicoUniversidadTipificacionN3,
+    'llamada_cortada': aplicoUniversidadTipificacionN3
 };
 
 // Listener para los cambios en Tipificación N1
