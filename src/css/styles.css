@@ -190,18 +190,28 @@ input[type="date"], input[type="text"] {
 #documentos-popup label[for="documentosrequeridos"],
 #documentos-container label[for="documentosfaltantes"],
 #seguimiento-popup label[for="seguimiento"],
-#seguimiento-container label[for="metodo"] {
+#seguimiento-container label[for="metodo"],
+#documentos-sin-documento-popup label[for="documentos_sin_documento"],
+#documentos-sin-documento-container label[for="documentos_seleccionados_sin_documento"],
+#documentos-sin-apostillar-popup label[for="documentos_sin_apostillar"],
+#documentos-sin-apostillar-container label[for="documentos_seleccionados_sin_apostillar"],
+#informacion-popup label[for="informacion-requerida"],
+#informacion-container label[for="informacion-seleccionada"] {
     font-weight: bold;
 }
 
-#documentos-popup p, #seguimiento-popup p {
-    padding: 0;
+#documentos-popup p, #seguimiento-popup p, #documentos-sin-apostillar-popup p, #documentos-sin-documento-popup p, #informacion-popup p {
+    padding: 0; 
     padding-top: 5px;
     font-size: 1rem; /* Reduce el tamaño de la tipografía */
     color: #f16315;
 }
 
-#documentos-popup, #seguimiento-popup {
+#documentos-popup,
+#seguimiento-popup,
+#documentos-sin-apostillar-popup,
+#documentos-sin-documento-popup,
+#informacion-popup {
     background-color: #f9f9f9;
     padding: 20px;
     border: 1px solid #ddd;
@@ -225,7 +235,11 @@ button {
     margin-top: .75rem;
 }
 
-ul#documentos-seleccionados li, ul#metodo-seleccionado li {
+ul#documentos-seleccionados li, 
+ul#metodo-seleccionado li,
+ul#documentos-seleccionados-sin-apostillar li,
+ul#documentos-seleccionados-sin-documento li, 
+ul#informacion-seleccionados li{
     font-size: 1rem;
     color: #666666;
     display: block;
@@ -233,8 +247,24 @@ ul#documentos-seleccionados li, ul#metodo-seleccionado li {
     padding: 5px 10px;
 }
 
-ul#documentos-seleccionados li:hover, ul#metodo-seleccionado li:hover {
+#statusfinal {
+    background-color: #f0f0f0; /* Un color de fondo para indicar que el campo no es editable */
+    border: 1px solid #ccc; /* Bordes sutiles */
+    padding: 5px 10px;
+    color: #666666;
+    width: 100%;
+    box-sizing: border-box; /* Asegura que el padding no aumente el ancho del input */
+    cursor: not-allowed; /* Cambia el cursor a un icono que indica que no es editable */
+    margin-top: 27px;
+}
+
+ul#documentos-seleccionados li:hover,
+ul#metodo-seleccionado li:hover,
+ul#documentos-seleccionados-sin-apostillar li:hover,
+ul#documentos-seleccionados-sin-documento li:hover, 
+ul#informacion-seleccionados li:hover {
     background-color: inherit;
     color: #666666;
     height: fit-content;
 }
+
