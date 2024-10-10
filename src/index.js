@@ -217,6 +217,16 @@ document.getElementById('resultado2').addEventListener('change', function () {
         `;
     }
 
+    // Mostramos las opciones correspondientes en Tipificación N1 para "No contesta"
+    else if (resultado2Value === 'no_contesta') {
+        tipificacionn1Container.style.display = 'block';
+        tipificacionn1.innerHTML = `
+            <option value="" disabled selected>Selecciona</option>
+            <option value="no_efectivo">No efectivo</option>
+            <option value="no_contesta">No contesta</option>
+        `;
+    }
+
     // Si no hay opción válida, ocultamos las tipificaciones
     else {
         tipificacionn1Container.style.display = 'none';
@@ -347,6 +357,13 @@ const opcionesTipificacionN1 = {
     'aplico_universidad': [
         { value: 'espera_de_pago', text: 'En espera de pago - Open' },
         { value: 'llamada_cortada', text: 'Llamada cortada / Fallas en audio - Open' }
+    ],
+    'no_contesta': [
+        { value: 'sin_respuesta', text: 'Sin respuesta - Open' },
+        { value: 'num_invalido', text: 'Número inválido - Lost/Hold' },
+        { value: 'lead_prueba', text: 'Lead de prueba/Falso - Lost' },
+        { value: 'lead_repetido', text: 'Lead repetido - Lost' },
+        { value: 'fallas_audio', text: 'Llamada cortada/ Fallas audio - Open' }
     ]
 };
 
@@ -451,6 +468,17 @@ const opcionesTipificacionN3 = {
     ],
     'espera_de_pago': aplicoUniversidadTipificacionN3,
     'llamada_cortada': aplicoUniversidadTipificacionN3
+    ,
+    'sin_respuesta': [
+        { value: 'manda_buzon', text: 'Da tono y manda a buzón' },
+        { value: 'fuera_de_servicio', text: 'Fuera del área de servicio' },
+        { value: 'rechaza_llamada', text: 'Rechaza llamada' },
+        { value: 'manda_buzon', text: 'Da tono y manda a buzón' },
+        { value: 'buzon_directo', text: 'Buzón directo' }
+    ],
+    'lead_repetido': [
+        { value: 'mas_registros', text: 'Atención en otro lead / más de un registro' }
+    ]
 };
 
 // Listener para los cambios en Tipificación N1
