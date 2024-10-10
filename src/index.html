@@ -59,7 +59,7 @@
 
                         <!-- Resultado 1 -->
                         <div class="form-group-column">
-                            <label for="resultado1">Resultado 1 *</label>
+                            <label for="resultado1">Estatus de contacto *</label>
                             <div class="custom-select">
                                 <select id="resultado1" name="resultado1">
                                     <option value="" disabled selected>Selecciona</option> <!-- Opción por defecto -->
@@ -84,8 +84,8 @@
 
                     <div class="form-row">
                         <!-- Resultado 2 -->
-                        <div class="form-group-column">
-                            <label for="resultado2">Resultado 2 *</label>
+                        <div class="form-group-column" id="resultado2-container" style="display: none;">
+                            <label for="resultado2">Perfil/estado del New Lead *</label>
                             <div class="custom-select">
                                 <select id="resultado2" name="resultado2">
                                     <option value="" disabled selected>Seleciona</option> <!-- Opción por defecto -->
@@ -100,7 +100,7 @@
 
                         <!-- Tificicación - N1 -->
                         <div class="form-group-column" id="tipificacionn1-container" style="display: none;">
-                            <label for="tipificacionn1">Tipificación - N1 *</label>
+                            <label for="tipificacionn1">Contexto *</label>
                             <div class="custom-select">
                                 <select id="tipificacionn1" name="tipificacionn1">
                                     <option value="" disabled selected>Selecciona</option> <!-- Opción por defecto -->
@@ -133,12 +133,12 @@
                                 <ul id="informacion-seleccionados"></ul>
                                 <button id="editar-informacion">Editar</button>
                             </div>
-                        </div> 
+                        </div>
 
 
                         <!-- Tipificación - N2 -->
                         <div class="form-group-column" id="tipificacionn2-container" style="display: none;">
-                            <label for="tipificacionn2">Tipificación - N2 *</label>
+                            <label for="tipificacionn2">Especificaciones *</label>
                             <div class="custom-select">
                                 <select id="tipificacionn2" name="tipificacionn2">
                                     <option value="" disabled selected>Selecciona</option> <!-- Opción por defecto -->
@@ -152,7 +152,7 @@
                     <div class="form-row">
                         <!-- Tipificación - N3 -->
                         <div class="form-group-column" id="tipificacionn3-container" style="display: none;">
-                            <label for="tipificacionn3">Tipificación - N3 *</label>
+                            <label for="tipificacionn3">Detalles *</label>
                             <div class="custom-select">
                                 <select id="tipificacionn3" name="tipificacionn3">
                                     <option value="" disabled selected>Selecciona</option> <!-- Opción por defecto -->
@@ -334,7 +334,28 @@
                                 <input type="date" id="fechaproxact" name="fechaproxact">
                             </div>
                         </div>
+                    </div>
 
+                    <div class="form-row">
+                        <!-- Descripción -->
+                        <div class="descripcion-column">
+                            <label for="proximaactividad">Descripción</label>
+                            <div class="description-text">
+                                <input type="text" id="descripcion" name="descripcion">
+                            </div>
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="button-group">
+                            <button type="button">Nuevo WhatsApp</button>
+                            <button type="button">Correo Automático</button>
+                            <button type="button">Nuevo Email</button>
+                            <button type="button">Nuevo Ticket</button>
+                            <div class="button-send">
+                                <button type="button">Cancelar</button>
+                                <button type="button">Guardar</button>
+                            </div>
+                        </div>
                     </div>
                     </div>
 

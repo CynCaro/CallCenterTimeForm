@@ -12,6 +12,113 @@ const mostrarOpciones = (selectId, options) => {
     }
 };
 
+
+// Función para ocultar popups relacionados
+const ocultarTodosLosPopups = () => {
+    const popups = [
+        'documentos-popup',
+        'documentos-container',
+        'seguimiento-popup',
+        'seguimiento-container',
+        'documentos-sin-apostillar-popup',
+        'documentos-sin-documento-popup',
+        'documentos-sin-apostillar-container',
+        'documentos-sin-documento-container',
+        'informacion-popup',
+        'informacion-container'
+    ];
+    
+    popups.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.style.display = 'none';
+        }
+    });
+};
+
+// Función para ocultar Tipificación 1, 2, 3 y limpiar sus selecciones
+const ocultarTipificaciones = () => {
+    const tipificacionn1Container = document.getElementById('tipificacionn1-container');
+    const tipificacionn2Container = document.getElementById('tipificacionn2-container');
+    const tipificacionn3Container = document.getElementById('tipificacionn3-container');
+    
+    // Ocultar Tipificación 1, 2, y 3
+    tipificacionn1Container.style.display = 'none';
+    tipificacionn2Container.style.display = 'none';
+    tipificacionn3Container.style.display = 'none';
+
+    // Limpiar las opciones de Tipificación 1, 2 y 3
+    document.getElementById('tipificacionn1').innerHTML = '';
+    document.getElementById('tipificacionn2').innerHTML = '';
+    document.getElementById('tipificacionn3').innerHTML = '';
+};
+
+// Inicialmente ocultar el contenedor de Tipo de contacto
+document.getElementById('tipocontacto').parentElement.parentElement.style.display = 'none';
+
+// Listener para Resultado 1
+document.getElementById('resultado1').addEventListener('change', function () {
+    const selectedValue = this.value;
+    const tipoContactoContainer = document.getElementById('tipocontacto').parentElement.parentElement;
+    const tipoContacto = document.getElementById('tipocontacto');
+    const resultado2Container = document.getElementById('resultado2-container');
+    const resultado2 = document.getElementById('resultado2');
+
+    // Mostrar Tipo de contacto si selecciona "Contactado"
+    if (selectedValue === 'contactado') {
+        tipoContactoContainer.style.display = 'block';
+        tipoContacto.disabled = false;
+        resultado2Container.style.display = 'none';
+        resultado2.value = ''; // Limpiar selección de Resultado 2
+    } else if (selectedValue === 'no_contactado') {
+        // Si selecciona "No contactado", ocultamos todos los campos relacionados
+        tipoContactoContainer.style.display = 'none';
+        tipoContacto.value = '';
+        resultado2Container.style.display = 'none';
+        resultado2.value = '';
+
+        // Ocultar Tipificación y popups
+        ocultarTipificaciones();
+        ocultarTodosLosPopups();
+    } else {
+        tipoContactoContainer.style.display = 'none';
+        tipoContacto.value = '';
+        resultado2Container.style.display = 'none';
+        resultado2.value = '';
+    }
+});
+
+// Listener para Tipo de contacto
+document.getElementById('tipocontacto').addEventListener('change', function () {
+    const selectedValue = this.value;
+    const resultado2Container = document.getElementById('resultado2-container');
+    const resultado2 = document.getElementById('resultado2');
+
+    // Ocultar Tipificación y popups si se cambia Tipo de contacto
+    ocultarTipificaciones();
+    ocultarTodosLosPopups();
+
+    // Mostrar las opciones de Resultado 2 basadas en el valor de Tipo de contacto
+    if (selectedValue === 'primer_contacto') {
+        mostrarOpciones('resultado2', [
+            { value: 'interesado', text: 'Interesado' },
+            { value: 'no_interesado', text: 'No interesado' },
+            { value: 'aplico_en_universidad', text: 'Aplicó en Universidad' }
+        ]);
+        resultado2Container.style.display = 'block';
+    } else if (selectedValue === 'seguimiento') {
+        mostrarOpciones('resultado2', [
+            { value: 'no_efectivo', text: 'No efectivo' },
+            { value: 'no_contesta', text: 'No contesta' }
+        ]);
+        resultado2Container.style.display = 'block';
+    } else {
+        resultado2Container.style.display = 'none';
+        resultado2.value = ''; // Limpiar selección de Resultado 2
+    }
+});
+
+
 // Función para manejar el cambio en Tipificación N1 y actualizar Tipificación N2
 const handleTipificacionN1Change = (tipificacionN2Options) => {
     const tipificacionN1 = document.getElementById('tipificacionn1');
@@ -211,9 +318,8 @@ document.getElementById('resultado2').addEventListener('change', function () {
         tipificacionn1Container.style.display = 'block';
         tipificacionn1.innerHTML = `
             <option value="" disabled selected>Selecciona</option>
-            <option value="interesado">Interesado</option>
-            <option value="no_interesado">No interesado</option>
-            <option value="aplico_universidad">Aplicó en Universidad</option>
+            <option value="espera_de_pago">En espera de pago - Open</option>
+            <option value="lamada_cortada">Llamada cortada / Fallas en audio - Open</option>
         `;
     }
 
@@ -248,16 +354,16 @@ const opcionesComunesTipificacionN3 = [
     { value: 'otro_programa', text: 'Otro programa' }
 ];
 
-// Opciones aplico en Universidad para Tipificación N3
-const aplicoUniversidadTipificacionN3 = [
-    { value: 'se_agenda', text: 'Se agenda a peticición del aspirante-Open' },
-    { value: 'no_se_encuentra', text: 'No se encuentra el aspirante - Open' },
-    { value: 'contesta_cuelga', text: 'Contesta y cuelga - Open' },
-    { value: 'num_equivocado', text: 'Número equivocado - Lost / Hold' },
-    { value: 'llamada_cortada', text: 'Llamada cortada / Fallas en audio - Open' },
-    { value: 'lead_repetido', text: 'Lead Repetido - Lost' }, 
-    { value: 'no_registro', text: 'No se registro - Lost / Hold' }
-];
+// // Opciones aplico en Universidad para Tipificación N3
+// const aplicoUniversidadTipificacionN3 = [
+//     { value: 'se_agenda', text: 'Se agenda a peticición del aspirante-Open' },
+//     { value: 'no_se_encuentra', text: 'No se encuentra el aspirante - Open' },
+//     { value: 'contesta_cuelga', text: 'Contesta y cuelga - Open' },
+//     { value: 'num_equivocado', text: 'Número equivocado - Lost / Hold' },
+//     { value: 'llamada_cortada', text: 'Llamada cortada / Fallas en audio - Open' },
+//     { value: 'lead_repetido', text: 'Lead Repetido - Lost' }, 
+//     { value: 'no_registro', text: 'No se registro - Lost / Hold' }
+// ];
 
 // Opciones dinámicas para Tipificación N1 y N2
 const opcionesTipificacionN1 = {
@@ -354,10 +460,10 @@ const opcionesTipificacionN1 = {
         { value: 'temas_personales', text: 'Temas personales' },
         { value: 'temas_salud', text: 'Tema salud' }
     ],
-    'aplico_universidad': [
-        { value: 'espera_de_pago', text: 'En espera de pago - Open' },
-        { value: 'llamada_cortada', text: 'Llamada cortada / Fallas en audio - Open' }
-    ],
+    // 'aplico_en_universidad': [
+    //     { value: 'espera_de_pago', text: aplicoUniversidadTipificacionN3 },
+    //     { value: 'lamada_cortada', text: 'aplicoUniversidadTipificacionN3' }
+    // ],
     'no_contesta': [
         { value: 'sin_respuesta', text: 'Sin respuesta - Open' },
         { value: 'num_invalido', text: 'Número inválido - Lost/Hold' },
@@ -389,9 +495,6 @@ const opcionesTipificacionN2 = {
     'busca_licenciatura': opcionesComunesTipificacionN3, // Reutilización de opciones comunes
     'busca_maestria': opcionesComunesTipificacionN3,     // Reutilización de opciones comunes
     'busca_doctorado': opcionesComunesTipificacionN3     // Reutilización de opciones comunes
-    ,
-    'espera_de_pago': aplicoUniversidadTipificacionN3,
-    'llamada_cortada': aplicoUniversidadTipificacionN3
 };
 
 // Opciones dinámicas para Tipificación N3
@@ -466,9 +569,6 @@ const opcionesTipificacionN3 = {
         { value: 'doctorado', text: 'Doctorado' },
         { value: 'especialidad', text: 'Especialidad' }
     ],
-    'espera_de_pago': aplicoUniversidadTipificacionN3,
-    'llamada_cortada': aplicoUniversidadTipificacionN3
-    ,
     'sin_respuesta': [
         { value: 'manda_buzon', text: 'Da tono y manda a buzón' },
         { value: 'fuera_de_servicio', text: 'Fuera del área de servicio' },
