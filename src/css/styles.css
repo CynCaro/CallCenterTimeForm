@@ -76,10 +76,11 @@ li:hover {
 .form {
     position: absolute; /* Posiciona el formulario encima de la imagen */
     width: 65%;
+    height: auto;
     margin-left: auto;
     background-color: #FAFAFA;
     top: 14%; /* Ajusta la posición vertical del formulario */
-    left: 66.3%;
+    left: 66%;
     transform: translateX(-50%); /* Ajusta para centrar el formulario */
     background-color:#f5f5f5;
     /* padding: 20px; */
@@ -88,7 +89,7 @@ li:hover {
     z-index: 10; /* Asegura que el formulario esté por encima de la imagen */
 }
 
-/* Contenedor general que pone todos los divs en una fila */
+/* Flexbox en columna para el label y el input */
 .form-row {
     display: flex;
     justify-content: flex-start; /* Alinea los select a la izquierda */
@@ -101,6 +102,56 @@ li:hover {
     display: flex;
     flex-direction: column; /* Coloca el label arriba del select */
     width: 30%; /* Ajusta el ancho de cada columna */
+}
+
+/* Columna para descripción */
+.descripcion-column {
+    display: flex;
+    flex-direction: column;
+    width: 62%;
+}
+
+/* Contenedor para los botones, alineados horizontalmente */
+.button-group {
+    display: flex;
+    flex-direction: column; /* Coloca los botones en columna */
+    /* gap: 10px; Añade espacio entre los botones */
+    width: 30%;
+}
+
+/* Estilos para los botones */
+.button-group button {
+    border: 1px solid #1709b9;
+    border-radius: 4px;
+    color: #1709b9;
+}
+
+/* Cambia el color al pasar el ratón por encima */
+.button-group button:hover {
+    background-color: #1709b9;
+    color: white;
+}
+
+/* Contenedor para los botones, alineados a la derecha y en una fila */
+.button-send {
+    display: flex;
+    justify-content: flex-end; /* Alinea los botones a la derecha */
+    gap: 10px; /* Añade espacio entre los botones */
+}
+
+/* Estilos para los botones */
+.button-send button {
+    width: auto;
+    color: #2f4169;
+    border: 1px solid #666666;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Estilo específico para el input con id="descripcion" */
+#descripcion {
+    height: 403%;
+    border: 1px solid #1709b9;
 }
 
 /* ------------ SELECT PERSONALIZACIÓN --------------*/
@@ -255,7 +306,7 @@ ul#informacion-seleccionados li{
     width: 100%;
     box-sizing: border-box; /* Asegura que el padding no aumente el ancho del input */
     cursor: not-allowed; /* Cambia el cursor a un icono que indica que no es editable */
-    margin-top: 27px;
+    margin-top: 32px;
 }
 
 ul#documentos-seleccionados li:hover,
