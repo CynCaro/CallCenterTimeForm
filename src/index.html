@@ -33,7 +33,7 @@
                         </ul>
                     </nav>
                 </header>
-                <p>Registrar nueva actividad</p>
+                <p>Registro de nueva actividad</p>
 
                 <hr>
 
@@ -71,7 +71,7 @@
 
                         <!-- Tipo de contacto -->
                         <div class="form-group-column">
-                            <label for="tipocontacto">Tipo de contacto *</label>
+                            <label for="tipocontacto">Nivel de contacto *</label>
                             <div class="custom-select">
                                 <select id="tipocontacto" name="tipocontacto">
                                     <option value="" disabled selected>Selecciona</option> <!-- Opción por defecto -->
@@ -85,7 +85,7 @@
                     <div class="form-row">
                         <!-- Resultado 2 -->
                         <div class="form-group-column" id="resultado2-container" style="display: none;">
-                            <label for="resultado2">Estado *</label>
+                            <label for="resultado2">Respuesta de lead *</label>
                             <div class="custom-select">
                                 <select id="resultado2" name="resultado2">
                                     <option value="" disabled selected>Seleciona</option> <!-- Opción por defecto -->
@@ -100,7 +100,7 @@
 
                         <!-- Tificicación - N1 -->
                         <div class="form-group-column" id="tipificacionn1-container" style="display: none;">
-                            <label for="tipificacionn1">Contexto *</label>
+                            <label for="tipificacionn1">Tipificación de respuesta *</label>
                             <div class="custom-select">
                                 <select id="tipificacionn1" name="tipificacionn1">
                                     <option value="" disabled selected>Selecciona</option> <!-- Opción por defecto -->
@@ -138,7 +138,7 @@
 
                         <!-- Tipificación - N2 -->
                         <div class="form-group-column" id="tipificacionn2-container" style="display: none;">
-                            <label for="tipificacionn2">Especificaciones *</label>
+                            <label for="tipificacionn2">Subtipificación de respuesta *</label>
                             <div class="custom-select">
                                 <select id="tipificacionn2" name="tipificacionn2">
                                     <option value="" disabled selected>Selecciona</option> <!-- Opción por defecto -->
@@ -152,7 +152,7 @@
                     <div class="form-row">
                         <!-- Tipificación - N3 -->
                         <div class="form-group-column" id="tipificacionn3-container" style="display: none;">
-                            <label for="tipificacionn3">Detalles *</label>
+                            <label for="tipificacionn3">Detalles de subtipificación *</label>
                             <div class="custom-select">
                                 <select id="tipificacionn3" name="tipificacionn3">
                                     <option value="" disabled selected>Selecciona</option> <!-- Opción por defecto -->
@@ -279,18 +279,9 @@
                     </div>
 
                     <div class="form-row">
-                        <!-- Status Final
-                        <div class="form-group-column">
-                            <label for="statusfinal">Status Final *</label>
-                            <div>
-                                <input type="text" id="statusfinal" name="statusfinal" required>
-                                </select>
-                            </div>
-                        </div> -->
-
                         <!-- Interés -->
                         <div class="form-group-column">
-                            <label for="tipificacionn1">Interés *</label>
+                            <label for="tipificacionn1">Interés del lead *</label>
                             <div class="custom-select">
                                 <select id="interés" name="interés">
                                     <option value="" disabled selected>Selecciona</option>
@@ -314,7 +305,7 @@
 
                         <!-- Próxima actividad -->
                         <div class="form-group-column">
-                            <label for="proximaactividad">Próxima actividad *</label>
+                            <label for="proximaactividad">Próxima comunicación *</label>
                             <div class="custom-select">
                                 <select id="proximaactividad" name="proximaactividad">
                                     <option value="" disabled selected>Selecciona</option>
@@ -329,28 +320,36 @@
 
                         <!-- Fecha próxima actividad -->
                         <div class="form-group-column">
-                            <label for="fechaproxact">Fecha próxima actividad *</label>
+                            <label for="fechaproxact">Fecha de envío de comunicación *</label>
                             <div class="custom-date">
                                 <input type="date" id="fechaproxact" name="fechaproxact">
                             </div>
                         </div>
                     </div>
 
-                    <div class="form-row">
+                    <div class="form-row-final">
                         <!-- Descripción -->
                         <div class="descripcion-column">
-                            <label for="proximaactividad">Descripción</label>
+                            <label for="proximaactividad">Descripción de comunicación</label>
                             <div class="description-text">
                                 <input type="text" id="descripcion" name="descripcion">
+                                <!-- Status Final -->
+                                <div class="status-last-section">
+                                    <label for="statuslast">Status Final *</label>
+                                    <div>
+                                        <input type="text" id="statuslast" name="statuslast" required readonly>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
                         <!-- Botones -->
                         <div class="button-group">
                             <button type="button">Nuevo WhatsApp</button>
-                            <button type="button">Correo Automático</button>
-                            <button type="button">Nuevo Email</button>
-                            <button type="button">Nuevo Ticket</button>
+                            <button type="button">Correo automático</button>
+                            <button type="button">Nuevo email</button>
+                            <button type="button">Nuevo ticket</button>
                             <div class="button-send">
                                 <button type="button">Cancelar</button>
                                 <button type="button">Guardar</button>
@@ -358,7 +357,6 @@
                         </div>
                     </div>
                     </div>
-
                 </form>
 
             </section>

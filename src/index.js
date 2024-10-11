@@ -50,6 +50,12 @@ const ocultarTipificaciones = () => {
     document.getElementById('tipificacionn3').innerHTML = '';
 };
 
+// Función para reiniciar el campo statuslast
+const reiniciarStatusFinal = () => {
+    const statusFinalInput = document.getElementById('statuslast');
+    statusFinalInput.value = '';  // Limpiar el campo statuslast
+};
+
 // Inicialmente ocultar el contenedor de Tipo de contacto
 document.getElementById('tipocontacto').parentElement.parentElement.style.display = 'none';
 
@@ -104,6 +110,7 @@ document.getElementById('resultado1').addEventListener('change', function () {
         }
 
         // Ocultar Tipificación y popups
+        reiniciarStatusFinal();  // Reiniciar statuslast
         ocultarTipificaciones();
         ocultarTodosLosPopups();
 
@@ -124,6 +131,7 @@ document.getElementById('tipocontacto').addEventListener('change', function () {
     const resultado1Value = document.getElementById('resultado1').value;
 
     // Ocultar y limpiar Resultado 2, Tipificaciones, y todos los popups si se cambia Tipo de contacto
+    reiniciarStatusFinal();  // Reiniciar statuslast
     ocultarTipificaciones();
     ocultarTodosLosPopups();
     resultado2Container.style.display = 'none';
@@ -151,8 +159,21 @@ document.getElementById('tipocontacto').addEventListener('change', function () {
 // Función para manejar el cambio en Tipificación N1 y actualizar Tipificación N2
 const handleTipificacionN1Change = (tipificacionN2Options) => {
     const tipificacionN1 = document.getElementById('tipificacionn1');
+    const statusFinalInput = document.getElementById('statuslast');  // Input para Status Final
+
     tipificacionN1.addEventListener('change', function () {
-        const selectedValue = this.value;
+        const selectedText = this.options[this.selectedIndex].text;  // Obtener el texto de la opción seleccionada
+
+        // Dividir el texto por el guion medio y tomar la parte después del guion
+        const partes = selectedText.split('-');
+        const estadoFinal = partes.length > 1 ? partes[1].trim() : selectedText;  // Si hay guion, tomar la segunda parte
+        document.getElementById('statuslast').value = estadoFinal;  // Actualizar statuslast
+
+        // Actualizar Status Final con el estado final
+        statusFinalInput.value = estadoFinal;  // Imprimir solo la parte después del guion
+
+        // Continuar con el flujo de Tipificación N2 y N3
+        const selectedValue = this.value;  // Obtener el valor de la opción seleccionada (para Tipificación N2)
 
         // Ocultar el popup de Documentos, el contenedor de Documentos seleccionados y Tipificación N3 si se cambia Tipificación N1
         document.getElementById('documentos-popup').style.display = 'none';
@@ -175,7 +196,6 @@ const handleTipificacionN1Change = (tipificacionN2Options) => {
         if (selectedValue === 'solo_informacion') {
             document.getElementById('informacion-popup').style.display = 'block'; // Mostrar el popup de Solo buscaba información
             document.getElementById('tipificacionn2-container').style.display = 'none'; // Ocultar Tipificación N2
-            // Si existe alguna opción en Tipificación N2 para el valor seleccionado en N1, se muestran las opciones.
         } else if (tipificacionN2Options[selectedValue]) {
             mostrarOpciones('tipificacionn2', tipificacionN2Options[selectedValue]);
         } else {
@@ -292,6 +312,9 @@ document.getElementById('resultado2').addEventListener('change', function () {
     document.getElementById('documentos-sin-documento-container').style.display = 'none';
     document.getElementById('informacion-popup').style.display = 'none';  // Ocultamos el popup de Solo buscaba información
     document.getElementById('informacion-container').style.display = 'none'; // Ocultamos el contenedor de Solo buscaba información
+   
+    // Reiniciar statuslast
+    reiniciarStatusFinal();  // Reiniciar statuslast
 
 
     // Mostramos las opciones correspondientes en Tipificación N1 para "Interesado"
