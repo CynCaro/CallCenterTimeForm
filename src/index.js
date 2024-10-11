@@ -2,16 +2,13 @@
 const mostrarOpciones = (selectId, options) => {
     const selectElement = document.getElementById(selectId);
     if (selectElement) {
-        // Insertar las nuevas opciones
         selectElement.innerHTML = `
             <option value="" disabled selected>Selecciona</option>
             ${options.map(option => `<option value="${option.value}">${option.text}</option>`).join('')}
         `;
-        // Asegurarse de que el contenedor sea visible
         selectElement.parentElement.parentElement.style.display = 'block'; // Mostrar el contenedor que envuelve al select
     }
 };
-
 
 // Función para ocultar popups relacionados
 const ocultarTodosLosPopups = () => {
@@ -56,7 +53,28 @@ const ocultarTipificaciones = () => {
 // Inicialmente ocultar el contenedor de Tipo de contacto
 document.getElementById('tipocontacto').parentElement.parentElement.style.display = 'none';
 
-// Listener para Resultado 1
+// Constantes para opciones de Tipo de contacto y Resultado 2
+const CONTACTADO = 'contactado';
+const NO_CONTACTADO = 'no_contactado';
+const PRIMER_CONTACTO = 'primer_contacto';
+const SEGUIMIENTO = 'seguimiento';
+const SEGUIMIENTO_NO_CONTACTO = 'seguimiento_no_contacto'; // Nuevo valor para Seguimiento en No Contactado
+
+const OPCIONES_PRIMER_CONTACTO = [
+    { value: 'interesado', text: 'Interesado' },
+    { value: 'no_interesado', text: 'No interesado' },
+    { value: 'aplico_en_universidad', text: 'Aplicó en Universidad' }
+];
+
+const OPCIONES_SEGUIMIENTO_NO_EFECTIVO = [
+    { value: 'no_efectivo', text: 'No efectivo' }
+];
+
+const OPCIONES_SEGUIMIENTO_NO_CONTACTO = [
+    { value: 'no_contesta', text: 'No contesta' }
+];
+
+// Listener para Resultado 1 (maneja el flujo para "Contactado" y "No contactado")
 document.getElementById('resultado1').addEventListener('change', function () {
     const selectedValue = this.value;
     const tipoContactoContainer = document.getElementById('tipocontacto').parentElement.parentElement;
@@ -64,23 +82,33 @@ document.getElementById('resultado1').addEventListener('change', function () {
     const resultado2Container = document.getElementById('resultado2-container');
     const resultado2 = document.getElementById('resultado2');
 
-    // Mostrar Tipo de contacto si selecciona "Contactado"
-    if (selectedValue === 'contactado') {
+    if (selectedValue === CONTACTADO || selectedValue === NO_CONTACTADO) {
+        // Mostrar Tipo de contacto y ocultar Resultado 2
         tipoContactoContainer.style.display = 'block';
         tipoContacto.disabled = false;
         resultado2Container.style.display = 'none';
-        resultado2.value = ''; // Limpiar selección de Resultado 2
-    } else if (selectedValue === 'no_contactado') {
-        // Si selecciona "No contactado", ocultamos todos los campos relacionados
-        tipoContactoContainer.style.display = 'none';
-        tipoContacto.value = '';
-        resultado2Container.style.display = 'none';
         resultado2.value = '';
+
+        // Opciones para Contactado y No Contactado
+        if (selectedValue === CONTACTADO) {
+            tipoContacto.innerHTML = `
+                <option value="" disabled selected>Selecciona</option>
+                <option value="primer_contacto">Primer contacto</option>
+                <option value="seguimiento">Seguimiento</option>
+            `;
+        } else if (selectedValue === NO_CONTACTADO) {
+            tipoContacto.innerHTML = `
+                <option value="" disabled selected>Selecciona</option>
+                <option value="${SEGUIMIENTO_NO_CONTACTO}">Seguimiento</option>
+            `;
+        }
 
         // Ocultar Tipificación y popups
         ocultarTipificaciones();
         ocultarTodosLosPopups();
+
     } else {
+        // Ocultar ambos campos si no hay selección válida
         tipoContactoContainer.style.display = 'none';
         tipoContacto.value = '';
         resultado2Container.style.display = 'none';
@@ -88,36 +116,37 @@ document.getElementById('resultado1').addEventListener('change', function () {
     }
 });
 
-// Listener para Tipo de contacto
+// Listener para Tipo de contacto (maneja el flujo dentro de "Contactado" y "No contactado")
 document.getElementById('tipocontacto').addEventListener('change', function () {
     const selectedValue = this.value;
     const resultado2Container = document.getElementById('resultado2-container');
     const resultado2 = document.getElementById('resultado2');
+    const resultado1Value = document.getElementById('resultado1').value;
 
-    // Ocultar Tipificación y popups si se cambia Tipo de contacto
+    // Ocultar y limpiar Resultado 2, Tipificaciones, y todos los popups si se cambia Tipo de contacto
     ocultarTipificaciones();
     ocultarTodosLosPopups();
+    resultado2Container.style.display = 'none';
+    resultado2.value = '';
 
-    // Mostrar las opciones de Resultado 2 basadas en el valor de Tipo de contacto
-    if (selectedValue === 'primer_contacto') {
-        mostrarOpciones('resultado2', [
-            { value: 'interesado', text: 'Interesado' },
-            { value: 'no_interesado', text: 'No interesado' },
-            { value: 'aplico_en_universidad', text: 'Aplicó en Universidad' }
-        ]);
+    if (selectedValue === PRIMER_CONTACTO && resultado1Value === CONTACTADO) {
+        // Mostrar las opciones de Resultado 2 para Primer Contacto
+        mostrarOpciones('resultado2', OPCIONES_PRIMER_CONTACTO);
         resultado2Container.style.display = 'block';
-    } else if (selectedValue === 'seguimiento') {
-        mostrarOpciones('resultado2', [
-            { value: 'no_efectivo', text: 'No efectivo' },
-            { value: 'no_contesta', text: 'No contesta' }
-        ]);
+    } else if (selectedValue === SEGUIMIENTO && resultado1Value === CONTACTADO) {
+        // Mostrar las opciones de Resultado 2 para Seguimiento dentro de "Contactado"
+        mostrarOpciones('resultado2', OPCIONES_SEGUIMIENTO_NO_EFECTIVO);
+        resultado2Container.style.display = 'block';
+    } else if (selectedValue === SEGUIMIENTO_NO_CONTACTO && resultado1Value === NO_CONTACTADO) {
+        // Mostrar las opciones de Resultado 2 para Seguimiento dentro de "No Contactado"
+        mostrarOpciones('resultado2', OPCIONES_SEGUIMIENTO_NO_CONTACTO);
         resultado2Container.style.display = 'block';
     } else {
+        // Si no hay selección válida, se ocultan todos los campos relacionados
         resultado2Container.style.display = 'none';
-        resultado2.value = ''; // Limpiar selección de Resultado 2
+        resultado2.value = '';
     }
 });
-
 
 // Función para manejar el cambio en Tipificación N1 y actualizar Tipificación N2
 const handleTipificacionN1Change = (tipificacionN2Options) => {
@@ -284,6 +313,7 @@ document.getElementById('resultado2').addEventListener('change', function () {
         tipificacionn1.innerHTML = `
             <option value="" disabled selected>Selecciona</option>
             <option value="agenda_peticion_aspirante">Se agenda a petición del aspirante - Open</option>
+            <option value="sin_aspirante">No se encuentra el aspirante - Open</option>
             <option value="contesta_y_cuelga">Contesta y cuelga - Open</option>
             <option value="numero_equivocado">Número equivocado - Lost / Hold</option>
             <option value="llamada_cortada">Llamada cortada / Fallas en audio - Open</option>
@@ -313,6 +343,15 @@ document.getElementById('resultado2').addEventListener('change', function () {
         `;
     }
 
+    //
+    else if (resultado2Value === 'seguimiento') {
+        tipificacionn1Container.style.display = 'block';
+        tipificacionn1.innerHTML = `
+            <option value="" disabled selected>Selecciona</option>
+            <option value="no_contesta">No contesta</option>
+    `;
+    }
+
     // Mostramos las opciones correspondientes en Tipificación N1 para "Aplicó en Universidad"
     else if (resultado2Value === 'aplico_en_universidad') {
         tipificacionn1Container.style.display = 'block';
@@ -328,8 +367,11 @@ document.getElementById('resultado2').addEventListener('change', function () {
         tipificacionn1Container.style.display = 'block';
         tipificacionn1.innerHTML = `
             <option value="" disabled selected>Selecciona</option>
-            <option value="no_efectivo">No efectivo</option>
-            <option value="no_contesta">No contesta</option>
+            <option value="sin_respuesta">Sin respuesta - Open</option>
+            <option value="num_invalido">Número inválido - Lost/Hold</option>
+            <option value="lead_prueba">Lead de prueba/Falso - Lost</option>
+            <option value="lead_repetido">Lead repetido - Lost</option>
+            <option value="fallas_audio">Llamada cortada/ Fallas audio - Open</option>
         `;
     }
 
@@ -353,17 +395,6 @@ const opcionesComunesTipificacionN3 = [
     { value: 'contenido', text: 'Contenido / plan de estudios' },
     { value: 'otro_programa', text: 'Otro programa' }
 ];
-
-// // Opciones aplico en Universidad para Tipificación N3
-// const aplicoUniversidadTipificacionN3 = [
-//     { value: 'se_agenda', text: 'Se agenda a peticición del aspirante-Open' },
-//     { value: 'no_se_encuentra', text: 'No se encuentra el aspirante - Open' },
-//     { value: 'contesta_cuelga', text: 'Contesta y cuelga - Open' },
-//     { value: 'num_equivocado', text: 'Número equivocado - Lost / Hold' },
-//     { value: 'llamada_cortada', text: 'Llamada cortada / Fallas en audio - Open' },
-//     { value: 'lead_repetido', text: 'Lead Repetido - Lost' }, 
-//     { value: 'no_registro', text: 'No se registro - Lost / Hold' }
-// ];
 
 // Opciones dinámicas para Tipificación N1 y N2
 const opcionesTipificacionN1 = {
@@ -398,11 +429,9 @@ const opcionesTipificacionN1 = {
         { value: 'familiar_amigo', text: 'Es familiar / amigo' },
         { value: 'no_especifica', text: 'No especifica' }
     ],
-    'lead_repetido': [
-        { value: 'otro_lead', text: 'Atención en otro lead / más de un registro' }
-    ],
+
     'no_se_registro': [
-        { value: 'vio_tik_tok', text: 'Vió un tik tok' },
+        { value: 'vio_tiktok', text: 'Vió un TikTok' },
         { value: 'buscaba_trabajo', text: 'Busca trabajo' },
         { value: 'publicidad', text: 'Publicidad engañosa' },
         { value: 'otro', text: 'Otro' },
@@ -460,16 +489,15 @@ const opcionesTipificacionN1 = {
         { value: 'temas_personales', text: 'Temas personales' },
         { value: 'temas_salud', text: 'Tema salud' }
     ],
-    // 'aplico_en_universidad': [
-    //     { value: 'espera_de_pago', text: aplicoUniversidadTipificacionN3 },
-    //     { value: 'lamada_cortada', text: 'aplicoUniversidadTipificacionN3' }
-    // ],
-    'no_contesta': [
-        { value: 'sin_respuesta', text: 'Sin respuesta - Open' },
-        { value: 'num_invalido', text: 'Número inválido - Lost/Hold' },
-        { value: 'lead_prueba', text: 'Lead de prueba/Falso - Lost' },
-        { value: 'lead_repetido', text: 'Lead repetido - Lost' },
-        { value: 'fallas_audio', text: 'Llamada cortada/ Fallas audio - Open' }
+    'sin_respuesta': [
+        { value: 'manda_buzon', text: 'Da tono y manda a buzón' },
+        { value: 'fuera_de_servicio', text: 'Fuera del área de servicio' },
+        { value: 'rechaza_llamada', text: 'Rechaza llamada' },
+        { value: 'manda_buzon', text: 'Da tono y manda a buzón' },
+        { value: 'buzon_directo', text: 'Buzón directo' }
+    ],
+    'lead_repetido': [
+        { value: 'mas_registros', text: 'Atención en otro lead / más de un registro' }
     ]
 };
 
@@ -568,16 +596,6 @@ const opcionesTipificacionN3 = {
         { value: 'maestria', text: 'Maestría' },
         { value: 'doctorado', text: 'Doctorado' },
         { value: 'especialidad', text: 'Especialidad' }
-    ],
-    'sin_respuesta': [
-        { value: 'manda_buzon', text: 'Da tono y manda a buzón' },
-        { value: 'fuera_de_servicio', text: 'Fuera del área de servicio' },
-        { value: 'rechaza_llamada', text: 'Rechaza llamada' },
-        { value: 'manda_buzon', text: 'Da tono y manda a buzón' },
-        { value: 'buzon_directo', text: 'Buzón directo' }
-    ],
-    'lead_repetido': [
-        { value: 'mas_registros', text: 'Atención en otro lead / más de un registro' }
     ]
 };
 
