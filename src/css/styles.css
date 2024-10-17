@@ -78,7 +78,6 @@ li:hover {
     width: 65%;
     height: auto;
     margin-left: auto;
-    background-color: #FAFAFA;
     top: 14%; /* Ajusta la posición vertical del formulario */
     left: 66%;
     transform: translateX(-50%); /* Ajusta para centrar el formulario */
@@ -93,7 +92,14 @@ li:hover {
 .form-row {
     display: flex;
     justify-content: flex-start; /* Alinea los select a la izquierda */
-    margin: 0 0 25px 45px; /* Espaciado alrededor de los grupos */
+    margin: 0 0 25px 50px; /* Espaciado alrededor de los grupos */
+    gap: 20px; /* Añade espacio entre los select */
+}
+
+.form-row-final {
+    display: flex;
+    justify-content: flex-start; /* Alinea los select a la izquierda */
+    margin: 0 0 160px 50px; /* Espaciado alrededor de los grupos */
     gap: 20px; /* Añade espacio entre los select */
 }
 
@@ -111,12 +117,25 @@ li:hover {
     width: 62%;
 }
 
+/* Estilos para el textarea */
+.description-text textarea {
+    width: 100%; /* Asegura que el textarea ocupe todo el ancho de la columna */
+    height: 85%;
+    padding: 10px;
+    margin-top: 10px;
+    font-size: 1rem;
+    resize: none; /* Evita que el usuario cambie el tamaño del textarea */
+    border: 1px solid #1709b9;
+    border-radius: 4px;
+}
+
 /* Contenedor para los botones, alineados horizontalmente */
 .button-group {
     display: flex;
     flex-direction: column; /* Coloca los botones en columna */
     /* gap: 10px; Añade espacio entre los botones */
     width: 30%;
+    margin-top: 19px;
 }
 
 /* Estilos para los botones */
@@ -124,6 +143,7 @@ li:hover {
     border: 1px solid #1709b9;
     border-radius: 4px;
     color: #1709b9;
+    background-color:#f5f5f5;
 }
 
 /* Cambia el color al pasar el ratón por encima */
@@ -143,15 +163,26 @@ li:hover {
 .button-send button {
     width: auto;
     color: #2f4169;
+    background-color: #FAFAFA;
     border: 1px solid #666666;
     border-radius: 4px;
     cursor: pointer;
 }
 
-/* Estilo específico para el input con id="descripcion" */
-#descripcion {
-    height: 403%;
-    border: 1px solid #1709b9;
+/* Estilo para el botón cuando está deshabilitado */
+button:disabled {
+    background-color: #ccc; /* Color de fondo gris para dar la apariencia de deshabilitado */
+    cursor: not-allowed; /* Cambiar el cursor a "no permitido" */
+    color: #666; /* Cambiar el color del texto para que luzca deshabilitado */
+    border: 1px solid #999; /* Cambiar el color del borde para que combine con el fondo */
+    opacity: 0.6; /* Hacer que se vea más claro para resaltar que está deshabilitado */
+}
+
+/* Evitar hover y clics en el botón deshabilitado */
+button:disabled:hover {
+    background-color: #ccc; /* Mantener el color gris al hacer hover */
+    color: #666; /* Mantener el color del texto */
+    cursor: not-allowed; /* Asegurarse de que el cursor sigue siendo no permitido */
 }
 
 /* ------------ SELECT PERSONALIZACIÓN --------------*/
@@ -199,8 +230,19 @@ option {
     color: #666666;
 }
 
+/* Estilo para Safari */
+@media not all and (min-resolution:.001dpcm) { 
+    @supports (-webkit-appearance:none) {
+        input[type="date"], input[type="time"] {
+            color: #666666; /* Color del texto */
+            background-color: white; /* Color del fondo */
+            font-size: 1rem; /* Tamaño de la fuente */
+        }
+    }
+}
+
 /* Aplica los mismos estilos al input[type="date"] y al input[type="text"] */
-input[type="date"], input[type="text"] {
+input[type="date"], input[type="text"], input[type="time"] {
     width: 100%;
     height: 34px;
     padding-left: 10px;
@@ -223,13 +265,14 @@ input[type="date"], input[type="text"] {
 .custom-date {
     position: relative;
     width: 100%;
+    color: #666666
 }
 
 /* Estilos para el ícono del calendario */
 .custom-date::after {
     /* content: '\1F4C5'; Icono de calendario */
     font-size: 1.5rem;
-    color: #666666;
+    /* color: #666666; */
     position: absolute;
     right: 10px;
     top: 61%;
@@ -298,6 +341,20 @@ ul#informacion-seleccionados li{
     padding: 5px 10px;
 }
 
+.status-last-section {
+    margin-top: 10px;
+}
+
+#statuslast {
+    background-color: #f0f0f0; /* Un color de fondo para indicar que el campo no es editable */
+    border: 1px solid #ccc; /* Bordes sutiles */
+    padding: 5px 10px;
+    color: #666666;
+    width: 49%;
+    box-sizing: border-box; /* Asegura que el padding no aumente el ancho del input */
+    cursor: not-allowed; /* Cambia el cursor a un icono que indica que no es editable */
+}
+
 #statusfinal {
     background-color: #f0f0f0; /* Un color de fondo para indicar que el campo no es editable */
     border: 1px solid #ccc; /* Bordes sutiles */
@@ -318,4 +375,6 @@ ul#informacion-seleccionados li:hover {
     color: #666666;
     height: fit-content;
 }
+
+
 
