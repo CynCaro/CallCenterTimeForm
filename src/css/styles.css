@@ -99,7 +99,7 @@ li:hover {
 .form-row-final {
     display: flex;
     justify-content: flex-start; /* Alinea los select a la izquierda */
-    margin: 0 0 160px 50px; /* Espaciado alrededor de los grupos */
+    margin: 0 0 135px 50px; /* Espaciado alrededor de los grupos */
     gap: 20px; /* Añade espacio entre los select */
 }
 
