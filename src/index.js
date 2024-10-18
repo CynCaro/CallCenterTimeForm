@@ -3,7 +3,7 @@ const handleInformacionPopup = () => {
     const costosCheckbox = document.getElementById('costos');
     const tipificacionN3 = document.getElementById('tipificacionn3');
     const tipificacionN3Container = document.getElementById('tipificacionn3-container');
-    const tipificacionN3Label = document.getElementById('tipificacionn3-label'); // Asegúrate de que el label tenga este ID
+    const tipificacionN3Label = document.getElementById('tipificacionn3-label');
     const defaultLabel = "Detalles de subtipificación *"; // Título por defecto
 
     // Escuchar el cambio del checkbox de "Costos"
@@ -84,27 +84,39 @@ const ocultarTodosLosPopups = () => {
     });
 };
 
-// Función para ocultar Tipificación 1, 2, 3 y limpiar sus selecciones
+// Función para ocultar Tipificación 1, 2, 3, 4 y limpiar sus selecciones
 const ocultarTipificaciones = () => {
     const tipificacionn1Container = document.getElementById('tipificacionn1-container');
     const tipificacionn2Container = document.getElementById('tipificacionn2-container');
     const tipificacionn3Container = document.getElementById('tipificacionn3-container');
+    const tipificacionn4Container = document.getElementById('tipificacionn4-container'); // Tipificación N4 (Modalidad)
 
-    // Ocultar Tipificación 1, 2, y 3
+    // Ocultar Tipificación 1, 2, 3 y 4
     tipificacionn1Container.style.display = 'none';
     tipificacionn2Container.style.display = 'none';
     tipificacionn3Container.style.display = 'none';
+    tipificacionn4Container.style.display = 'none';
 
     // Limpiar las opciones de Tipificación 1, 2 y 3
     document.getElementById('tipificacionn1').innerHTML = '';
     document.getElementById('tipificacionn2').innerHTML = '';
     document.getElementById('tipificacionn3').innerHTML = '';
+    document.getElementById('tipificacionn4').innerHTML = '<option value="" disabled selected>Selecciona</option>';
 };
 
 // Función para reiniciar el campo statuslast
 const reiniciarStatusFinal = () => {
     const statusFinalInput = document.getElementById('statuslast');
     statusFinalInput.value = '';  // Limpiar el campo statuslast
+};
+
+const limpiarCamposDependientes = () => {
+    document.getElementById('interes').value = '';  // Limpiar Interés del lead
+    document.getElementById('proximaactividad').value = '';  // Limpiar Próxima comunicación
+    document.getElementById('fechaproxact').value = '';  // Limpiar Fecha de envío de comunicación
+    document.getElementById('horaproxact').value = '';  // Limpiar Hora de envío de comunicación
+    document.getElementById('descripcion').value = '';  // Limpiar Descripción de comunicación
+    document.getElementById('tipificacionn4-container').style.display = 'none';  // Ocultar Tipificación N4 (Modalidad)
 };
 
 // Inicializar todo
@@ -163,6 +175,9 @@ document.getElementById('resultado1').addEventListener('change', function () {
                 <option value="${SEGUIMIENTO_NO_CONTACTO}">Seguimiento</option>
             `;
         }
+        
+        // Limpiar los campos dependientes
+        limpiarCamposDependientes();
 
         // Ocultar Tipificación y popups
         reiniciarStatusFinal();  // Reiniciar statuslast
@@ -209,6 +224,8 @@ document.getElementById('tipocontacto').addEventListener('change', function () {
         resultado2Container.style.display = 'none';
         resultado2.value = '';
     }
+    // Limpiar los campos dependientes
+    limpiarCamposDependientes();
 });
 
 // Función genérica para limpiar los checkboxes dentro de un contenedor
@@ -262,6 +279,9 @@ const handleTipificacionN1Change = (tipificacionN2Options) => {
             statusFinalInput.disabled = true;  // Deshabilitar el campo Status Final si no es "Lost / Hold"
         }
 
+        // Limpiar los campos dependientes
+        limpiarCamposDependientes();
+
         // Limpiar y ocultar Tipificación N2 y N3 al cambiar Tipificación N1
         tipificacionN2.innerHTML = '<option value="" disabled selected>Selecciona</option>';
         document.getElementById('tipificacionn3').innerHTML = '<option value="" disabled selected>Selecciona</option>';
@@ -304,6 +324,8 @@ const handleTipificacionN1Change = (tipificacionN2Options) => {
 // Función para manejar el cambio en Tipificación N2 y actualizar Tipificación N3 o mostrar el popup de documentos o seguimiento
 const handleTipificacionN2Change = (tipificacionN3Options) => {
     const tipificacionN2 = document.getElementById('tipificacionn2');
+    const tipificacionN4Container = document.getElementById('tipificacionn4-container'); // Contenedor de Tipificación N4
+    const tipificacionN4 = document.getElementById('tipificacionn4'); // Campo de Tipificación N4 (Tipo de enseñanza)
 
     tipificacionN2.addEventListener('change', function () {
         const selectedValue = this.value;
@@ -324,6 +346,10 @@ const handleTipificacionN2Change = (tipificacionN3Options) => {
 
         // Ocultar y limpiar Resultado 4 si se cambia Tipificación N2
         resetResultado4();
+
+        // Limpiar y ocultar Tipificación N4 (Tipo de enseñanza) al cambiar Tipificación N2
+        tipificacionN4.innerHTML = '<option value="" disabled selected>Selecciona</option>';
+        tipificacionN4Container.style.display = 'none';
 
         // Verificamos si el valor seleccionado es 'documento_tramite' o 'seguimiento'
         if (selectedValue === 'documento_tramite') {
@@ -414,6 +440,12 @@ document.getElementById('resultado2').addEventListener('change', function () {
     const resultado2Value = this.value;
     const tipificacionn1Container = document.getElementById('tipificacionn1-container');
     const tipificacionn1 = document.getElementById('tipificacionn1');
+    const tipificacionN4Container = document.getElementById('tipificacionn4-container'); // Contenedor de Tipificación N4 (Tipo de enseñanza)
+    const tipificacionN4 = document.getElementById('tipificacionn4'); // Select de Tipificación N4 (Tipo de enseñanza)
+
+    // Ocultar y limpiar Tipificación N4 cuando cambie Resultado 2
+    tipificacionN4.innerHTML = '<option value="" disabled selected>Selecciona</option>';
+    tipificacionN4Container.style.display = 'none';
 
     // Limpiamos y ocultamos las tipificaciones y popups
     tipificacionn1.innerHTML = '';
@@ -435,9 +467,8 @@ document.getElementById('resultado2').addEventListener('change', function () {
     limpiarCheckboxes('informacion-popup');
     document.getElementById('informacion-container').style.display = 'none'; // Ocultamos el contenedor de Solo buscaba información
 
-    // Reiniciar statuslast
-    reiniciarStatusFinal();  // Reiniciar statuslast
-
+    // Ocultar y limpiar Resultado 4 si se cambia Tipificación N2
+    resetResultado4();
 
     // Mostramos las opciones correspondientes en Tipificación N1 para "Interesado"
     if (resultado2Value === 'interesado') {
