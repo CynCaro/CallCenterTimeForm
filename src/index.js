@@ -113,8 +113,8 @@ const reiniciarStatusFinal = () => {
 const limpiarCamposDependientes = () => {
     document.getElementById('interes').value = '';  // Limpiar Interés del lead
     document.getElementById('proximaactividad').value = '';  // Limpiar Próxima comunicación
-    document.getElementById('fechaproxact').value = '';  // Limpiar Fecha de envío de comunicación
-    document.getElementById('horaproxact').value = '';  // Limpiar Hora de envío de comunicación
+    document.getElementById('fechaproxact').value = '';  // Limpiar Fecha próxima comunicación
+    document.getElementById('horaproxact').value = '';  // Limpiar Hora próxima comunicación
     document.getElementById('descripcion').value = '';  // Limpiar Descripción de comunicación
     document.getElementById('tipificacionn4-container').style.display = 'none';  // Ocultar Tipificación N4 (Modalidad)
 };
@@ -134,9 +134,9 @@ const SEGUIMIENTO = 'seguimiento';
 const SEGUIMIENTO_NO_CONTACTO = 'seguimiento_no_contacto'; // Nuevo valor para Seguimiento en No Contactado
 
 const OPCIONES_PRIMER_CONTACTO = [
+    { value: 'aplico_en_universidad', text: 'Aplicó en Universidad' },
     { value: 'interesado', text: 'Interesado' },
-    { value: 'no_interesado', text: 'No interesado' },
-    { value: 'aplico_en_universidad', text: 'Aplicó en Universidad' }
+    { value: 'no_interesado', text: 'No interesado' }
 ];
 
 const OPCIONES_SEGUIMIENTO_NO_EFECTIVO = [
@@ -175,7 +175,7 @@ document.getElementById('resultado1').addEventListener('change', function () {
                 <option value="${SEGUIMIENTO_NO_CONTACTO}">Seguimiento</option>
             `;
         }
-        
+
         // Limpiar los campos dependientes
         limpiarCamposDependientes();
 
@@ -241,8 +241,8 @@ const handleTipificacionN1Change = (tipificacionN2Options) => {
     const tipificacionN1 = document.getElementById('tipificacionn1');
     const tipificacionN2 = document.getElementById('tipificacionn2');
     const statusFinalInput = document.getElementById('statuslast');  // Input para Status Final
-    const fechaEnvio = document.getElementById('fechaproxact');  // Input para Fecha de envío de comunicación
-    const horaEnvio = document.getElementById('horaproxact');  // Input para Hora de envío de comunicación
+    const fechaEnvio = document.getElementById('fechaproxact');  // Input para Fecha próxima comunicación
+    const horaEnvio = document.getElementById('horaproxact');  // Input para Horario próxima comunicación
     const informacionPopup = document.getElementById('informacion-popup');  // Popup de Solo buscaba información
 
 
@@ -252,10 +252,16 @@ const handleTipificacionN1Change = (tipificacionN2Options) => {
 
         // Dividir el texto por el guion medio y tomar la parte después del guion
         const partes = selectedText.split('-');
-        const estadoFinal = partes.length > 1 ? partes[1].trim() : selectedText;  // Si hay guion, tomar la segunda parte
 
-        // Actualizar Status Final con el estado derivado
-        statusFinalInput.value = estadoFinal;
+        // Si no hay guion en tipificacionn1, no actualizar el campo statusFinal
+        if (partes.length > 1) {
+            const estadoFinal = partes[1].trim();  // Si hay guion, tomar la segunda parte
+            statusFinalInput.value = estadoFinal;  // Actualizar Status Final con el valor derivado
+            statusFinalInput.setAttribute('data-from-n1', 'true');  // Marcar que el valor de statusfinal proviene de N1
+        } else {
+            statusFinalInput.value = '';  // Limpiar Status Final si no hay guion
+            statusFinalInput.setAttribute('data-from-n1', 'false');  // Marcar que el valor no proviene de N1
+        }
 
         // Reiniciar campos dependientes
         tipificacionN2.innerHTML = '<option value="" disabled selected>Selecciona</option>';
@@ -266,11 +272,11 @@ const handleTipificacionN1Change = (tipificacionN2Options) => {
         document.getElementById('descripcion').value = '';  // Limpiar la descripción
         guardarButton.disabled = true;  // Desactivar el botón de guardar hasta que se llenen los campos nuevamente
 
-        // Si la opción seleccionada incluye "Lost / Hold", desactivar Fecha y Hora de envío de comunicación
-        if (selectedText.includes("Lost / Hold")) {
-            fechaEnvio.disabled = true;  // Deshabilitar Fecha de envío de comunicación
+        // Lógica para manejar la desactivación de campos
+        if (selectedText.includes("Lost / Hold") || selectedText.includes("Lost")) {
+            fechaEnvio.disabled = true;  // Deshabilitar Fecha próxima comunicación
             fechaEnvio.value = '';  // Limpiar el valor del campo de fecha
-            horaEnvio.disabled = true;  // Deshabilitar Hora de envío de comunicación
+            horaEnvio.disabled = true;  // Deshabilitar Hora próxima comunicación
             horaEnvio.value = '';  // Limpiar el valor del campo de hora
             statusFinalInput.disabled = false;  // Asegurar que Status Final esté activo
         } else {
@@ -326,9 +332,21 @@ const handleTipificacionN2Change = (tipificacionN3Options) => {
     const tipificacionN2 = document.getElementById('tipificacionn2');
     const tipificacionN4Container = document.getElementById('tipificacionn4-container'); // Contenedor de Tipificación N4
     const tipificacionN4 = document.getElementById('tipificacionn4'); // Campo de Tipificación N4 (Tipo de enseñanza)
+    const fechaEnvio = document.getElementById('fechaproxact');  // Input para Fecha próxima comunicación
+    const horaEnvio = document.getElementById('horaproxact');  // Input para Horario próxima comunicación
+    const statusFinalInput = document.getElementById('statuslast');  // Input para Status Final
+
 
     tipificacionN2.addEventListener('change', function () {
+        const selectedText = this.options[this.selectedIndex].text;  // Obtener el texto de la opción seleccionada
         const selectedValue = this.value;
+
+        // Si statusFinal no proviene de tipificacionn1 o está vacío, actualizar con tipificacionn2
+        if (statusFinalInput.getAttribute('data-from-n1') === 'false' || statusFinalInput.value === '') {
+            const partes = selectedText.split('-');
+            const estadoFinal = partes.length > 1 ? partes[1].trim() : '';  // Si hay guion, tomar la segunda parte
+            statusFinalInput.value = estadoFinal;  // Actualizar Status Final
+        }
 
         // Ocultar los popups de Documentos y Seguimiento por defecto seleccionados si se cambia Tipificación N2
         document.getElementById('documentos-popup').style.display = 'none';
@@ -350,6 +368,24 @@ const handleTipificacionN2Change = (tipificacionN3Options) => {
         // Limpiar y ocultar Tipificación N4 (Tipo de enseñanza) al cambiar Tipificación N2
         tipificacionN4.innerHTML = '<option value="" disabled selected>Selecciona</option>';
         tipificacionN4Container.style.display = 'none';
+
+        // Verificar si la opción seleccionada incluye "Lost" o "Lost / Hold" para desactivar Fecha y Hora
+        if (selectedText.includes("Lost") || selectedText.includes("Lost / Hold")) {
+            fechaEnvio.disabled = true;  // Deshabilitar Fecha próxima comunicación
+            fechaEnvio.value = '';  // Limpiar el valor del campo de fecha
+            horaEnvio.disabled = true;  // Deshabilitar Hora próxima comunicación
+            horaEnvio.value = '';  // Limpiar el valor del campo de hora
+            statusFinalInput.disabled = false;  // Asegurar que Status Final esté activo
+        }
+        // Verificar si la opción seleccionada incluye "Open" para activar Fecha y Hora
+        else if (selectedText.includes("Open")) {
+            fechaEnvio.disabled = false;  // Habilitar Fecha próxima comunicación
+            horaEnvio.disabled = false;  // Habilitar Hora próxima comunicación
+            statusFinalInput.disabled = true;  // Deshabilitar Status Final
+        }
+
+        // Limpiar los campos dependientes
+        limpiarCamposDependientes();
 
         // Verificamos si el valor seleccionado es 'documento_tramite' o 'seguimiento'
         if (selectedValue === 'documento_tramite') {
@@ -475,11 +511,11 @@ document.getElementById('resultado2').addEventListener('change', function () {
         tipificacionn1Container.style.display = 'block';
         tipificacionn1.innerHTML = `
             <option value="" disabled selected>Selecciona</option>
-            <option value="agenda_sig_ciclo">Agenda para siguiente ciclo - Lost / Hold</option>
+            <option value="agenda_sig_ciclo">Agenda para siguiente ciclo</option>
             <option value="evaluando_propuesta">Evaluando propuesta - Open</option>
-            <option value="referido">Referido - Open</option>
-            <option value="llamada_cortada">Llamada cortada / Fallas en audio - Open</option>
             <option value="lead_repetido">Lead repetido - Lost</option>
+            <option value="llamada_cortada">Llamada cortada / Fallas en audio - Open</option>
+            <option value="referido">Referido - Open</option>
         `;
     }
 
@@ -488,13 +524,13 @@ document.getElementById('resultado2').addEventListener('change', function () {
         tipificacionn1Container.style.display = 'block';
         tipificacionn1.innerHTML = `
             <option value="" disabled selected>Selecciona</option>
-            <option value="agenda_peticion_aspirante">Se agenda a petición del aspirante - Open</option>
-            <option value="sin_aspirante">No se encuentra el aspirante - Open</option>
             <option value="contesta_y_cuelga">Contesta y cuelga - Open</option>
-            <option value="numero_equivocado">Número equivocado - Lost / Hold</option>
-            <option value="llamada_cortada">Llamada cortada / Fallas en audio - Open</option>
             <option value="lead_repetido">Lead Repetido - Lost</option>
+            <option value="llamada_cortada">Llamada cortada / Fallas en audio - Open</option>
+            <option value="sin_aspirante">No se encuentra el aspirante - Open</option>
             <option value="no_se_registro">No se registró - Lost / Hold</option>
+            <option value="numero_equivocado">Número equivocado - Lost / Hold</option>
+            <option value="agenda_peticion_aspirante">Se agenda a petición del aspirante - Open</option>
         `;
     }
 
@@ -503,19 +539,19 @@ document.getElementById('resultado2').addEventListener('change', function () {
         tipificacionn1Container.style.display = 'block';
         tipificacionn1.innerHTML = `
             <option value="" disabled selected>Selecciona</option>
+            <option value="alternativas_pago_insuficientes">Alternativas de pago insuficientes - Lost / Hold</option>
             <option value="plan_no_interes">El plan de estudios / programa no es de su interés - Lost / Hold</option>
-            <option value="lead_repetido">Lead Repetido - Lost</option>
-            <option value="sin_capacidad_pago">No tiene capacidad de pago - Lost / Hold</option>
             <option value="interesado_otra_modalidad">Interesado en otra modalidad - Lost / Hold</option>
+            <option value="lead_repetido">Lead Repetido - Lost</option>
+            <option value="llamada_cortada">Llamada cortada / Fallas en audio - Open</option>
             <option value="no_cumple_requisitos">No cumple con requisitos académicos - Lost / Hold</option>
             <option value="no_acuerdo_proceso">No está de acuerdo con el proceso de equivalencia/revalidación - Lost / Hold</option>
-            <option value="solo_informacion">Solo buscaba información - Lost / Hold</option>
-            <option value="inscripto_otro">Ya se inscribió en otra institución - Lost / Hold</option>
-            <option value="sin_disponibilidad_tiempo">Sin disponibilidad de tiempo - Lost / Hold</option>
-            <option value="pide_no_marcacion">Pide no se le marque de nuevo - Lost / Hold</option>
+            <option value="sin_capacidad_pago">No tiene capacidad de pago - Lost / Hold</option>
             <option value="pensado_gratis">Pensó que era gratis - Lost / Hold</option>
-            <option value="alternativas_pago_insuficientes">Alternativas de pago insuficientes - Lost / Hold</option>
-            <option value="llamada_cortada">Llamada cortada / Fallas en audio - Open</option>
+            <option value="pide_no_marcacion">Pide no se le marque de nuevo - Lost / Hold</option>
+            <option value="sin_disponibilidad_tiempo">Sin disponibilidad de tiempo - Lost / Hold</option>
+            <option value="solo_informacion">Solo buscaba información - Lost / Hold</option>
+            <option value="inscripto_otro">Ya se inscribió en otra institución - Lost / Hold</option> 
         `;
     }
 
@@ -543,11 +579,12 @@ document.getElementById('resultado2').addEventListener('change', function () {
         tipificacionn1Container.style.display = 'block';
         tipificacionn1.innerHTML = `
             <option value="" disabled selected>Selecciona</option>
-            <option value="sin_respuesta">Sin respuesta - Open</option>
-            <option value="num_invalido">Número inválido - Lost / Hold</option>
-            <option value="lead_prueba">Lead de prueba/Falso - Lost</option>
+            <option value="lead_prueba">Lead de prueba / Falso - Lost</option>
             <option value="lead_repetido">Lead repetido - Lost</option>
-            <option value="fallas_audio">Llamada cortada/ Fallas audio - Open</option>
+            <option value="fallas_audio">Llamada cortada / Fallas audio - Open</option>
+            <option value="num_invalido">Número inválido - Lost / Hold</option>
+            <option value="envia_informacion_wa">Se envía información por WA</option>
+            <option value="sin_respuesta">Sin respuesta - Open</option>
         `;
     }
 
@@ -568,83 +605,89 @@ tipificacionn1.addEventListener('change', function () {
 
 // Opciones comunes para Tipificación N3
 const opcionesComunesTipificacionN3 = [
+    { value: 'contenido', text: 'Contenido / Plan de estudios' },
     { value: 'modalidad', text: 'Modalidad' },
-    { value: 'contenido', text: 'Contenido / plan de estudios' },
     { value: 'otro_programa', text: 'Otro programa' }
 ];
 
 // Opciones dinámicas para Tipificación N1 y N2
 const opcionesTipificacionN1 = {
     'agenda_sig_ciclo': [
-        { value: 'proximo_ciclo', text: 'Próximo ciclo' },
-        { value: '2_ciclos_post', text: '2 ciclos posteriores o más' }
+        { value: '2_ciclos_post', text: '2 ciclos posteriores o más - Lost / Hold' },
+        { value: 'proximo_ciclo', text: 'Próximo ciclo - Open' }
     ],
     'evaluando_propuesta': [
-        { value: 'presupuesto', text: 'Presupuesto' },
+        { value: 'revalidacion_equivalencia', text: 'Busca revalidación/equivalencia' },
         { value: 'comparacion_universidades', text: 'Comparación con otras Universidades' },
         { value: 'documento_tramite', text: 'Documento en trámite' },  // Cuando el usuario selecciona esta opción, se mostrará el popup
-        { value: 'plan_estudios', text: 'Plan de estudios / programa si es de su interés' },
         { value: 'duracion_programa', text: 'Duración del programa' },
         { value: 'otra_persona', text: 'El programa es para otra persona' },
-        { value: 'revalidacion_equivalencia', text: 'Busca revalidación/equivalencia' },
-        { value: 'otro', text: 'Otro' },
-        { value: 'interesado_potencial', text: 'Interesado potencial' }
+        { value: 'interesado_potencial', text: 'Interesado potencial' },
+        { value: 'plan_estudios', text: 'Plan de estudios / programa si es de su interés' },
+        { value: 'presupuesto', text: 'Presupuesto' },
+        { value: 'otro', text: 'Otro' }
+
     ],
     'referido': [
-        { value: 'universidad', text: 'Universidad' },
         { value: 'amigo_familiar', text: 'Amigo / Familiar' },
-        { value: 'empresa', text: 'Empresa' }
+        { value: 'empresa', text: 'Empresa' },
+        { value: 'universidad', text: 'Universidad' }
     ],
     'lead_repetido': [
         { value: 'atencion_otro_lead', text: 'Atención en otro lead / más de un registro' }
+    ],
+    'envia_informacion_wa': [
+        { value: 'no_existe_num_wa', text: 'No existe número para envío Wa - Lost' },
+        { value: 'se_envia_wa', text: 'Se envía Wa - Open' },
+        { value: 'aspirante_no_responde', text: 'Aspirante no responde - Open' },
     ],
     'agenda_peticion_aspirante': [
         { value: 'seguimiento', text: 'Seguimiento' }
     ],
     'numero_equivocado': [
-        { value: 'no_conocen', text: 'No lo conocen' },
         { value: 'familiar_amigo', text: 'Es familiar / amigo' },
-        { value: 'no_especifica', text: 'No especifica' }
+        { value: 'no_especifica', text: 'No especifica' },
+        { value: 'no_conocen', text: 'No lo conocen' }
     ],
 
     'no_se_registro': [
-        { value: 'vio_tiktok', text: 'Vió un TikTok' },
         { value: 'buscaba_trabajo', text: 'Busca trabajo' },
-        { value: 'publicidad', text: 'Publicidad engañosa' },
         { value: 'otro', text: 'Otro' },
+        { value: 'publicidad', text: 'Publicidad engañosa' },
+        { value: 'vio_tiktok', text: 'Vió un TikTok' },
     ],
     'plan_no_interes': [
-        { value: 'busca_programa', text: 'Busca otro contenido / Programa' },
         { value: 'busca_curso', text: 'Busca curso' },
-        { value: 'busca_diplomado', text: 'Busca Diplomado' },
+        { value: 'busca_diplomado', text: 'Busca diplomado' },
+        { value: 'busca_doctorado', text: 'Busca doctorado' },
         { value: 'busca_licenciatura', text: 'Busca licenciatura' },
         { value: 'busca_maestria', text: 'Busca maestría' },
-        { value: 'busca_doctorado', text: 'Busca doctorado' },
+        { value: 'busca_programa', text: 'Busca otro contenido / Programa' },
         { value: 'no_especifica', text: 'No especifica' }
     ],
     'sin_capacidad_pago': [
+        { value: 'busca_convenio_uni', text: 'Busca financiamiento / Convenio con la Universidad' },
+        { value: 'busca_meses', text: 'Busca meses sin intereses' },
         { value: 'no_presupuesto', text: 'No entra en su presupuesto' },
-        { value: 'no_credito_banco', text: 'No le autorizaron el crédito en el banco' },
         { value: 'no_credito_financiamiento', text: 'No le autorizaron el crédito / Financiamento en su empresa' },
+        { value: 'no_credito_banco', text: 'No le autorizaron el crédito en el banco' },
+        { value: 'sin empleo', text: 'No tiene empleo por el momento' },
+        { value: 'otro', text: 'Otro' },
         { value: 'sin_apoyo_tercero', text: 'Tercero no le puede apoyar' },
         { value: 'percance', text: 'Tuvo un percance' },
-        { value: 'busca_convenio_uni', text: 'Busca financiamiento / convenio con la Universidad' },
-        { value: 'busca_meses', text: 'Busca meses sin intereses' },
-        { value: 'sin empleo', text: 'No tiene empleo por el momento' },
-        { value: 'otro', text: 'Otro' }
     ],
     'interesado_otra_modalidad': [
-        { value: 'presencial', text: 'Presencial' },
-        { value: 'hibrido', text: 'Híbrido' }
+        { value: 'hibrido', text: 'Híbrido' },
+        { value: 'presencial', text: 'Presencial' }
     ],
     'no_cumple_requisitos': [
-        { value: 'estudios_cursando', text: 'Estudios en curso' },
-        { value: 'documento_tramite', text: 'Graduado sin documento' },
-        { value: 'documento_tramite', text: 'Graduado documento en trámite' },
-        { value: 'carrera_tecnica', text: 'Tiene carrera técnica' },
         { value: 'carrera_no_afin', text: 'Carrera no es afín' },
         { value: 'extranjero', text: 'Es extranjero' },
-        { value: 'sin_licenciatura', text: 'No cuenta con licenciatura' }
+        { value: 'estudios_cursando', text: 'Estudios en curso' },
+        { value: 'documento_tramite', text: 'Graduado con documento en trámite' },
+        { value: 'documento_tramite', text: 'Graduado sin documento' },
+        { value: 'sin_licenciatura', text: 'No cuenta con licenciatura' },
+        { value: 'carrera_tecnica', text: 'Tiene carrera técnica' }
     ],
     'sin_disponibilidad_tiempo': [
         { value: 'actualmente_estudia', text: 'Actualmente estudia' },
@@ -653,12 +696,12 @@ const opcionesTipificacionN1 = {
         { value: 'tema_salud', text: 'Tema salud' },
     ],
     'inscripto_otro': [
-        { value: 'tec', text: 'TEC' },
-        { value: 'itam', text: 'ITAM' },
-        { value: 'uvm', text: 'UVM' },
-        { value: 'panamericana', text: 'Panamericana' },
         { value: 'ibero', text: 'IBERO' },
-        { value: 'otro', text: 'Otro' }
+        { value: 'itam', text: 'ITAM' },
+        { value: 'otro', text: 'Otro' },
+        { value: 'panamericana', text: 'Panamericana' },
+        { value: 'tec', text: 'TEC' },
+        { value: 'uvm', text: 'UVM' },
     ],
     'sin_disponibilidad_tiempo': [
         { value: 'actualmente_estudia', text: 'Actualmente estudia' },
@@ -667,30 +710,31 @@ const opcionesTipificacionN1 = {
         { value: 'temas_salud', text: 'Tema salud' }
     ],
     'sin_respuesta': [
+        { value: 'buzon_directo', text: 'Buzón directo' },
         { value: 'manda_buzon', text: 'Da tono y manda a buzón' },
         { value: 'fuera_de_servicio', text: 'Fuera del área de servicio' },
-        { value: 'rechaza_llamada', text: 'Rechaza llamada' },
-        { value: 'buzon_directo', text: 'Buzón directo' }
+        { value: 'no_responde_wa', text: 'No responde WhatsApp' },
+        { value: 'rechaza_llamada', text: 'Rechaza llamada' }
     ],
     'lead_repetido': [
-        { value: 'mas_registros', text: 'Atención en otro lead / más de un registro' }
+        { value: 'mas_registros', text: 'Atención en otro lead / Más de un registro' }
     ]
 };
 
 // Opciones dinámicas para Tipificación N2
 const opcionesTipificacionN2 = {
     '2_ciclos_post': [
+        { value: 'no_especifica', text: 'No especifica' },
         { value: 'trimestre1', text: 'Trimestre 1 (ene, feb, mar)' },
         { value: 'trimestre2', text: 'Trimestre 2 (abr, may, jun)' },
         { value: 'trimestre3', text: 'Trimestre 3 (jul, ago, sep)' },
-        { value: 'trimestre4', text: 'Trimestre 4 (oct, nov, dic)' },
-        { value: 'no_especifica', text: 'No especifica' }
+        { value: 'trimestre4', text: 'Trimestre 4 (oct, nov, dic)' }
     ],
     'presupuesto': [
-        { value: 'meses_sin_intereses', text: 'Busca meses sin intereses' },
         { value: 'financiamiento', text: 'Busca financiamiento / Convenio con la universidad' },
-        { value: 'empresa', text: 'Lo apoyará su empresa' },
+        { value: 'meses_sin_intereses', text: 'Busca meses sin intereses' },
         { value: 'credito', text: 'En espera que le aprueben un crédito' },
+        { value: 'empresa', text: 'Lo apoyará su empresa' },
         { value: 'tercero', text: 'Lo apoyará un tercero / Tercero toma decisión' },
         { value: 'otro', text: 'Otro' }
     ],
@@ -704,11 +748,11 @@ const opcionesTipificacionN2 = {
 // Opciones dinámicas para Tipificación N3
 const opcionesTipificacionN3 = {
     '2_ciclos_post': [
+        { value: 'no_especifica', text: 'No especifica' },
         { value: 'trimestre1', text: 'Trimestre 1 (ene, feb, mar)' },
         { value: 'trimestre2', text: 'Trimestre 2 (abr, may, jun)' },
         { value: 'trimestre3', text: 'Trimestre 3 (jul, ago, sep)' },
-        { value: 'trimestre4', text: 'Trimestre 4 (oct, nov, dic)' },
-        { value: 'no_especifica', text: 'No especifica' }
+        { value: 'trimestre4', text: 'Trimestre 4 (oct, nov, dic)' }
     ],
     'presupuesto': [
         { value: 'meses_sin_intereses', text: 'Busca meses sin intereses' },
@@ -719,16 +763,16 @@ const opcionesTipificacionN3 = {
         { value: 'otro', text: 'Otro' }
     ],
     'comparacion_universidades': [
-        { value: 'tec', text: 'TEC' },
-        { value: 'itam', text: 'ITAM' },
-        { value: 'uvm', text: 'UVM' },
-        { value: 'panamericana', text: 'Panamericana' },
         { value: 'ibero', text: 'IBERO' },
-        { value: 'otro', text: 'Otro' }
+        { value: 'itam', text: 'ITAM' },
+        { value: 'otro', text: 'Otro' },
+        { value: 'panamericana', text: 'Panamericana' },
+        { value: 'tec', text: 'TEC' },
+        { value: 'uvm', text: 'UVM' },
     ],
     'interesado_potencial': [
-        { value: 'evaluando_costos', text: 'Evaluando costos' },
         { value: 'espera_aplicar', text: 'En espera de fecha para aplicar solicitud' },
+        { value: 'evaluando_costos', text: 'Evaluando costos' },
         { value: 'evaluando_opciones', text: 'Evaluando otras opciones' },
         { value: 'promesa_pago', text: 'Promesa de pago' }
     ],
@@ -739,7 +783,7 @@ const opcionesTipificacionN3 = {
     'busca_doctorado': opcionesComunesTipificacionN3     // Reutilización de opciones comunes
     ,
     'no_presupuesto': [
-        { value: 'menos_3_mil', text: 'Menos de 3 mil' },
+        { value: 'menos_3_mil', text: 'Menos de 3 mil mensuales' },
         { value: '3_4_mil', text: '3 a 4 mil mensuales' },
         { value: '4_5_mil', text: '4 a 5 mil mensuales' },
         { value: 'mas_5_mil', text: 'Más de 5 mil mensuales' },
@@ -754,8 +798,8 @@ const opcionesTipificacionN3 = {
     'estudios_cursando': [
         { value: 'bachillerato', text: 'Bachillerato' },
         { value: 'licenciatura', text: 'Licenciatura' },
-        { value: 'servicio_social', text: 'Servicio Social' },
-        { value: 'otro', text: 'Otro' }
+        { value: 'otro', text: 'Otro' },
+        { value: 'servicio_social', text: 'Servicio Social' }
     ],
     'carrera_no_afin': [
         { value: 'con_experiencia', text: 'Con experiencia' },
@@ -766,20 +810,23 @@ const opcionesTipificacionN3 = {
         { value: 'sin_doc', text: 'Sin documento' }
     ],
     'actualmente_estudia': [
-        { value: 'curso_seminario', text: 'Curso /Seminario' },
+        { value: 'curso_seminario', text: 'Curso / Seminario' },
         { value: 'diplomado', text: 'Diplomado' },
-        { value: 'licenciatura', text: 'Licenciatura' },
-        { value: 'maestria', text: 'Maestría' },
         { value: 'doctorado', text: 'Doctorado' },
-        { value: 'especialidad', text: 'Especialidad' }
+        { value: 'especialidad', text: 'Especialidad' },
+        { value: 'licenciatura', text: 'Licenciatura' },
+        { value: 'maestria', text: 'Maestría' }
+    ],
+    'manda_buzon': [
+        { value: 'envio_whats', text: 'Envío de WhatsApp' },
     ]
 };
 
 // Opciones comunes para Tipificación N4
 const opcionesComunesTipificacionN4 = [
-    { value: 'presencial', text: 'Presencial' },
     { value: 'hibrido', text: 'Híbrido' },
-    { value: 'online', text: 'Online' }
+    { value: 'online', text: 'Online' },
+    { value: 'presencial', text: 'Presencial' }
 ];
 
 // Opciones dinámicas para Tipificación N4
@@ -803,6 +850,10 @@ const manejarPopup = (guardarBtnId, popupId, containerId, selectorCheckboxes, li
     const container = document.getElementById(containerId);
     const listaSeleccionados = document.getElementById(listaId);
     const checkboxes = document.querySelectorAll(selectorCheckboxes);
+    const titulacionMaestriaCheckbox = document.getElementById('titulacion_maestria'); // Checkbox de Titulación por maestría
+    const statusFinalContainer = document.getElementById('statusfinal-container'); // Contenedor de Resultado 4 (statusfinal)
+    const statusFinalInput = document.getElementById('statusfinal'); // Campo de Resultado 4 (statusfinal)
+
     let seleccionados = [];
 
     // Función para actualizar la lista de documentos seleccionados
@@ -819,6 +870,17 @@ const manejarPopup = (guardarBtnId, popupId, containerId, selectorCheckboxes, li
             .map(checkbox => ({ id: checkbox.id, text: checkbox.value }));
     };
 
+    // Mostrar/Ocultar Resultado 4 (statusfinal) en tiempo real cuando se selecciona/des-selecciona el checkbox de Titulación por maestría
+    titulacionMaestriaCheckbox.addEventListener('change', function () {
+        if (this.checked) {
+            statusFinalContainer.style.display = 'block';  // Mostrar Resultado 4 (statusfinal)
+            statusFinalInput.value = 'En espera del certificado';  // Actualizar el valor del campo
+        } else {
+            statusFinalContainer.style.display = 'none';  // Ocultar Resultado 4 (statusfinal)
+            statusFinalInput.value = '';  // Limpiar el valor del campo
+        }
+    });
+
     // Guardar documentos seleccionados y mostrar la lista en el contenedor
     guardarBtn.addEventListener('click', function (event) {
         event.preventDefault();
@@ -826,6 +888,16 @@ const manejarPopup = (guardarBtnId, popupId, containerId, selectorCheckboxes, li
         actualizarListaSeleccionados();
         popup.style.display = 'none';
         container.style.display = 'block';
+
+        // Lógica para mostrar "En espera del certificado" en statusfinal si está seleccionada Titulación por maestría
+        if (titulacionMaestriaCheckbox.checked) {
+            statusFinalContainer.style.display = 'block';
+            statusFinalInput.value = 'En espera del certificado';
+        } else {
+            // Si no está seleccionada, limpiar el campo Resultado 4 (statusfinal)
+            statusFinalContainer.style.display = 'none';
+            statusFinalInput.value = '';
+        }
     });
 
     // Volver a mostrar el popup con los documentos seleccionados previamente
