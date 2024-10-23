@@ -12,8 +12,8 @@ const handleInformacionPopup = () => {
             // Actualizar Tipificación N3 con las opciones "Financiamiento" y "Alternativas de pago"
             tipificacionN3.innerHTML = `
                 <option value="" disabled selected>Selecciona</option>
-                <option value="financiamiento">Financiamiento</option>
                 <option value="alternativas_pago">Alternativas de pago</option>
+                <option value="financiamiento">Financiamiento</option>
             `;
             tipificacionN3Container.style.display = 'block';
             tipificacionN3Label.innerText = "Opciones asociadas a Costos *";
@@ -582,8 +582,8 @@ document.getElementById('resultado2').addEventListener('change', function () {
             <option value="lead_prueba">Lead de prueba / Falso - Lost</option>
             <option value="lead_repetido">Lead repetido - Lost</option>
             <option value="fallas_audio">Llamada cortada / Fallas audio - Open</option>
-            <option value="num_invalido">Número inválido - Lost / Hold</option>
-            <option value="envia_informacion_wa">Se envía información por WA</option>
+            <option value="num_invalido">Número inválido</option>
+            <option value="envia_informacion_wa">Se envía información por Wa - Open</option>
             <option value="sin_respuesta">Sin respuesta - Open</option>
         `;
     }
@@ -637,9 +637,11 @@ const opcionesTipificacionN1 = {
         { value: 'atencion_otro_lead', text: 'Atención en otro lead / más de un registro' }
     ],
     'envia_informacion_wa': [
+        { value: 'aspirante_no_responde', text: 'Aspirante no responde' },
+    ],
+    'num_invalido': [
         { value: 'no_existe_num_wa', text: 'No existe número para envío Wa - Lost' },
-        { value: 'se_envia_wa', text: 'Se envía Wa - Open' },
-        { value: 'aspirante_no_responde', text: 'Aspirante no responde - Open' },
+        { value: 'se_envia_wa', text: 'Se envía Wa - Open' }
     ],
     'agenda_peticion_aspirante': [
         { value: 'seguimiento', text: 'Seguimiento' }
@@ -755,10 +757,10 @@ const opcionesTipificacionN3 = {
         { value: 'trimestre4', text: 'Trimestre 4 (oct, nov, dic)' }
     ],
     'presupuesto': [
-        { value: 'meses_sin_intereses', text: 'Busca meses sin intereses' },
         { value: 'financiamiento', text: 'Busca financiamiento / Convenio con la universidad' },
-        { value: 'empresa', text: 'Lo apoyará su empresa' },
+        { value: 'meses_sin_intereses', text: 'Busca meses sin intereses' },
         { value: 'credito', text: 'En espera que le aprueben un crédito' },
+        { value: 'empresa', text: 'Lo apoyará su empresa' },
         { value: 'tercero', text: 'Lo apoyará un tercero / Tercero toma decisión' },
         { value: 'otro', text: 'Otro' }
     ],
@@ -790,10 +792,11 @@ const opcionesTipificacionN3 = {
         { value: 'otro', text: 'Otro' },
     ],
     'percance': [
-        { value: 'personal', text: 'Personal' },
         { value: 'familiar', text: 'Familiar' },
-        { value: 'salud', text: 'Salud' },
         { value: 'otro', text: 'Otro' },
+        { value: 'personal', text: 'Personal' },
+        { value: 'salud', text: 'Salud' }
+        
     ],
     'estudios_cursando': [
         { value: 'bachillerato', text: 'Bachillerato' },
@@ -850,10 +853,6 @@ const manejarPopup = (guardarBtnId, popupId, containerId, selectorCheckboxes, li
     const container = document.getElementById(containerId);
     const listaSeleccionados = document.getElementById(listaId);
     const checkboxes = document.querySelectorAll(selectorCheckboxes);
-    const titulacionMaestriaCheckbox = document.getElementById('titulacion_maestria'); // Checkbox de Titulación por maestría
-    const statusFinalContainer = document.getElementById('statusfinal-container'); // Contenedor de Resultado 4 (statusfinal)
-    const statusFinalInput = document.getElementById('statusfinal'); // Campo de Resultado 4 (statusfinal)
-
     let seleccionados = [];
 
     // Función para actualizar la lista de documentos seleccionados
@@ -870,17 +869,6 @@ const manejarPopup = (guardarBtnId, popupId, containerId, selectorCheckboxes, li
             .map(checkbox => ({ id: checkbox.id, text: checkbox.value }));
     };
 
-    // Mostrar/Ocultar Resultado 4 (statusfinal) en tiempo real cuando se selecciona/des-selecciona el checkbox de Titulación por maestría
-    titulacionMaestriaCheckbox.addEventListener('change', function () {
-        if (this.checked) {
-            statusFinalContainer.style.display = 'block';  // Mostrar Resultado 4 (statusfinal)
-            statusFinalInput.value = 'En espera del certificado';  // Actualizar el valor del campo
-        } else {
-            statusFinalContainer.style.display = 'none';  // Ocultar Resultado 4 (statusfinal)
-            statusFinalInput.value = '';  // Limpiar el valor del campo
-        }
-    });
-
     // Guardar documentos seleccionados y mostrar la lista en el contenedor
     guardarBtn.addEventListener('click', function (event) {
         event.preventDefault();
@@ -888,16 +876,6 @@ const manejarPopup = (guardarBtnId, popupId, containerId, selectorCheckboxes, li
         actualizarListaSeleccionados();
         popup.style.display = 'none';
         container.style.display = 'block';
-
-        // Lógica para mostrar "En espera del certificado" en statusfinal si está seleccionada Titulación por maestría
-        if (titulacionMaestriaCheckbox.checked) {
-            statusFinalContainer.style.display = 'block';
-            statusFinalInput.value = 'En espera del certificado';
-        } else {
-            // Si no está seleccionada, limpiar el campo Resultado 4 (statusfinal)
-            statusFinalContainer.style.display = 'none';
-            statusFinalInput.value = '';
-        }
     });
 
     // Volver a mostrar el popup con los documentos seleccionados previamente
