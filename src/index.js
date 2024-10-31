@@ -339,6 +339,7 @@ const handleTipificacionN2Change = (tipificacionN3Options) => {
     const tipificacionN4 = document.getElementById('tipificacionn4'); // Campo de Tipificación N4 (Tipo de enseñanza)
     const fechaEnvio = document.getElementById('fechaproxact');  // Input para Fecha próxima comunicación
     const horaEnvio = document.getElementById('horaproxact');  // Input para Horario próxima comunicación
+    const proximaComunicacion = document.getElementById('proximaactividad');
     const statusFinalInput = document.getElementById('statuslast');  // Input para Status Final
 
 
@@ -374,18 +375,21 @@ const handleTipificacionN2Change = (tipificacionN3Options) => {
         tipificacionN4.innerHTML = '<option value="" disabled selected>Selecciona</option>';
         tipificacionN4Container.style.display = 'none';
 
-        // Verificar si la opción seleccionada incluye "Lost" o "Lost / Hold" para desactivar Fecha y Hora
+        // Verificar si la opción seleccionada incluye "Lost" o "Lost / Hold" para desactivar Fecha, Hora y Próxima comunicación
         if (selectedText.includes("Lost") || selectedText.includes("Lost / Hold")) {
             fechaEnvio.disabled = true;  // Deshabilitar Fecha próxima comunicación
             fechaEnvio.value = '';  // Limpiar el valor del campo de fecha
             horaEnvio.disabled = true;  // Deshabilitar Hora próxima comunicación
             horaEnvio.value = '';  // Limpiar el valor del campo de hora
+            proximaComunicacion.disabled = true;
+            proximaComunicacion.value = '';
             statusFinalInput.disabled = false;  // Asegurar que Status Final esté activo
         }
         // Verificar si la opción seleccionada incluye "Open" para activar Fecha y Hora
         else if (selectedText.includes("Open")) {
             fechaEnvio.disabled = false;  // Habilitar Fecha próxima comunicación
             horaEnvio.disabled = false;  // Habilitar Hora próxima comunicación
+            proximaComunicacion.disabled = false;
             statusFinalInput.disabled = true;  // Deshabilitar Status Final
         }
 
@@ -483,6 +487,9 @@ document.getElementById('resultado2').addEventListener('change', function () {
     const tipificacionn1 = document.getElementById('tipificacionn1');
     const tipificacionN4Container = document.getElementById('tipificacionn4-container'); // Contenedor de Tipificación N4 (Tipo de enseñanza)
     const tipificacionN4 = document.getElementById('tipificacionn4'); // Select de Tipificación N4 (Tipo de enseñanza)
+
+    // Limpiar los campos dependientes, incluyendo Descripción
+    limpiarCamposDependientes();
 
     // Ocultar y limpiar Tipificación N4 cuando cambie Resultado 2
     tipificacionN4.innerHTML = '<option value="" disabled selected>Selecciona</option>';
