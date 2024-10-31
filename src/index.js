@@ -4,7 +4,7 @@ const handleInformacionPopup = () => {
     const tipificacionN3 = document.getElementById('tipificacionn3');
     const tipificacionN3Container = document.getElementById('tipificacionn3-container');
     const tipificacionN3Label = document.getElementById('tipificacionn3-label');
-    const defaultLabel = "Detalles de subtipificación *"; // Título por defecto
+    const defaultLabel = "6) Detalles de subtipificación *"; // Título por defecto
 
     // Escuchar el cambio del checkbox de "Costos"
     const actualizarSubtipificacion = () => {
@@ -37,7 +37,7 @@ const handleTipificacionRespuestaChange = () => {
     const tipificacionRespuesta = document.getElementById("tipificacionn1");
     const tipificacionN3Container = document.getElementById('tipificacionn3-container');
     const tipificacionN3Label = document.getElementById('tipificacionn3-label');
-    const defaultLabel = "Detalles de subtipificación *"; // Título por defecto
+    const defaultLabel = "6) Detalles de subtipificación *"; // Título por defecto
 
     tipificacionRespuesta.addEventListener('change', () => {
         // Ocultar el contenedor Tipificación N3 y restaurar el título por defecto si cambia la opción
@@ -167,12 +167,12 @@ document.getElementById('resultado1').addEventListener('change', function () {
             tipoContacto.innerHTML = `
                 <option value="" disabled selected>Selecciona</option>
                 <option value="primer_contacto">Primer contacto</option>
-                <option value="seguimiento">Seguimiento</option>
+                <option value="seguimiento">NA</option>
             `;
         } else if (selectedValue === NO_CONTACTADO) {
             tipoContacto.innerHTML = `
                 <option value="" disabled selected>Selecciona</option>
-                <option value="${SEGUIMIENTO_NO_CONTACTO}">Seguimiento</option>
+                <option value="${SEGUIMIENTO_NO_CONTACTO}">NA</option>
             `;
         }
 
@@ -273,15 +273,20 @@ const handleTipificacionN1Change = (tipificacionN2Options) => {
         guardarButton.disabled = true;  // Desactivar el botón de guardar hasta que se llenen los campos nuevamente
 
         // Lógica para manejar la desactivación de campos
+        const proximaComunicacion = document.getElementById('proximaactividad'); // Elemento "Próxima comunicación"
+
         if (selectedText.includes("Lost / Hold") || selectedText.includes("Lost")) {
             fechaEnvio.disabled = true;  // Deshabilitar Fecha próxima comunicación
             fechaEnvio.value = '';  // Limpiar el valor del campo de fecha
             horaEnvio.disabled = true;  // Deshabilitar Hora próxima comunicación
             horaEnvio.value = '';  // Limpiar el valor del campo de hora
+            proximaComunicacion.disabled = true;  // Deshabilitar Próxima comunicación
+            proximaComunicacion.value = '';  // Limpiar el valor del campo de próxima comunicación
             statusFinalInput.disabled = false;  // Asegurar que Status Final esté activo
         } else {
             fechaEnvio.disabled = false;  // Habilitar el campo de fecha
             horaEnvio.disabled = false;  // Habilitar el campo de hora
+            proximaComunicacion.disabled = false;  // Habilitar Próxima comunicación
             statusFinalInput.disabled = true;  // Deshabilitar el campo Status Final si no es "Lost / Hold"
         }
 
@@ -644,7 +649,8 @@ const opcionesTipificacionN1 = {
         { value: 'se_envia_wa', text: 'Se envía Wa - Open' }
     ],
     'agenda_peticion_aspirante': [
-        { value: 'seguimiento', text: 'Seguimiento' }
+        { value: 'seguimiento', text: 'Seguimiento' },
+        { value: 'comparte_info', text: 'Se comparte información' }
     ],
     'numero_equivocado': [
         { value: 'familiar_amigo', text: 'Es familiar / amigo' },
@@ -772,6 +778,9 @@ const opcionesTipificacionN3 = {
         { value: 'tec', text: 'TEC' },
         { value: 'uvm', text: 'UVM' },
     ],
+    'comparte_info':[
+        { value: 'espera_de_resp', text: 'En espera de respuesta' },
+    ],
     'interesado_potencial': [
         { value: 'espera_aplicar', text: 'En espera de fecha para aplicar solicitud' },
         { value: 'evaluando_costos', text: 'Evaluando costos' },
@@ -796,7 +805,7 @@ const opcionesTipificacionN3 = {
         { value: 'otro', text: 'Otro' },
         { value: 'personal', text: 'Personal' },
         { value: 'salud', text: 'Salud' }
-        
+
     ],
     'estudios_cursando': [
         { value: 'bachillerato', text: 'Bachillerato' },
@@ -853,6 +862,9 @@ const manejarPopup = (guardarBtnId, popupId, containerId, selectorCheckboxes, li
     const container = document.getElementById(containerId);
     const listaSeleccionados = document.getElementById(listaId);
     const checkboxes = document.querySelectorAll(selectorCheckboxes);
+    const titulacionMaestriaCheckbox = document.getElementById('titulacion_maestria'); // Checkbox de Titulación por maestría
+    const statusFinalContainer = document.getElementById('statusfinal-container'); // Contenedor de Resultado 4 (statusfinal)
+    const statusFinalInput = document.getElementById('statusfinal'); // Campo de Resultado 4 (statusfinal)
     let seleccionados = [];
 
     // Función para actualizar la lista de documentos seleccionados
@@ -868,6 +880,17 @@ const manejarPopup = (guardarBtnId, popupId, containerId, selectorCheckboxes, li
             .filter(checkbox => checkbox.checked)
             .map(checkbox => ({ id: checkbox.id, text: checkbox.value }));
     };
+
+    // Mostrar/Ocultar Resultado 4 (statusfinal) en tiempo real cuando se selecciona/des-selecciona el checkbox de Titulación por maestría
+    titulacionMaestriaCheckbox.addEventListener('change', function () {
+        if (this.checked) {
+            statusFinalContainer.style.display = 'block';  // Mostrar Resultado 4 (statusfinal)
+            statusFinalInput.value = 'En espera del certificado';  // Actualizar el valor del campo
+        } else {
+            statusFinalContainer.style.display = 'none';  // Ocultar Resultado 4 (statusfinal)
+            statusFinalInput.value = '';  // Limpiar el valor del campo
+        }
+    });
 
     // Guardar documentos seleccionados y mostrar la lista en el contenedor
     guardarBtn.addEventListener('click', function (event) {
@@ -1014,7 +1037,7 @@ function exportarExcel(event) {
 
     // Verificación si el checkbox "Costos" está marcado
     const costosCheckbox = document.getElementById('costos');
-    let detallesSubtipificacionTitle = "Detalles de subtipificación"; // Título por defecto
+    let detallesSubtipificacionTitle = "6) Detalles de subtipificación"; // Título por defecto
     let detallesSubtipificacion = obtenerTextoSelect("tipificacionn3");
 
     // Si el checkbox de "Costos" está marcado, cambiar el título dinámicamente
