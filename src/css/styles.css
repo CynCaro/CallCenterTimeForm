@@ -319,7 +319,7 @@ input[type="date"], input[type="text"], input[type="time"] {
     z-index: 1000; */
 }
 
-input[type="checkbox"], input[type="radio"] {
+input[type="checkbox"] {
     margin-top: .75rem;
     margin-right: .5rem;
 }
