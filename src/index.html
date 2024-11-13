@@ -46,21 +46,21 @@
                             <div class="custom-select">
                                 <select id="canaldecomunicacion" name="canaldecomunicacion" required>
                                     <option value="" disabled selected>Selecciona</option> <!-- Opción por defecto -->
-                                    <option value="in_call">1- In Call</option>
-                                    <option value="out_call">2- In Email</option>
-                                    <option value="in_wa_g">3- In Wa G</option>
-                                    <option value="in_wa_p">4- In Wa P</option>
-                                    <option value="out_wa_g">5- Out Call</option>
-                                    <option value="out_wa_p">6- Out Email</option>
-                                    <option value="in_mail">7- Out Wa G</option>
-                                    <option value="out_mail">8- Out Wa P</option>
+                                    <option value="in_call">1- Correo entrante</option>
+                                    <option value="out_call">2- Correo saliente</option>
+                                    <option value="in_wa_g">3- Llamada entrante</option>
+                                    <option value="in_wa_p">4- Llamada saliente</option>
+                                    <option value="out_wa_g">5- Wa G entrante</option>
+                                    <option value="out_wa_p">6- Wa G saliente</option>
+                                    <option value="in_mail">7- Wa P entrante</option>
+                                    <option value="out_mail">8- Wa P saliente</option>
                                 </select>
                             </div>
                         </div>
 
                         <!-- Resultado 1 -->
                         <div class="form-group-column">
-                            <label for="resultado1">Estatus de contacto *</label>
+                            <label for="resultado1">1) Estatus de contacto *</label>
                             <div class="custom-select">
                                 <select id="resultado1" name="resultado1">
                                     <option value="" disabled selected>Selecciona</option> <!-- Opción por defecto -->
@@ -72,7 +72,7 @@
 
                         <!-- Tipo de contacto -->
                         <div class="form-group-column" style="display: none;">
-                            <label for="tipocontacto">Nivel de contacto *</label>
+                            <label for="tipocontacto">2) Resultado del contacto *</label>
                             <div class="custom-select">
                                 <select id="tipocontacto" name="tipocontacto">
                                     <option value="" disabled selected>Selecciona</option> <!-- Opción por defecto -->
@@ -86,7 +86,7 @@
                     <div class="form-row">
                         <!-- Resultado 2 -->
                         <div class="form-group-column" id="resultado2-container" style="display: none;">
-                            <label for="resultado2">Respuesta de lead *</label>
+                            <label for="resultado2">3) Respuesta de lead *</label>
                             <div class="custom-select">
                                 <select id="resultado2" name="resultado2">
                                     <option value="" disabled selected>Seleciona</option> <!-- Opción por defecto -->
@@ -101,7 +101,7 @@
 
                         <!-- Tificicación - N1 -->
                         <div class="form-group-column" id="tipificacionn1-container" style="display: none;">
-                            <label for="tipificacionn1">Tipificación de respuesta *</label>
+                            <label for="tipificacionn1">4) Tipificación de respuesta *</label>
                             <div class="custom-select">
                                 <select id="tipificacionn1" name="tipificacionn1">
                                     <option value="" disabled selected>Selecciona</option> <!-- Opción por defecto -->
@@ -139,7 +139,7 @@
 
                         <!-- Tipificación - N2 -->
                         <div class="form-group-column" id="tipificacionn2-container" style="display: none;">
-                            <label for="tipificacionn2">Subtipificación de respuesta *</label>
+                            <label for="tipificacionn2">5) Subtipificación de respuesta *</label>
                             <div class="custom-select">
                                 <select id="tipificacionn2" name="tipificacionn2" required>
                                     <option value="" disabled selected>Selecciona</option> <!-- Opción por defecto -->
@@ -174,7 +174,7 @@
                                     value="&#183 Certificado de licenciatura">Certificado de licenciatura<br>
                                 <input type="checkbox" id="curp" value="&#183 Curp"> CURP<br>
                                 <input type="checkbox" id="titulo" value="&#183 Título"> Título<br>
-                                <input type="checkbox" id="titulacion_maestria" value="&#183 Títulación por maestría"> Titulación por maestría<br>
+                                <div><input type="checkbox" id="titulacion_maestria" value="&#183 Títulación por maestría"> Titulación por maestría<br></div>
                             </div>
                             <button id="guardar-documentos">Guardar</button>
                         </div>
@@ -229,7 +229,7 @@
 
                         <!-- Tipificación - N4 -->
                         <div class="form-group-column" id="tipificacionn4-container" style="display: none;">
-                            <label for="tipificacionn4" id="tipificacionn4-label">Tipo de enseñanza *</label>
+                            <label for="tipificacionn4" id="tipificacionn4-label">7) Tipo de enseñanza *</label>
                             <div class="custom-select">
                                 <select id="tipificacionn4" name="tipificacionn4" required>
                                     <option value="" disabled selected>Selecciona</option>
@@ -324,10 +324,10 @@
                                 <select id="proximaactividad" name="proximaactividad" required>
                                     <option value="" disabled selected>Selecciona</option>
                                     <!-- Opción por defecto -->
-                                    <option value="out_call">1- Out Call</option>
-                                    <option value="out_wa_p">2- Out Email</option>
-                                    <option value="out_wa_g">3- Out Wa G</option>
-                                    <option value="out_mail">4- Out Wa p</option>
+                                    <option value="out_call">1- Envío de correo</option>
+                                    <option value="out_wa_p">2- Llamada saliente</option>
+                                    <option value="out_wa_g">3- Wa G saliente</option>
+                                    <option value="out_mail">4- Wa P saliente</option>
                                 </select>
                             </div>
                         </div>
