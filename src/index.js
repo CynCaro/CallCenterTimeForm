@@ -361,11 +361,12 @@ const handleTipificacionN2Change = (tipificacionN3Options) => {
         limpiarCheckboxes('seguimiento-popup');
 
         // Ocultar automáticamente los popups y contenedores relacionados con documentos
-        ['documentos-sin-apostillar', 'documentos-sin-documento'].forEach(prefix => {
+        ['documentos-sin-apostillar', 'documentos-sin-documento', 'documentos'].forEach(prefix => {
             document.getElementById(`${prefix}-popup`).style.display = 'none';  // Ocultar popup
             document.getElementById(`${prefix}-container`).style.display = 'none';  // Ocultar contenedor
             limpiarCheckboxes(`${prefix}-popup`);  // Limpiar checkboxes del popup
         });
+
 
         // Manejar el status final basado en la selección
         if (statusFinalInput.getAttribute('data-from-n1') === 'false' || statusFinalInput.value === '') {
