@@ -61,6 +61,27 @@ const mostrarOpciones = (selectId, options) => {
     }
 };
 
+// Función para generar checkboxes dinámicamente en un contenedor
+const generarCheckboxes = (containerId, opciones) => {
+    const container = document.getElementById(containerId);
+    container.innerHTML = ''; // Limpia el contenedor antes de agregar nuevos checkboxes
+
+    opciones.forEach(opcion => {
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.id = opcion.value;
+        checkbox.value = opcion.text;
+
+        const label = document.createElement('label');
+        label.htmlFor = opcion.value;
+        label.innerText = opcion.text;
+
+        container.appendChild(checkbox);
+        container.appendChild(label);
+        container.appendChild(document.createElement('br'));
+    });
+};
+
 // Función para ocultar popups relacionados
 const ocultarTodosLosPopups = () => {
     const popups = [
@@ -73,7 +94,9 @@ const ocultarTodosLosPopups = () => {
         'documentos-sin-apostillar-container',
         'documentos-sin-documento-container',
         'informacion-popup',
-        'informacion-container'
+        'informacion-container',
+        'comparacion-universidades-popup', // Nuevo: Popup de comparación de universidades
+        'comparacion-universidades-container' // Nuevo: Contenedor de comparación de universidades
     ];
 
     popups.forEach(id => {
@@ -83,6 +106,13 @@ const ocultarTodosLosPopups = () => {
         }
     });
 };
+
+// Función genérica para limpiar los checkboxes dentro de un contenedor
+function limpiarCheckboxes(contenedorID) {
+    document.querySelectorAll(`#${contenedorID} input[type="checkbox"]`).forEach(checkbox => {
+        checkbox.checked = false; // Deseleccionar todas las opciones
+    });
+}
 
 // Función para ocultar Tipificación 1, 2, 3, 4 y limpiar sus selecciones
 const ocultarTipificaciones = () => {
@@ -228,14 +258,6 @@ document.getElementById('tipocontacto').addEventListener('change', function () {
     limpiarCamposDependientes();
 });
 
-// Función genérica para limpiar los checkboxes dentro de un contenedor
-function limpiarCheckboxes(contenedorID) {
-    document.querySelectorAll(`#${contenedorID} input[type="checkbox"]`).forEach(checkbox => {
-        checkbox.checked = false; // Deseleccionar todas las opciones
-    });
-}
-
-
 // Función para manejar el cambio en Tipificación N1 y actualizar Tipificación N2 y otros campos dependientes
 const handleTipificacionN1Change = (tipificacionN2Options) => {
     const tipificacionN1 = document.getElementById('tipificacionn1');
@@ -344,6 +366,7 @@ const handleTipificacionN2Change = (tipificacionN3Options) => {
     const titulacionCheckbox = document.getElementById('titulacion_maestria'); // Checkbox "Titulación por maestría"
     const tipificacionN3Container = document.getElementById('tipificacionn3-container'); // Contenedor de Tipificación N3
     const tipificacionN3 = document.getElementById('tipificacionn3'); // Campo de Tipificación N3
+    const comparacionUniversidadesContainer = document.getElementById('comparacion-universidades-popup'); // Contenedor del popup/comparación
 
     tipificacionN2.addEventListener('change', function () {
         const selectedText = this.options[this.selectedIndex].text;  // Obtener texto de la opción seleccionada
@@ -361,12 +384,24 @@ const handleTipificacionN2Change = (tipificacionN3Options) => {
         limpiarCheckboxes('seguimiento-popup');
 
         // Ocultar automáticamente los popups y contenedores relacionados con documentos
-        ['documentos-sin-apostillar', 'documentos-sin-documento', 'documentos'].forEach(prefix => {
+        ['documentos-sin-apostillar', 'documentos-sin-documento', 'documentos', 'comparacion-universidades'].forEach(prefix => {
             document.getElementById(`${prefix}-popup`).style.display = 'none';  // Ocultar popup
             document.getElementById(`${prefix}-container`).style.display = 'none';  // Ocultar contenedor
             limpiarCheckboxes(`${prefix}-popup`);  // Limpiar checkboxes del popup
         });
 
+        // Llamar a la función generarCheckboxes para mostrar 'comparacion_universidades'
+        if (selectedValue === 'comparacion_universidades') {
+            comparacionUniversidadesContainer.style.display = 'block'; // Muestra el popup
+            generarCheckboxes('comparacion-universidades', [
+                { value: 'ibero', text: 'IBERO' },
+                { value: 'itam', text: 'ITAM' },
+                { value: 'panamericana', text: 'Panamericana' },
+                { value: 'tec', text: 'TEC' },
+                { value: 'uvm', text: 'UVM' },
+                { value: 'otro', text: 'Otro' }
+            ]);
+        }               
 
         // Manejar el status final basado en la selección
         if (statusFinalInput.getAttribute('data-from-n1') === 'false' || statusFinalInput.value === '') {
@@ -432,6 +467,11 @@ const handleTipificacionN2Change = (tipificacionN3Options) => {
             statusFinalInput.disabled = true;  // Deshabilitar Status Final
         }
     });
+    // Ocultar popups si cambia tipificacionN1 o resultado2
+    ['tipificacionn1', 'resultado2'].forEach(id => {
+        const element = document.getElementById(id);
+        element.addEventListener('change', () => ocultarTodosLosPopups());
+    });
 };
 
 // Función para manejar el cambio en Tipificación N3 y actualizar Resultado 4 o mostrar popups de documentos
@@ -439,7 +479,6 @@ const handleTipificacionN3Change = () => {
     const tipificacionN3 = document.getElementById('tipificacionn3');
     const tipificacionN4Container = document.getElementById('tipificacionn4-container'); // Contenedor de N4 (Modalidad)
     const tipificacionN4 = document.getElementById('tipificacionn4'); // Select de N4 (Modalidad)
-
 
     tipificacionN3.addEventListener('change', function () {
         const selectedValue = this.value;
@@ -453,7 +492,6 @@ const handleTipificacionN3Change = () => {
         limpiarCheckboxes('documentos-sin-documento-popup');
         document.getElementById('documentos-sin-apostillar-container').style.display = 'none';
         document.getElementById('documentos-sin-documento-container').style.display = 'none';
-
 
         // Lógica para el campo Resultado 4
         if (selectedValue === 'con_experiencia') {
@@ -558,7 +596,6 @@ document.getElementById('resultado2').addEventListener('change', function () {
             <option value="no_se_registro">No se registró - Lost / Hold</option>
             <option value="numero_equivocado">Número equivocado - Lost / Hold</option>
             <option value="agenda_peticion_aspirante">Se agenda a petición del aspirante - Open</option>
-            <option value="se_envia_info">Se envía información por Wa - Open</option>
         `;
     }
 
@@ -611,7 +648,6 @@ document.getElementById('resultado2').addEventListener('change', function () {
             <option value="lead_repetido">Lead repetido - Lost</option>
             <option value="fallas_audio">Llamada cortada / Fallas audio - Open</option>
             <option value="num_invalido">Número inválido</option>
-            <option value="envia_informacion_wa">Se envía información por Wa - Open</option>
             <option value="sin_respuesta">Sin respuesta - Open</option>
         `;
     }
@@ -669,12 +705,9 @@ const opcionesTipificacionN1 = {
     'lead_repetido': [
         { value: 'atencion_otro_lead', text: 'Atención en otro lead / más de un registro' }
     ],
-    'envia_informacion_wa': [
-        { value: 'no_responde_wa', text: 'No responde WhatsApp' },
-    ],
-    'se_envia_info': [
-        { value: 'sin_respuesta_aspirante', text: 'Sin respuesta del aspirante' },
-    ],
+    // 'envia_informacion_wa': [
+    //     { value: 'no_responde_wa', text: 'No responde WhatsApp' },
+    // ],
     'num_invalido': [
         { value: 'no_existe_num_wa', text: 'No existe número para envío Wa - Lost' },
         { value: 'se_envia_wa', text: 'Se envía Wa - Open' }
@@ -805,14 +838,6 @@ const opcionesTipificacionN3 = {
         { value: 'tercero', text: 'Lo apoyará un tercero / Tercero toma decisión' },
         { value: 'otro', text: 'Otro' }
     ],
-    'comparacion_universidades': [
-        { value: 'ibero', text: 'IBERO' },
-        { value: 'itam', text: 'ITAM' },
-        { value: 'panamericana', text: 'Panamericana' },
-        { value: 'tec', text: 'TEC' },
-        { value: 'uvm', text: 'UVM' },
-        { value: 'otro', text: 'Otro' }
-    ],
     'comparte_info': [
         { value: 'espera_de_resp', text: 'En espera de respuesta' },
     ],
@@ -898,59 +923,50 @@ const manejarPopup = (guardarBtnId, popupId, containerId, selectorCheckboxes, li
     const popup = document.getElementById(popupId);
     const container = document.getElementById(containerId);
     const listaSeleccionados = document.getElementById(listaId);
-    const checkboxes = document.querySelectorAll(selectorCheckboxes);
-    const titulacionMaestriaCheckbox = document.getElementById('titulacion_maestria'); // Checkbox de Titulación por maestría
-    const statusFinalContainer = document.getElementById('statusfinal-container'); // Contenedor de Resultado 4 (statusfinal)
-    const statusFinalInput = document.getElementById('statusfinal'); // Campo de Resultado 4 (statusfinal)
+    const editarBtn = container.querySelector('button'); // Botón de edición dentro del contenedor
+
     let seleccionados = [];
 
-    // Función para actualizar la lista de documentos seleccionados
+    // Función para actualizar la lista de seleccionados
     const actualizarListaSeleccionados = () => {
         listaSeleccionados.innerHTML = seleccionados.length
-            ? seleccionados.map(item => `<li>${item.text}</li>`).join('')
+            ? seleccionados.map(item => `<li>&#183; ${item.text}</li>`).join('')
             : `<li>${mensajeVacio}</li>`;
     };
 
-    // Función para obtener los checkboxes seleccionados
+    // Función para obtener los checkboxes seleccionados del popup específico
     const obtenerSeleccionados = () => {
-        seleccionados = [...checkboxes]
+        const checkboxes = popup.querySelectorAll(selectorCheckboxes); // Re-seleccionar checkboxes dinámicos por popup
+        seleccionados = Array.from(checkboxes)
             .filter(checkbox => checkbox.checked)
             .map(checkbox => ({ id: checkbox.id, text: checkbox.value }));
     };
 
-    // Mostrar/Ocultar Resultado 4 (statusfinal) en tiempo real cuando se selecciona/des-selecciona el checkbox de Titulación por maestría
-    titulacionMaestriaCheckbox.addEventListener('change', function () {
-        if (this.checked) {
-            statusFinalContainer.style.display = 'block';  // Mostrar Resultado 4 (statusfinal)
-            statusFinalInput.value = 'En espera del certificado';  // Actualizar el valor del campo
-        } else {
-            statusFinalContainer.style.display = 'none';  // Ocultar Resultado 4 (statusfinal)
-            statusFinalInput.value = '';  // Limpiar el valor del campo
-        }
-    });
-
-    // Guardar documentos seleccionados y mostrar la lista en el contenedor
+    // Evento: Guardar selección y mostrar en el contenedor
     guardarBtn.addEventListener('click', function (event) {
-        event.preventDefault();
-        obtenerSeleccionados();
-        actualizarListaSeleccionados();
-        popup.style.display = 'none';
-        container.style.display = 'block';
+        event.preventDefault(); // Prevenir validación global del formulario
+        obtenerSeleccionados(); // Guardar seleccionados
+        actualizarListaSeleccionados(); // Mostrar las selecciones
+        popup.style.display = 'none'; // Ocultar popup
+        container.style.display = 'block'; // Mostrar contenedor con resultados
     });
 
-    // Volver a mostrar el popup con los documentos seleccionados previamente
-    const editarBtn = container.querySelector('button'); // Asumiendo que el botón de edición está dentro del contenedor
-    editarBtn.addEventListener('click', function (event) {
-        event.preventDefault();
-        // Mostrar el popup nuevamente
-        popup.style.display = 'block';
-        container.style.display = 'none';
+    // Evento: Editar selección previa
+    if (editarBtn) {
+        editarBtn.addEventListener('click', function (event) {
+            event.preventDefault();
+            popup.style.display = 'block'; // Mostrar popup
+            container.style.display = 'none'; // Ocultar contenedor
 
-        // Restaurar el estado de los checkboxes según lo previamente seleccionado
-        checkboxes.forEach(checkbox => {
-            checkbox.checked = seleccionados.some(item => item.id === checkbox.id);
+            // Restaurar la selección previa de los checkboxes
+            const checkboxes = popup.querySelectorAll(selectorCheckboxes); // Restaurar dinamismo
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = seleccionados.some(item => item.id === checkbox.id);
+            });
         });
-    });
+    } else {
+        console.warn(`El botón de edición no se encontró en el contenedor ${containerId}`);
+    }
 };
 
 // Implementación para manejar el popup de documentos
@@ -1002,6 +1018,42 @@ manejarPopup(
     'informacion-seleccionados',     // ID del <ul> donde se mostrará la lista seleccionada
     'No se seleccionó información.'  // Mensaje en caso de que no haya selección
 );
+
+// Implementación para manejar el popup de comparación con otras universidades
+manejarPopup(
+    'guardar-comparacion',          // ID del botón de guardar
+    'comparacion-universidades-popup',  // ID del popup
+    'comparacion-universidades-container', // Contenedor donde se mostrará la selección
+    '#comparacion-universidades-popup input[type="checkbox"]', // Selector de checkboxes dentro del popup
+    'universidades-seleccionadas', // ID de la lista <ul> donde se mostrarán las selecciones
+    'No se seleccionaron universidades.' // Mensaje en caso de no selección
+);
+
+const manejarTitulacionMaestria = (titulacionMaestriaId, statusFinalContainerId, statusFinalInputId) => {
+    const titulacionMaestriaCheckbox = document.getElementById(titulacionMaestriaId);
+    const statusFinalContainer = document.getElementById(statusFinalContainerId);
+    const statusFinalInput = document.getElementById(statusFinalInputId);
+
+    if (!titulacionMaestriaCheckbox || !statusFinalContainer || !statusFinalInput) {
+        console.error('No se encontraron uno o más elementos necesarios para Titulación por Maestría.');
+        return;
+    }
+
+    titulacionMaestriaCheckbox.addEventListener('change', function () {
+        if (this.checked) {
+            statusFinalContainer.style.display = 'block';  // Mostrar el contenedor
+            statusFinalInput.value = 'En espera del certificado';  // Asignar el valor predeterminado
+            console.log('Mostrando "Resultado 4" con valor:', statusFinalInput.value);
+        } else {
+            statusFinalContainer.style.display = 'none';  // Ocultar el contenedor
+            statusFinalInput.value = '';  // Limpiar el valor
+            console.log('Ocultando "Resultado 4" y limpiando valor.');
+        }
+    });
+};
+
+// Llamada a la función
+manejarTitulacionMaestria('titulacion_maestria', 'statusfinal-container', 'statusfinal');
 
 // Función para manejar la visibilidad de "Opciones asociadas a Costos" basado en la selección de "Tipificación de respuesta"
 function verificarOpcionesCostos() {
@@ -1095,6 +1147,9 @@ function exportarExcel(event) {
     dataToExport["Método de seguimiento"] = obtenerCheckboxSeleccionados('#seguimiento-popup input[type="checkbox"]');
     dataToExport["Documentos sin apostillar"] = obtenerCheckboxSeleccionados('#documentos-sin-apostillar-popup input[type="checkbox"]');
     dataToExport["Sin documento"] = obtenerCheckboxSeleccionados('#documentos-sin-documento-popup input[type="checkbox"]');
+
+    // *** Capturar los valores seleccionados del popup "Comparación con otras universidades" ***
+    dataToExport["Comparación con otras universidades"] = obtenerCheckboxSeleccionados('#comparacion-universidades-popup input[type="checkbox"]');
 
     // Capturar el valor de otros campos
     dataToExport["Interés del lead"] = obtenerTextoSelect("interes");
