@@ -634,8 +634,8 @@ document.getElementById('resultado2').addEventListener('change', function () {
         tipificacionn1Container.style.display = 'block';
         tipificacionn1.innerHTML = `
             <option value="" disabled selected>Selecciona</option>
-            <option value="se_crea_solicitud">Se crea solicitud - Open</option>
             <option value="lamada_cortada">Llamada cortada / Fallas en audio - Open</option>
+            <option value="se_crea_solicitud">Se crea solicitud - Open</option>
         `;
     }
 
@@ -713,8 +713,8 @@ const opcionesTipificacionN1 = {
         { value: 'se_envia_wa', text: 'Se envía Wa - Open' }
     ],
     'agenda_peticion_aspirante': [
-        { value: 'seguimiento', text: 'Seguimiento' },
-        { value: 'comparte_info', text: 'Se comparte información' }
+        { value: 'comparte_info', text: 'Se comparte información' },
+        { value: 'seguimiento', text: 'Seguimiento' }
     ],
     'numero_equivocado': [
         { value: 'familiar_amigo', text: 'Es familiar / amigo' },
