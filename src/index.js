@@ -593,7 +593,7 @@ document.getElementById('resultado2').addEventListener('change', function () {
             <option value="lead_repetido">Lead Repetido - Lost</option>
             <option value="llamada_cortada">Llamada cortada / Fallas en audio - Open</option>
             <option value="sin_aspirante">No se encuentra el aspirante - Open</option>
-            <option value="no_se_registro">No se registró - Lost / Hold</option>
+            <option value="no_se_registro">No se registró - Lost</option>
             <option value="numero_equivocado">Número equivocado - Lost / Hold</option>
             <option value="agenda_peticion_aspirante">Se agenda a petición del aspirante - Open</option>
         `;
@@ -609,13 +609,13 @@ document.getElementById('resultado2').addEventListener('change', function () {
             <option value="interesado_otra_modalidad">Interesado en otra modalidad - Lost / Hold</option>
             <option value="lead_repetido">Lead Repetido - Lost</option>
             <option value="llamada_cortada">Llamada cortada / Fallas en audio - Open</option>
-            <option value="no_cumple_requisitos">No cumple con requisitos académicos - Lost / Hold</option>
+            <option value="no_cumple_requisitos">No cumple con requisitos académicos - Hold</option>
             <option value="no_acuerdo_proceso">No está de acuerdo con el proceso de equivalencia/revalidación - Lost / Hold</option>
-            <option value="sin_capacidad_pago">No tiene capacidad de pago - Lost / Hold</option>
+            <option value="sin_capacidad_pago">No tiene capacidad de pago - Hold</option>
             <option value="pensado_gratis">Pensó que era gratis - Lost / Hold</option>
             <option value="pide_no_marcacion">Pide no se le marque de nuevo - Lost / Hold</option>
             <option value="sin_disponibilidad_tiempo">Sin disponibilidad de tiempo - Lost / Hold</option>
-            <option value="solo_informacion">Solo buscaba información - Lost / Hold</option>
+            <option value="solo_informacion">Solo buscaba información - Hold</option>
             <option value="inscripto_otro">Ya se inscribió en otra institución - Lost / Hold</option> 
         `;
     }
@@ -647,7 +647,7 @@ document.getElementById('resultado2').addEventListener('change', function () {
             <option value="lead_prueba">Lead de prueba / Falso - Lost</option>
             <option value="lead_repetido">Lead repetido - Lost</option>
             <option value="fallas_audio">Llamada cortada / Fallas audio - Open</option>
-            <option value="num_invalido">Número inválido</option>
+            <option value="num_invalido">Número inválido para llamada</option>
             <option value="sin_respuesta">Sin respuesta - Open</option>
         `;
     }
@@ -675,8 +675,8 @@ const opcionesComunesTipificacionN2 = [
 // Opciones comunes para Tipificación N3
 const opcionesComunesTipificacionN3 = [
     { value: 'contenido', text: 'Contenido / Plan de estudios' },
-    { value: 'modalidad', text: 'Modalidad' },
-    { value: 'otro_programa', text: 'Otro programa' }
+    { value: 'duracion', text: 'Duración' },
+    { value: 'modalidad', text: 'Modalidad' }
 ];
 
 // Opciones dinámicas para Tipificación N1 y N2
@@ -686,15 +686,14 @@ const opcionesTipificacionN1 = {
         { value: 'proximo_ciclo', text: 'Próximo ciclo - Open' }
     ],
     'evaluando_propuesta': [
-        { value: 'revalidacion_equivalencia', text: 'Busca revalidación/equivalencia' },
+        { value: 'revalidacion_equivalencia', text: 'Busca revalidación / equivalencia' },
         { value: 'comparacion_universidades', text: 'Comparación con otras Universidades' },
         { value: 'documento_tramite', text: 'Documento en trámite' },  // Cuando el usuario selecciona esta opción, se mostrará el popup
         { value: 'duracion_programa', text: 'Duración del programa' },
         { value: 'otra_persona', text: 'El programa es para otra persona' },
-        { value: 'interesado_potencial', text: 'Interesado potencial' },
+        { value: 'interesado_potencial', text: 'Interesado potencial / Seguimiento a negociación' },
         { value: 'plan_estudios', text: 'Plan de estudios / programa si es de su interés' },
-        { value: 'presupuesto', text: 'Presupuesto' },
-        { value: 'otro', text: 'Otro' }
+        { value: 'presupuesto', text: 'Presupuesto' }
 
     ],
     'referido': [
@@ -709,11 +708,11 @@ const opcionesTipificacionN1 = {
     //     { value: 'no_responde_wa', text: 'No responde WhatsApp' },
     // ],
     'num_invalido': [
-        { value: 'no_existe_num_wa', text: 'No existe número para envío Wa - Lost' },
+        { value: 'no_existe_num_wa', text: 'No existe número para envío WhatssApp - Hold' },
         { value: 'se_envia_wa', text: 'Se envía Wa - Open' }
     ],
     'agenda_peticion_aspirante': [
-        { value: 'comparte_info', text: 'Se comparte información' },
+        { value: 'comparte_info', text: 'Se comparte información por WhatsApp' },
         { value: 'seguimiento', text: 'Seguimiento' }
     ],
     'numero_equivocado': [
@@ -723,6 +722,7 @@ const opcionesTipificacionN1 = {
     ],
     'no_se_registro': [
         { value: 'buscaba_trabajo', text: 'Busca trabajo' },
+        { value: 'menor_edad', text: 'Es menor de edad' },
         { value: 'otro', text: 'Otro' },
         { value: 'publicidad', text: 'Publicidad engañosa' },
         { value: 'vio_tiktok', text: 'Vió un TikTok' },
@@ -732,9 +732,7 @@ const opcionesTipificacionN1 = {
         { value: 'busca_diplomado', text: 'Busca diplomado' },
         { value: 'busca_doctorado', text: 'Busca doctorado' },
         { value: 'busca_licenciatura', text: 'Busca licenciatura' },
-        { value: 'busca_maestria', text: 'Busca maestría' },
-        { value: 'busca_programa', text: 'Busca otro contenido / Programa' },
-        { value: 'no_especifica', text: 'No especifica' }
+        { value: 'busca_maestria', text: 'Busca maestría' }
     ],
     'sin_capacidad_pago': [
         { value: 'busca_convenio_uni', text: 'Busca financiamiento / Convenio con la Universidad' },
@@ -743,7 +741,6 @@ const opcionesTipificacionN1 = {
         { value: 'no_credito_financiamiento', text: 'No le autorizaron el crédito / Financiamento en su empresa' },
         { value: 'no_credito_banco', text: 'No le autorizaron el crédito en el banco' },
         { value: 'sin empleo', text: 'No tiene empleo por el momento' },
-        { value: 'otro', text: 'Otro' },
         { value: 'sin_apoyo_tercero', text: 'Tercero no le puede apoyar' },
         { value: 'percance', text: 'Tuvo un percance' },
     ],
@@ -800,7 +797,6 @@ const opcionesTipificacionN1 = {
 // Opciones dinámicas para Tipificación N2
 const opcionesTipificacionN2 = {
     '2_ciclos_post': [
-        { value: 'no_especifica', text: 'No especifica' },
         { value: 'trimestre1', text: 'Trimestre 1 (ene, feb, mar)' },
         { value: 'trimestre2', text: 'Trimestre 2 (abr, may, jun)' },
         { value: 'trimestre3', text: 'Trimestre 3 (jul, ago, sep)' },
@@ -824,7 +820,6 @@ const opcionesTipificacionN2 = {
 // Opciones dinámicas para Tipificación N3
 const opcionesTipificacionN3 = {
     '2_ciclos_post': [
-        { value: 'no_especifica', text: 'No especifica' },
         { value: 'trimestre1', text: 'Trimestre 1 (ene, feb, mar)' },
         { value: 'trimestre2', text: 'Trimestre 2 (abr, may, jun)' },
         { value: 'trimestre3', text: 'Trimestre 3 (jul, ago, sep)' },
@@ -844,8 +839,7 @@ const opcionesTipificacionN3 = {
     'interesado_potencial': [
         { value: 'espera_aplicar', text: 'En espera de fecha para aplicar solicitud' },
         { value: 'evaluando_costos', text: 'Evaluando costos' },
-        { value: 'evaluando_opciones', text: 'Evaluando otras opciones' },
-        { value: 'promesa_pago', text: 'Promesa de pago' }
+        { value: 'evaluando_opciones', text: 'Evaluando otras opciones' }
     ],
     'busca_curso': opcionesComunesTipificacionN3,        // Reutilización de opciones comunes
     'busca_diplomado': opcionesComunesTipificacionN3,    // Reutilización de opciones comunes
@@ -858,18 +852,16 @@ const opcionesTipificacionN3 = {
         { value: '3_4_mil', text: '3 a 4 mil mensuales' },
         { value: '4_5_mil', text: '4 a 5 mil mensuales' },
         { value: 'mas_5_mil', text: 'Más de 5 mil mensuales' },
-        { value: 'otro', text: 'Otro' },
+        { value: 'no_lo_menciona', text: 'No lo menciona' },
     ],
     'percance': [
         { value: 'familiar', text: 'Familiar' },
-        { value: 'otro', text: 'Otro' },
         { value: 'personal', text: 'Personal' },
         { value: 'salud', text: 'Salud' }
     ],
     'estudios_cursando': [
         { value: 'bachillerato', text: 'Bachillerato' },
         { value: 'licenciatura', text: 'Licenciatura' },
-        { value: 'otro', text: 'Otro' },
         { value: 'servicio_social', text: 'Servicio Social' }
     ],
     'carrera_no_afin': [
