@@ -290,7 +290,9 @@ input[type="date"], input[type="text"], input[type="time"] {
 #documentos-sin-apostillar-popup label[for="documentos_sin_apostillar"],
 #documentos-sin-apostillar-container label[for="documentos_seleccionados_sin_apostillar"],
 #informacion-popup label[for="informacion-requerida"],
-#informacion-container label[for="informacion-seleccionada"] {
+#informacion-container label[for="informacion-seleccionada"],
+#comparacion-universidades-popup label[for="otras_universidades"],
+#comparacion-universidades-container label[for="comparacion"] {
     font-weight: bold;
 }
 
@@ -305,7 +307,8 @@ input[type="date"], input[type="text"], input[type="time"] {
 #seguimiento-popup,
 #documentos-sin-apostillar-popup,
 #documentos-sin-documento-popup,
-#informacion-popup {
+#informacion-popup,
+#comparacion-universidades-popup {
     background-color: #f9f9f9;
     padding: 20px;
     border: 1px solid #ddd;
@@ -333,7 +336,8 @@ ul#documentos-seleccionados li,
 ul#metodo-seleccionado li,
 ul#documentos-seleccionados-sin-apostillar li,
 ul#documentos-seleccionados-sin-documento li, 
-ul#informacion-seleccionados li{
+ul#informacion-seleccionados li,
+ul#universidades-seleccionadas li{
     font-size: 1rem;
     color: #666666;
     display: block;
@@ -370,7 +374,8 @@ ul#documentos-seleccionados li:hover,
 ul#metodo-seleccionado li:hover,
 ul#documentos-seleccionados-sin-apostillar li:hover,
 ul#documentos-seleccionados-sin-documento li:hover, 
-ul#informacion-seleccionados li:hover {
+ul#informacion-seleccionados li:hover,
+ul#universidades-seleccionadas li:hover {
     background-color: inherit;
     color: #666666;
     height: fit-content;

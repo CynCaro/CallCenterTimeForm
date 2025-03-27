@@ -114,15 +114,16 @@
                             <label for="informacion-requerida">Solo buscaba información</label>
                             <p>Selecciona el motivo:</p>
                             <div>
-                                <input type="checkbox" id="becas" value="&#183 Becas"> Becas<br>
-                                <input type="checkbox" id="modalidad" value="&#183 Busca otra modalidad"> Busca otra
+                                <input type="checkbox" id="becas" value="Becas"> Becas<br>
+                                <input type="checkbox" id="modalidad" value="Busca otra modalidad"> Busca otra
                                 modalidad<br>
-                                <input type="checkbox" id="contenido_programa" value="&#183 Contenido del programa">
+                                <input type="checkbox" id="contenido_programa" value="Contenido del programa">
                                 Contenido del programa<br>
-                                <input type="checkbox" id="costos" value="&#183 Costos"> Costos<br>
-                                <input type="checkbox" id="fechas_inicio" value="&#183 Fechas de inicio"> Fechas de
+                                <input type="checkbox" id="costos" value="Costos"> Costos<br>
+                                <input type="checkbox" id="otra_persona" value="El programa es para otra persona"> El programa es para otra persona<br>
+                                <input type="checkbox" id="fechas_inicio" value="Fechas de inicio"> Fechas de
                                 inicio<br>
-                                <input type="checkbox" id="otro" value="&#183 Otro"> Otro<br>
+                                <input type="checkbox" id="no_motivo" value="No da motivo"> No da motivo<br>
                             </div>
                             <button id="guardar-informacion">Aceptar</button>
                         </div>
@@ -166,15 +167,16 @@
                             <label for="documentosrequeridos">Documentos faltantes</label>
                             <p>Selecciona los documentos que el aspirante NO tiene:</p>
                             <div>
-                                <input type="checkbox" id="acta_nacimiento" value="&#183 Acta de nacimiento">Acta de
+                                <input type="checkbox" id="acta_nacimiento" value="Acta de nacimiento">Acta de
                                 nacimiento<br>
-                                <input type="checkbox" id="cedula_profesional" value="&#183 Cédula profesional">Cédula
+                                <input type="checkbox" id="cedula_profesional" value="Cédula profesional">Cédula
                                 profesional<br>
                                 <input type="checkbox" id="certificado_licenciatura"
-                                    value="&#183 Certificado de licenciatura">Certificado de licenciatura<br>
-                                <input type="checkbox" id="curp" value="&#183 Curp"> CURP<br>
-                                <input type="checkbox" id="titulo" value="&#183 Título"> Título<br>
-                                <div><input type="checkbox" id="titulacion_maestria" value="&#183 Títulación por maestría"> Titulación por maestría<br></div>
+                                    value="Certificado de licenciatura">Certificado de licenciatura<br>
+                                <input type="checkbox" id="curp" value="Curp"> CURP<br>
+                                <input type="checkbox" id="titulo" value="Título"> Título<br>
+                                <div><input type="checkbox" id="titulacion_maestria"
+                                        value="Títulación por maestría"> Titulación por maestría<br></div>
                             </div>
                             <button id="guardar-documentos">Guardar</button>
                         </div>
@@ -193,22 +195,21 @@
                             <label for="seguimiento">Método de seguimiento</label>
                             <p>Selecciona el método utilizado:</p>
                             <div>
-                                <input type="checkbox" id="correo" name="metodo_seguimiento" value="&#183 Correo">
+                                <input type="checkbox" id="correo" name="metodo_seguimiento" value="Correo">
                                 <label for="correo">Correo</label><br>
 
-                                <input type="checkbox" id="llamada" name="metodo_seguimiento" value="&#183 Llamada">
+                                <input type="checkbox" id="llamada" name="metodo_seguimiento" value="Llamada">
                                 <label for="llamada">Llamada</label><br>
 
                                 <input type="checkbox" id="no_especifica" name="metodo_seguimiento"
-                                    value="&#183 No especifica">
+                                    value="No especifica">
                                 <label for="no_especifica">No especifica</label><br>
 
-                                <input type="checkbox" id="whatsapp" name="metodo_seguimiento" value="&#183 WhatsApp">
+                                <input type="checkbox" id="whatsapp" name="metodo_seguimiento" value="WhatsApp">
                                 <label for="whatsapp">WhatsApp</label><br>
                             </div>
                             <button id="guardar-seguimiento">Aceptar</button>
                         </div>
-
                         <!-- Método de Seguimiento -->
                         <div id="seguimiento-container" class="form-group-column" style="display: none;">
                             <label for="metodo">Método de seguimiento:</label>
@@ -216,6 +217,21 @@
                                 <ul id="metodo-seleccionado"></ul>
                                 <button id="editar-seguimiento">Editar</button>
                             </div>
+                        </div>
+
+                        <!-- Popup de comparación de universidades -->
+                        <div id="comparacion-universidades-popup" style="display: none;">
+                            <label for="otras_universidades">Universidades:</label>
+                            <div id="comparacion-universidades"></div>
+                            <!-- Aquí se inyectarán los checkboxes dinámicos -->
+                            <button id="guardar-comparacion" type="button">Guardar</button>
+                        </div>
+
+                        <!-- Contenedor de comparación de universidades -->
+                        <div id="comparacion-universidades-container" class="form-group-column" style="display: none;">
+                            <label for="comparacion">Seleccionadas:</label>
+                            <ul id="universidades-seleccionadas"></ul>
+                            <button id="editar-comparacion" type="button">Editar</button>
                         </div>
 
                         <!-- Resultado 4 -->
@@ -243,10 +259,10 @@
                             <p>Selecciona los documentos:</p>
                             <div>
                                 <input type="checkbox" id="acta_nacimiento_apostilla"
-                                    value="&#183 Acta de nacimiento">Acta de nacimiento<br>
-                                <input type="checkbox" id="record_notas" value="&#183 Récord de notas">Récord de notas /
+                                    value="Acta de nacimiento">Acta de nacimiento<br>
+                                <input type="checkbox" id="record_notas" value="Récord de notas">Récord de notas /
                                 Certificado total de estudios<br>
-                                <input type="checkbox" id="titulo_apostilla" value="&#183 Título">Título<br>
+                                <input type="checkbox" id="titulo_apostilla" value="Título">Título<br>
                             </div>
                             <button id="guardar-documentos-sin-apostillar">Guardar</button>
                         </div>
@@ -265,18 +281,18 @@
                             <label for="documentos_sin_documento">Sin documento</label>
                             <p>Selecciona los documentos faltantes:</p>
                             <div>
-                                <input type="checkbox" id="acta_nacimiento" value="&#183 Acta de nacimiento">Acta de
+                                <input type="checkbox" id="acta_nacimiento" value="Acta de nacimiento">Acta de
                                 nacimiento<br>
-                                <input type="checkbox" id="curp" value="&#183 CURP">CURP<br>
+                                <input type="checkbox" id="curp" value="CURP">CURP<br>
                                 <input type="checkbox" id="dictamen_revalidacion"
-                                    value="&#183 Dictamen de Revalidación">Dictamen de Revalidación<br>
-                                    <input type="checkbox" id="forma_migratoria" value="&#183 Forma migratoria">Forma
+                                    value="Dictamen de Revalidación">Dictamen de Revalidación<br>
+                                <input type="checkbox" id="forma_migratoria" value="Forma migratoria">Forma
                                 migratoria<br>
-                                <input type="checkbox" id="record_notas" value="&#183 Récord de notas">Récord de
+                                <input type="checkbox" id="record_notas" value="Récord de notas">Récord de
                                 notas<br>
-                                <input type="checkbox" id="titulo" value="&#183 Título">Título<br>
-                                
-                                
+                                <input type="checkbox" id="titulo" value="Título">Título<br>
+
+
                             </div>
                             <button id="guardar-documentos-sin-documento">Guardar</button>
                         </div>
@@ -383,7 +399,7 @@
                         </div>
                     </div>
 
-                    
+
                     </div>
                 </form>
 
