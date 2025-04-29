@@ -658,6 +658,7 @@ document.getElementById('resultado2').addEventListener('change', function () {
     }
 });
 
+
 // Escuchar los cambios en Tipificación N1 para ocultar popups cuando se cambia de opción
 const tipificacionn1 = document.getElementById('tipificacionn1');
 tipificacionn1.addEventListener('change', function () {
@@ -1130,7 +1131,6 @@ function exportarExcel(event) {
 
     // Capturar el valor de "Resultado 4"
     dataToExport["Resultado 4"] = document.getElementById("statusfinal").value || '';
-
     // Capturar el valor de "Tipificación 4"
     dataToExport["Tipo de enseñanza"] = obtenerTextoSelect("tipificacionn4");
 
