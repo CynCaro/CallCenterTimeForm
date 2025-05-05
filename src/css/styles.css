@@ -281,6 +281,7 @@ input[type="date"], input[type="text"], input[type="time"] {
 }
 
 /* Estilos para popup y listas */
+#doc-dig-popup label[for="documentacion-digital"],
 #documentos-popup label[for="documentosrequeridos"],
 #documentos-container label[for="documentosfaltantes"],
 #seguimiento-popup label[for="seguimiento"],
@@ -296,13 +297,14 @@ input[type="date"], input[type="text"], input[type="time"] {
     font-weight: bold;
 }
 
-#documentos-popup p, #seguimiento-popup p, #documentos-sin-apostillar-popup p, #documentos-sin-documento-popup p, #informacion-popup p {
+#doc-dig-popup p,#documentos-popup p, #seguimiento-popup p, #documentos-sin-apostillar-popup p, #documentos-sin-documento-popup p, #informacion-popup p {
     padding: 0; 
     padding-top: 5px;
     font-size: 1rem; /* Reduce el tamaño de la tipografía */
     color: #f16315;
 }
 
+#doc-dig-popup,
 #documentos-popup,
 #seguimiento-popup,
 #documentos-sin-apostillar-popup,
@@ -332,6 +334,7 @@ button {
     margin-top: .75rem;
 }
 
+ul#doc-dig-seleccionada li,
 ul#documentos-seleccionados li, 
 ul#metodo-seleccionado li,
 ul#documentos-seleccionados-sin-apostillar li,
@@ -370,6 +373,7 @@ ul#universidades-seleccionadas li{
     margin-top: 32px;
 }
 
+ul#doc-dig-seleccionada li:hover,
 ul#documentos-seleccionados li:hover,
 ul#metodo-seleccionado li:hover,
 ul#documentos-seleccionados-sin-apostillar li:hover,
