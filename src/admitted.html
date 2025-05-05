@@ -17,7 +17,7 @@
 <body>
     <main>
         <section>
-            <img src="AP-Manage-Admitted.png" alt="background AP Manager" class="background-image">
+            <img src="./img/AP-Manage-Admitted.png" alt="background AP Manager" class="background-image">
             <section class="form">
                 <header>
                     <nav>
@@ -76,8 +76,8 @@
                             <div class="custom-select">
                                 <select id="tipocontacto" name="tipocontacto">
                                     <option value="" disabled selected>Selecciona</option> <!-- Opción por defecto -->
-                                    <option value="primer_contacto">Primer contacto</option>
-                                    <option value="seguimiento">Seguimiento</option>
+                                    <option value="seguimiento_documentos">Seguimiento documentos</option>
+                                    <!-- <option value="seguimiento">Seguimiento</option> -->
                                 </select>
                             </div>
                         </div>
@@ -90,7 +90,7 @@
                             <div class="custom-select">
                                 <select id="resultado2" name="resultado2">
                                     <option value="" disabled selected>Seleciona</option> <!-- Opción por defecto -->
-                                    <option value="aplico_en_universidad">Aplicó en Universidad</option>
+                                    <!-- <option value="aplico_en_universidad">Aplicó en Universidad</option> -->
                                     <option value="interesado">Interesado</option>
                                     <option value="no_interesado">No interesado</option>
                                     <option value="no_efectivo">No efectivo</option>
@@ -161,6 +161,29 @@
                                 </select>
                             </div>
                         </div>
+
+                        <!-- Popup de Documentación digital pendiente -->
+                    <div id="doc-dig-popup" style="display: none;">
+                        <label for="documentacion-digital">Documentación digital</label>
+                        <p>Selecciona la documentación pendiente:</p>
+                        <div>
+                            <input type="checkbox" id="cedula_profesional" value="Cédula profesional">Cédula
+                            profesional<br>
+                            <input type="checkbox" id="certificado_licenciatura"
+                                value="Certificado de licenciatura">Certificado de licenciatura<br>
+                            <input type="checkbox" id="titulo" value="Título"> Título<br>
+                        </div>
+                        <button id="guardar-doc-digital">Guardar</button>
+                    </div>
+
+                    <!-- Pendiente -->
+                    <div id="doc-dig-container" class="form-group-column" style="display: none;">
+                        <label for="documentacion-pendiente">Documentación pendiente:</label>
+                        <div>
+                            <ul id="doc-dig-seleccionada"></ul>
+                            <button id="editar-documentos">Editar</button>
+                        </div>
+                    </div>
 
                         <!-- Popup de Documentos -->
                         <div id="documentos-popup" style="display: none;">
@@ -245,7 +268,7 @@
 
                         <!-- Tipificación - N4 -->
                         <div class="form-group-column" id="tipificacionn4-container" style="display: none;">
-                            <label for="tipificacionn4" id="tipificacionn4-label">7) Tipo de enseñanza *</label>
+                            <label for="tipificacionn4" id="tipificacionn4-label">7) Tipo de subtipificación *</label>
                             <div class="custom-select">
                                 <select id="tipificacionn4" name="tipificacionn4" required>
                                     <option value="" disabled selected>Selecciona</option>
