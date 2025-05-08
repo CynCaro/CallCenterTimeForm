@@ -580,6 +580,7 @@ document.getElementById('resultado2').addEventListener('change', function () {
             <option value="evaluando_propuesta">Evaluando propuesta - Open</option>
             <option value="lead_repetido">Lead repetido - Lost</option>
             <option value="llamada_cortada">Llamada cortada / Fallas en audio - Open</option>
+            <option value="pago">Pago</option>
             <option value="referido">Referido - Open</option>
         `;
     }
@@ -704,6 +705,15 @@ const opcionesTipificacionN1 = {
     ],
     'lead_repetido': [
         { value: 'atencion_otro_lead', text: 'Atención en otro lead / más de un registro' }
+    ],
+    'pago': [
+        { value: 'completado', text: 'Completado - Won' },
+        { value: 'esperando_comprobante_pago', text: 'En espera de comprobante de pago - Open' },
+        { value: 'en_proceso', text: 'En proceso de dictamen técnico -Won' },
+        { value: 'extranjero', text: 'Es extranjero - Won' },
+        { value: 'ciclo_futuro', text: 'Ingresa en ciclo futuro - Won' },
+        { value: 'intento_pago', text: 'Intento de pago - Open' },
+        { value: 'pendiente_reflejado', text: 'Pendiente por reflejar - Open' },
     ],
     // 'envia_informacion_wa': [
     //     { value: 'no_responde_wa', text: 'No responde WhatsApp' },
@@ -834,8 +844,15 @@ const opcionesTipificacionN3 = {
         { value: 'tercero', text: 'Lo apoyará un tercero / Tercero toma decisión' },
         { value: 'otro', text: 'Otro' }
     ],
+    'ciclo_futuro': [
+        { value: '2_ciclos_post', text: '2 ciclos posteriores o más ' },
+        { value: 'proximo_ciclo', text: 'Próximo ciclo' },
+    ],
     'comparte_info': [
         { value: 'espera_de_resp', text: 'En espera de respuesta' },
+    ],
+    'intento_pago': [
+        { value: 'errores_tecnicos', text: 'Plataforma con errores técnicos' },
     ],
     'interesado_potencial': [
         { value: 'espera_aplicar', text: 'En espera de fecha para aplicar solicitud' },
