@@ -159,21 +159,12 @@ document.addEventListener('DOMContentLoaded', () => {
 // Constantes para opciones de Tipo de contacto y Resultado 2
 const CONTACTADO = 'contactado';
 const NO_CONTACTADO = 'no_contactado';
-const PRIMER_CONTACTO = 'primer_contacto';
 const SEGUIMIENTO = 'seguimiento';
-const SEGUIMIENTO_NO_CONTACTO = 'seguimiento_no_contacto'; // Nuevo valor para Seguimiento en No Contactado
 
-const OPCIONES_PRIMER_CONTACTO = [
-    { value: 'aplico_en_universidad', text: 'Aplicó en Universidad' },
+const OPCIONES_SEGUIMIENTO = [
     { value: 'interesado', text: 'Interesado' },
-    { value: 'no_interesado', text: 'No interesado' }
-];
-
-const OPCIONES_SEGUIMIENTO_NO_EFECTIVO = [
-    { value: 'no_efectivo', text: 'No efectivo' }
-];
-
-const OPCIONES_SEGUIMIENTO_NO_CONTACTO = [
+    { value: 'no_efectivo', text: 'No efectivo' },
+    { value: 'no_interesado', text: 'No interesado' },
     { value: 'no_contesta', text: 'No contesta' }
 ];
 
@@ -185,77 +176,50 @@ document.getElementById('resultado1').addEventListener('change', function () {
     const resultado2Container = document.getElementById('resultado2-container');
     const resultado2 = document.getElementById('resultado2');
 
+    // Siempre limpiar resultado2 al cambiar resultado1
+    resultado2.innerHTML = ''; // Limpia opciones
+    resultado2.value = '';     // Limpia selección
+    resultado2Container.style.display = 'none'; // Lo oculta
+
     if (selectedValue === CONTACTADO || selectedValue === NO_CONTACTADO) {
-        // Mostrar Tipo de contacto y ocultar Resultado 2
         tipoContactoContainer.style.display = 'block';
         tipoContacto.disabled = false;
-        resultado2Container.style.display = 'none';
-        resultado2.value = '';
 
-        // Opciones para Contactado y No Contactado
-        if (selectedValue === CONTACTADO) {
-            tipoContacto.innerHTML = `
-                <option value="" disabled selected>Selecciona</option>
-                <option value="primer_contacto">Primer contacto</option>
-                <option value="seguimiento">NA</option>
-            `;
-        } else if (selectedValue === NO_CONTACTADO) {
-            tipoContacto.innerHTML = `
-                <option value="" disabled selected>Selecciona</option>
-                <option value="${SEGUIMIENTO_NO_CONTACTO}">NA</option>
-            `;
-        }
+        tipoContacto.innerHTML = `
+            <option value="" disabled selected>Selecciona</option>
+            <option value="${SEGUIMIENTO}">Seguimiento</option>
+        `;
+        tipoContacto.value = '';
 
-        // Limpiar los campos dependientes
         limpiarCamposDependientes();
-
-        // Ocultar Tipificación y popups
-        reiniciarStatusFinal();  // Reiniciar statuslast
+        reiniciarStatusFinal();
         ocultarTipificaciones();
         ocultarTodosLosPopups();
-
     } else {
-        // Ocultar ambos campos si no hay selección válida
         tipoContactoContainer.style.display = 'none';
         tipoContacto.value = '';
-        resultado2Container.style.display = 'none';
-        resultado2.value = '';
+        tipoContacto.innerHTML = ''; // También limpias las opciones de tipocontacto
     }
 });
 
-// Listener para Tipo de contacto (maneja el flujo dentro de "Contactado" y "No contactado")
+//  lógica condicional para mostrar resultado2 cuando el valor seleccionado sea "seguimiento":
 document.getElementById('tipocontacto').addEventListener('change', function () {
     const selectedValue = this.value;
     const resultado2Container = document.getElementById('resultado2-container');
     const resultado2 = document.getElementById('resultado2');
-    const resultado1Value = document.getElementById('resultado1').value;
 
-    // Ocultar y limpiar Resultado 2, Tipificaciones, y todos los popups si se cambia Tipo de contacto
-    reiniciarStatusFinal();  // Reiniciar statuslast
+    reiniciarStatusFinal();
     ocultarTipificaciones();
     ocultarTodosLosPopups();
-    resultado2Container.style.display = 'none';
-    resultado2.value = '';
+    limpiarCamposDependientes();
 
-    if (selectedValue === PRIMER_CONTACTO && resultado1Value === CONTACTADO) {
-        // Mostrar las opciones de Resultado 2 para Primer Contacto
-        mostrarOpciones('resultado2', OPCIONES_PRIMER_CONTACTO);
-        resultado2Container.style.display = 'block';
-    } else if (selectedValue === SEGUIMIENTO && resultado1Value === CONTACTADO) {
-        // Mostrar las opciones de Resultado 2 para Seguimiento dentro de "Contactado"
-        mostrarOpciones('resultado2', OPCIONES_SEGUIMIENTO_NO_EFECTIVO);
-        resultado2Container.style.display = 'block';
-    } else if (selectedValue === SEGUIMIENTO_NO_CONTACTO && resultado1Value === NO_CONTACTADO) {
-        // Mostrar las opciones de Resultado 2 para Seguimiento dentro de "No Contactado"
-        mostrarOpciones('resultado2', OPCIONES_SEGUIMIENTO_NO_CONTACTO);
+    if (selectedValue === SEGUIMIENTO) {
+        mostrarOpciones('resultado2', OPCIONES_SEGUIMIENTO);
         resultado2Container.style.display = 'block';
     } else {
-        // Si no hay selección válida, se ocultan todos los campos relacionados
         resultado2Container.style.display = 'none';
-        resultado2.value = '';
+        resultado2.innerHTML = ''; // Limpia completamente las opciones
     }
-    // Limpiar los campos dependientes
-    limpiarCamposDependientes();
 });
 
 // Función para manejar el cambio en Tipificación N1 y actualizar Tipificación N2 y otros campos dependientes
@@ -510,16 +474,15 @@ const handleTipificacionN3Change = () => {
             statusFinalInput.value = '';
         }
 
-        // Lógica para mostrar el select de Modalidad (Tipificación N4) si se selecciona "Modalidad" en Tipificación N3
-        if (selectedValue === 'modalidad') {
-            // Mostrar el select de Modalidad con las opciones
-            mostrarOpciones('tipificacionn4', opcionesComunesTipificacionN4);
-            tipificacionN4Container.style.display = 'block';  // Mostrar Tipificación N4
-        } else {
-            // Ocultar Tipificación N4 si no se selecciona "Modalidad"
-            tipificacionN4.innerHTML = '<option value="" disabled selected>Selecciona</option>';
-            tipificacionN4Container.style.display = 'none';  // Ocultar Tipificación N4
+        // Lógica para mostrar Tipificación N4 si hay opciones definidas para la opción seleccionada
+        if (opcionesTipificacionN4[selectedValue]) {
+            mostrarOpciones('tipificacionn4', opcionesTipificacionN4[selectedValue]);
+            tipificacionN4Container.style.display = 'block';
+            } else {
+                tipificacionN4.innerHTML = '<option value="" disabled selected>Selecciona</option>';
+                tipificacionN4Container.style.display = 'none';
         }
+
     });
 };
 
@@ -684,7 +647,7 @@ const opcionesComunesTipificacionN3 = [
 // Opciones dinámicas para Tipificación N1 y N2
 const opcionesTipificacionN1 = {
     'agenda_sig_ciclo': [
-        { value: '2_ciclos_post', text: '2 ciclos posteriores o más - Lost / Hold' },
+        { value: '2_ciclos_post', text: '2 ciclos posteriores o más - Hold' },
         { value: 'proximo_ciclo', text: 'Próximo ciclo - Open' }
     ],
     'evaluando_propuesta': [
@@ -694,7 +657,7 @@ const opcionesTipificacionN1 = {
         { value: 'duracion_programa', text: 'Duración del programa' },
         { value: 'otra_persona', text: 'El programa es para otra persona' },
         { value: 'interesado_potencial', text: 'Interesado potencial / Seguimiento a negociación' },
-        { value: 'plan_estudios', text: 'Plan de estudios / programa si es de su interés' },
+        { value: 'plan_estudios', text: 'Plan de estudios / Programa si es de su interés' },
         { value: 'presupuesto', text: 'Presupuesto' }
 
     ],
@@ -842,7 +805,6 @@ const opcionesTipificacionN3 = {
         { value: 'credito', text: 'En espera que le aprueben un crédito' },
         { value: 'empresa', text: 'Lo apoyará su empresa' },
         { value: 'tercero', text: 'Lo apoyará un tercero / Tercero toma decisión' },
-        { value: 'otro', text: 'Otro' }
     ],
     'ciclo_futuro': [
         { value: '2_ciclos_post', text: '2 ciclos posteriores o más ' },
@@ -855,9 +817,10 @@ const opcionesTipificacionN3 = {
         { value: 'errores_tecnicos', text: 'Plataforma con errores técnicos' },
     ],
     'interesado_potencial': [
-        { value: 'espera_aplicar', text: 'En espera de fecha para aplicar solicitud' },
-        { value: 'evaluando_costos', text: 'Evaluando costos' },
-        { value: 'evaluando_opciones', text: 'Evaluando otras opciones' }
+        { value: 'promesa_pago', text: 'Promesa de pago' }
+    ],
+    'completado': [
+        { value: 'asignar_agente', text: 'Asignar agente de documentos' }
     ],
     'busca_curso': opcionesComunesTipificacionN3,        // Reutilización de opciones comunes
     'busca_diplomado': opcionesComunesTipificacionN3,    // Reutilización de opciones comunes
@@ -906,6 +869,14 @@ const opcionesTipificacionN3 = {
     'rechaza_llamada': opcionesComunesTipificacionN2,
 };
 
+const opcionesDosCiclosPost = [
+    { value: 'no_especifica', text: 'No especifica' },
+    { value: 'trimestre1', text: 'Trimestre 1 (ene, feb, mar)' },
+    { value: 'trimestre2', text: 'Trimestre 2 (abr, may, jun)' },
+    { value: 'trimestre3', text: 'Trimestre 3 (jul, ago, sep)' },
+    { value: 'trimestre4', text: 'Trimestre 4 (oct, nov, dic)' }
+];
+
 // Opciones comunes para Tipificación N4
 const opcionesComunesTipificacionN4 = [
     { value: 'hibrido', text: 'Híbrido' },
@@ -915,7 +886,8 @@ const opcionesComunesTipificacionN4 = [
 
 // Opciones dinámicas para Tipificación N4
 const opcionesTipificacionN4 = {
-    'modalidad': opcionesComunesTipificacionN4 // Asociamos la opción 'modalidad' con las opciones comunes de Tipificación N4
+    'modalidad': opcionesComunesTipificacionN4, // Asociamos la opción 'modalidad' con las opciones comunes de Tipificación N4
+    '2_ciclos_post': opcionesDosCiclosPost
 };
 
 // Listener para los cambios en Tipificación N1
