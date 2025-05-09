@@ -640,8 +640,8 @@ const opcionesComunesTipificacionN2 = [
 // Opciones comunes para Tipificación N3
 const opcionesComunesTipificacionN3 = [
     { value: 'contenido', text: 'Contenido / Plan de estudios' },
-    { value: 'duracion', text: 'Duración' },
-    { value: 'modalidad', text: 'Modalidad' }
+    { value: 'modalidad', text: 'Modalidad' },
+    { value: 'otro_programa', text: 'Otro programa' }
 ];
 
 // Opciones dinámicas para Tipificación N1 y N2
@@ -740,10 +740,10 @@ const opcionesTipificacionN1 = {
     'inscripto_otro': [
         { value: 'ibero', text: 'IBERO' },
         { value: 'itam', text: 'ITAM' },
+        { value: 'otro', text: 'Otro' },
         { value: 'panamericana', text: 'Panamericana' },
         { value: 'tec', text: 'TEC' },
         { value: 'uvm', text: 'UVM' },
-        { value: 'otro', text: 'Otro' }
     ],
     'sin_disponibilidad_tiempo': [
         { value: 'actualmente_estudia', text: 'Actualmente estudia' },
@@ -823,11 +823,15 @@ const opcionesTipificacionN3 = {
         { value: 'asignar_agente', text: 'Asignar agente de documentos' }
     ],
     'busca_curso': opcionesComunesTipificacionN3,        // Reutilización de opciones comunes
-    'busca_diplomado': opcionesComunesTipificacionN3,    // Reutilización de opciones comunes
     'busca_licenciatura': opcionesComunesTipificacionN3, // Reutilización de opciones comunes
     'busca_maestria': opcionesComunesTipificacionN3,     // Reutilización de opciones comunes
     'busca_doctorado': opcionesComunesTipificacionN3     // Reutilización de opciones comunes
     ,
+    'busca_diplomado': [
+        { value: 'contenido', text: 'Contenido / Plan de estudios' },
+        { value: 'duracion', text: 'Duración' },
+        { value: 'modalidad', text: 'Modalidad' }
+    ],
     'no_presupuesto': [
         { value: 'menos_3_mil', text: 'Menos de 3 mil mensuales' },
         { value: '3_4_mil', text: '3 a 4 mil mensuales' },
