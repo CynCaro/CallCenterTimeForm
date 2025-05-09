@@ -612,7 +612,8 @@ document.getElementById('resultado2').addEventListener('change', function () {
             <option value="lead_repetido">Lead repetido - Lost</option>
             <option value="fallas_audio">Llamada cortada / Fallas audio - Open</option>
             <option value="num_invalido">Número inválido para llamada</option>
-            <option value="sin_respuesta">Sin respuesta - Open</option>
+            <option value="sin_contacto">Sin contacto cumpliendo máximo de intentos - Hold</option>
+            <option value="contacto_previo">Contacto previo - Open</option>
         `;
     }
 
@@ -685,6 +686,10 @@ const opcionesTipificacionN1 = {
         { value: 'no_existe_num_wa', text: 'No existe número para envío WhatssApp - Hold' },
         { value: 'se_envia_wa', text: 'Se envía Wa - Open' }
     ],
+    'sin_contacto':[
+        { value: 'llamada', text: 'Llamada' },
+        { value: 'whatsapp', text: 'WhatsApp' }
+    ],
     'agenda_peticion_aspirante': [
         { value: 'comparte_info', text: 'Se comparte información por WhatsApp' },
         { value: 'seguimiento', text: 'Seguimiento' }
@@ -751,10 +756,11 @@ const opcionesTipificacionN1 = {
         { value: 'temas_personales', text: 'Temas personales' },
         { value: 'temas_salud', text: 'Tema salud' }
     ],
-    'sin_respuesta': [
+    'contacto_previo': [
         { value: 'buzon_directo', text: 'Buzón directo' },
         { value: 'manda_buzon', text: 'Da tono y manda a buzón' },
         { value: 'fuera_de_servicio', text: 'Fuera del área de servicio' },
+        { value: 'no_responde_wa', text: 'No responde WhatsApp' },
         { value: 'rechaza_llamada', text: 'Rechaza llamada' }
     ],
     'lead_repetido': [
