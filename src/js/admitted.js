@@ -631,7 +631,7 @@ document.getElementById("resultado2").addEventListener("change", function () {
             <option value="extranjero_pago_exitoso">Extranjero con pago exitoso - Won</option>
             <option value="ingresa_ciclo_futuro">Ingresa en ciclo futuro - Won</option>
             <option value="requiere_equivalencia">Requiere equivalencia / Admitido - Won</option>
-            <option value="seguimiento_inscripcion">Seguimiento a inscripción - Won</option>
+            <option value="seguimiento_inscripcion">Seguimiento a inscripción - Won / Inscrito</option>
         `;
   }
 
@@ -730,7 +730,7 @@ const opcionesTipificacionN1 = {
   ],
   seguimiento_inscripcion: [
     // { value: "aplica_carta_compromiso", text: "Aplica carta compromiso" },
-    { value: "inscrito_doc_faltante", text: "Inscrito / Documentación digital pendiente" }
+    { value: "inscrito_doc_faltante", text: "Documentación digital pendiente" }
   ],
 
 // NO EFECTIVO
