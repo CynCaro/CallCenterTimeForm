@@ -114,6 +114,36 @@ const limpiarCamposDependientes = () => {
   document.getElementById("tipificacionn4-container").style.display = "none"; // Ocultar Tipificación N4 (Modalidad)
 };
 
+// --- NUEVA función para desactivar campos de comunicación ---
+function actualizarEstadoCamposComunicacion() {
+  const statusFinalInput = document.getElementById("statuslast");
+  const fechaEnvio = document.getElementById("fechaproxact");
+  const horaEnvio = document.getElementById("horaproxact");
+  const proximaComunicacion = document.getElementById("proximaactividad");
+
+  const tipificacionN3Text = document.getElementById("tipificacionn3").selectedOptions[0]?.text || "";
+  const tipificacionN4Text = document.getElementById("tipificacionn4")?.selectedOptions[0]?.text || "";
+
+  const desactivar =
+    tipificacionN3Text.includes("Asignar agente de retención") ||
+    tipificacionN4Text.includes("Asignar agente de retención");
+
+  if (desactivar) {
+    fechaEnvio.disabled = true;
+    fechaEnvio.value = "";
+    horaEnvio.disabled = true;
+    horaEnvio.value = "";
+    proximaComunicacion.disabled = true;
+    proximaComunicacion.value = "";
+    statusFinalInput.disabled = false;
+  } else {
+    fechaEnvio.disabled = false;
+    horaEnvio.disabled = false;
+    proximaComunicacion.disabled = false;
+    statusFinalInput.disabled = true;
+  }
+}
+
 // Inicializar todo
 document.addEventListener("DOMContentLoaded", () => {
     ocultarTodosLosPopups(); // ✅ Ocultar todos los contenedores al cargar la página
@@ -122,139 +152,168 @@ document.addEventListener("DOMContentLoaded", () => {
 //>>> 1)ESTATUS DEL CONTACTO* <<<
 // Constantes para opciones de Tipo de contacto y Resultado 2
 const CONTACTADO = "contactado";
+const NO_CONTACTADO = "no_contactado";
 const SEGUIMIENTO_DOCUMENTOS = "seguimiento_documentos";
 
-// Listener para Resultado 1 (solo maneja el flujo para "Contactado")
+// >>> 1) ESTATUS DEL CONTACTO <<<
 document.getElementById("resultado1").addEventListener("change", function () {
-    const selectedValue = this.value;
-    const tipoContactoContainer =
-      document.getElementById("tipocontacto").parentElement.parentElement;
-    const tipoContacto = document.getElementById("tipocontacto");
-    const resultado2Container = document.getElementById("resultado2-container");
-    const resultado2 = document.getElementById("resultado2");
-  
-    if (selectedValue === CONTACTADO) {
-      tipoContactoContainer.style.display = "block";
-      tipoContacto.disabled = false;
-  
-      // Mostrar directamente opción Seguimiento documentos
-      tipoContacto.innerHTML = `
-        <option value="" disabled selected>Selecciona</option>
-        <option value="${SEGUIMIENTO_DOCUMENTOS}">Seguimiento documentos</option>
-      `;
-  
-      resultado2Container.style.display = "none";
-      resultado2.value = "";
-  
-      limpiarCamposDependientes();
-      reiniciarStatusFinal();
-      ocultarTipificaciones();
-      ocultarTodosLosPopups();
-    } else {
-      // Si no es "contactado", ocultamos campos relacionados
-      tipoContactoContainer.style.display = "none";
-      tipoContacto.innerHTML = `<option value="" disabled selected>Selecciona</option>`;
-      tipoContacto.disabled = true;
-      resultado2Container.style.display = "none";
-      resultado2.value = "";
-      ocultarTipificaciones();
-      ocultarTodosLosPopups();
-    }
-  });  
+  const selectedValue = this.value;
+  const tipoContactoContainer = document.getElementById("tipocontacto-container");
+  const tipoContacto = document.getElementById("tipocontacto");
+  const resultado2Container = document.getElementById("resultado2-container");
+  const resultado2 = document.getElementById("resultado2");
 
-// >>> 3)RESPUESTA DEL LEAD* <<<
-// Listener para Tipo de contacto (maneja el flujo dentro de "Seguimiento documentos")
+  if (selectedValue === CONTACTADO || selectedValue === NO_CONTACTADO) {
+    tipoContactoContainer.style.display = "block";
+    tipoContacto.disabled = false;
+
+    tipoContacto.innerHTML = `
+      <option value="" disabled selected>Selecciona</option>
+      <option value="${SEGUIMIENTO_DOCUMENTOS}">Seguimiento documentos</option>
+    `;
+
+    resultado2Container.style.display = "none";
+    resultado2.value = "";
+
+    limpiarCamposDependientes();
+    reiniciarStatusFinal();
+    ocultarTipificaciones();
+    ocultarTodosLosPopups();
+  } else {
+    tipoContactoContainer.style.display = "none";
+    tipoContacto.innerHTML = `<option value="" disabled selected>Selecciona</option>`;
+    tipoContacto.disabled = true;
+
+    resultado2Container.style.display = "none";
+    resultado2.value = "";
+
+    ocultarTipificaciones();
+    ocultarTodosLosPopups();
+  }
+});
+
+// >>> 2) RESPUESTA DEL LEAD <<<
 document.getElementById("tipocontacto").addEventListener("change", function () {
   const selectedValue = this.value;
   const resultado2Container = document.getElementById("resultado2-container");
   const resultado2 = document.getElementById("resultado2");
   const resultado1Value = document.getElementById("resultado1").value;
 
-  // Ocultar y limpiar Resultado 2, Tipificaciones, y todos los popups si se cambia Tipo de contacto
-  reiniciarStatusFinal(); // Reiniciar statuslast
+  reiniciarStatusFinal();
   ocultarTipificaciones();
   ocultarTodosLosPopups();
   resultado2Container.style.display = "none";
   resultado2.value = "";
 
-  // Mostrar Resultado 2 sin sobrescribir si es "seguimiento_documentos"
-  if (selectedValue === "seguimiento_documentos") {
+  if (selectedValue === SEGUIMIENTO_DOCUMENTOS) {
+    let opcionesResultado2 = "";
+
+    if (resultado1Value === NO_CONTACTADO) {
+      opcionesResultado2 = `<option value="no_contesta">No contesta</option>`;
+    } else if (resultado1Value === CONTACTADO) {
+      opcionesResultado2 = `
+        <option value="interesado">Interesado</option>
+        <option value="no_efectivo">No efectivo</option>
+        <option value="no_interesado">No interesado</option>
+      `;
+    }
+
+    resultado2.innerHTML = `
+      <option value="" disabled selected>Selecciona</option>
+      ${opcionesResultado2}
+    `;
     resultado2Container.style.display = "block";
   } else {
-    // Si no hay selección válida, se ocultan todos los campos relacionados
     resultado2Container.style.display = "none";
     resultado2.value = "";
   }
-  // Limpiar los campos dependientes
+
   limpiarCamposDependientes();
 });
 
-// Función para manejar el cambio en Tipificación N1 y actualizar Tipificación N2 y otros campos dependientes
+// >>> 3) TIPIFICACIÓN N1 <<<
 const handleTipificacionN1Change = (tipificacionN2Options) => {
   const tipificacionN1 = document.getElementById("tipificacionn1");
   const tipificacionN2 = document.getElementById("tipificacionn2");
-  const statusFinalInput = document.getElementById("statuslast"); // Input para Status Final
-  const fechaEnvio = document.getElementById("fechaproxact"); // Input para Fecha próxima comunicación
-  const horaEnvio = document.getElementById("horaproxact"); // Input para Horario próxima comunicación
-  const informacionPopup = document.getElementById("informacion-popup"); // Popup de Solo buscaba información
+  const statusFinalInput = document.getElementById("statuslast");
+  const fechaEnvio = document.getElementById("fechaproxact");
+  const horaEnvio = document.getElementById("horaproxact");
+  const informacionPopup = document.getElementById("informacion-popup");
 
   tipificacionN1.addEventListener("change", function () {
-    const selectedText = this.options[this.selectedIndex].text; // Obtener el texto de la opción seleccionada
-    const selectedValue = this.value; // Obtener el valor de la opción seleccionada (para Tipificación N2)
+    const selectedText = this.options[this.selectedIndex].text;
+    const selectedValue = this.value;
 
-    // Dividir el texto por el guion medio y tomar la parte después del guion
     const partes = selectedText.split("-");
-
-    // Si no hay guion en tipificacionn1, no actualizar el campo statusFinal
     if (partes.length > 1) {
-      const estadoFinal = partes[1].trim(); // Si hay guion, tomar la segunda parte
-      statusFinalInput.value = estadoFinal; // Actualizar Status Final con el valor derivado
-      statusFinalInput.setAttribute("data-from-n1", "true"); // Marcar que el valor de statusfinal proviene de N1
+      const estadoFinal = partes[1].trim();
+      statusFinalInput.value = estadoFinal;
+      statusFinalInput.setAttribute("data-from-n1", "true");
     } else {
-      statusFinalInput.value = ""; // Limpiar Status Final si no hay guion
-      statusFinalInput.setAttribute("data-from-n1", "false"); // Marcar que el valor no proviene de N1
+      statusFinalInput.value = "";
+      statusFinalInput.setAttribute("data-from-n1", "false");
     }
 
-    // Reiniciar campos dependientes
-    tipificacionN2.innerHTML =
-      '<option value="" disabled selected>Selecciona</option>';
-    document.getElementById("tipificacionn3").innerHTML =
-      '<option value="" disabled selected>Selecciona</option>';
-    document.getElementById("tipificacionn3-container").style.display = "none"; // Ocultar Tipificación N3
-    fechaEnvio.value = ""; // Limpiar el valor de la fecha
-    horaEnvio.value = ""; // Limpiar el valor de la hora
-    document.getElementById("descripcion").value = ""; // Limpiar la descripción
-    guardarButton.disabled = true; // Desactivar el botón de guardar hasta que se llenen los campos nuevamente
+    // Resultado 2 dinámico si es Seguimiento documentos
+    const resultado1Value = document.getElementById("resultado1").value;
+    const tipoContactoValue = document.getElementById("tipocontacto").value;
+    const resultado2 = document.getElementById("resultado2");
 
-    // Lógica para manejar la desactivación de campos
-    const proximaComunicacion = document.getElementById("proximaactividad"); // Elemento "Próxima comunicación"
+    if (tipoContactoValue === SEGUIMIENTO_DOCUMENTOS) {
+      let opcionesResultado2 = "";
 
-    if (selectedText.includes("Lost / Hold") || selectedText.includes("Lost")) {
-      fechaEnvio.disabled = true; // Deshabilitar Fecha próxima comunicación
-      fechaEnvio.value = ""; // Limpiar el valor del campo de fecha
-      horaEnvio.disabled = true; // Deshabilitar Hora próxima comunicación
-      horaEnvio.value = ""; // Limpiar el valor del campo de hora
-      proximaComunicacion.disabled = true; // Deshabilitar Próxima comunicación
-      proximaComunicacion.value = ""; // Limpiar el valor del campo de próxima comunicación
-      statusFinalInput.disabled = false; // Asegurar que Status Final esté activo
-    } else {
-      fechaEnvio.disabled = false; // Habilitar el campo de fecha
-      horaEnvio.disabled = false; // Habilitar el campo de hora
-      proximaComunicacion.disabled = false; // Habilitar Próxima comunicación
-      statusFinalInput.disabled = true; // Deshabilitar el campo Status Final si no es "Lost / Hold"
+      if (resultado1Value === NO_CONTACTADO) {
+        opcionesResultado2 = `
+          <option value="no_contesta">No contesta</option>
+        `;
+      } else if (resultado1Value === CONTACTADO) {
+        opcionesResultado2 = `
+          <option value="interesado">Interesado</option>
+          <option value="no_efectivo">No efectivo</option>
+          <option value="no_interesado">No interesado</option>
+        `;
+      }
     }
 
-    // Limpiar los campos dependientes
+    // Reset de campos
+    tipificacionN2.innerHTML = '<option value="" disabled selected>Selecciona</option>';
+    document.getElementById("tipificacionn3").innerHTML = '<option value="" disabled selected>Selecciona</option>';
+    document.getElementById("tipificacionn3-container").style.display = "none";
+    fechaEnvio.value = "";
+    horaEnvio.value = "";
+    document.getElementById("descripcion").value = "";
+    guardarButton.disabled = true;
+
+    // Desactivación condicional
+    // const proximaComunicacion = document.getElementById("proximaactividad");
+    // const resultado2Value = document.getElementById("resultado2").value;
+
+    // const desactivarComunicacion =
+    //   selectedText.includes("Asignar agente de retención") ||
+    //   resultado2Value === "asignar_agente_retencion";
+
+    // if (desactivarComunicacion) {
+    //   fechaEnvio.disabled = true;
+    //   fechaEnvio.value = "";
+    //   horaEnvio.disabled = true;
+    //   horaEnvio.value = "";
+    //   proximaComunicacion.disabled = true;
+    //   proximaComunicacion.value = "";
+    //   statusFinalInput.disabled = false;
+    // } else {
+    //   fechaEnvio.disabled = false;
+    //   horaEnvio.disabled = false;
+    //   proximaComunicacion.disabled = false;
+    //   statusFinalInput.disabled = true;
+    // }
+
     limpiarCamposDependientes();
 
-    // Limpiar y ocultar Tipificación N2 y N3 al cambiar Tipificación N1
-    tipificacionN2.innerHTML =
-      '<option value="" disabled selected>Selecciona</option>';
-    document.getElementById("tipificacionn3").innerHTML =
-      '<option value="" disabled selected>Selecciona</option>';
-    document.getElementById("tipificacionn3-container").style.display = "none"; // Ocultamos Tipificación N3
+    tipificacionN2.innerHTML = '<option value="" disabled selected>Selecciona</option>';
+    document.getElementById("tipificacionn3").innerHTML = '<option value="" disabled selected>Selecciona</option>';
+    document.getElementById("tipificacionn3-container").style.display = "none";
 
-    // Ocultar otros popups (excepto el popup de Solo buscaba información)
+    // Ocultar popups excepto información
     [
       "doc-dig-popup",
       "doc-dig-container",
@@ -268,40 +327,32 @@ const handleTipificacionN1Change = (tipificacionN2Options) => {
       "informacion-container",
     ].forEach((id) => {
       if (id !== "informacion-popup") {
-        // No ocultar el popup de "Solo buscaba información"
         document.getElementById(id).style.display = "none";
-        limpiarCheckboxes(id); // Limpiar los checkboxes de estos popups
+        limpiarCheckboxes(id);
       }
     });
 
-    // Ocultar el popup de "Solo buscaba información" y limpiar los checkboxes si cambia de opción
-    if (
-      informacionPopup.style.display === "block" &&
-      selectedValue !== "solo_informacion"
-    ) {
-      informacionPopup.style.display = "none"; // Ocultar el popup
-      limpiarCheckboxes("informacion-popup"); // Limpiar los checkboxes del popup si estaba visible
+    // Mostrar u ocultar el popup de información
+    if (informacionPopup.style.display === "block" && selectedValue !== "solo_informacion") {
+      informacionPopup.style.display = "none";
+      limpiarCheckboxes("informacion-popup");
     }
 
-    // Ocultar y limpiar Resultado 4 si se cambia Tipificación N2
     resetResultado4();
 
-    // Mostrar el popup de "Solo buscaba información" si se selecciona esta opción
     if (selectedValue === "solo_informacion") {
       console.log("Mostrando el popup de Solo buscaba información");
-      informacionPopup.style.display = "block"; // Mostrar el popup
-      document.getElementById("tipificacionn2-container").style.display =
-        "none"; // Ocultar Tipificación N2
+      informacionPopup.style.display = "block";
+      document.getElementById("tipificacionn2-container").style.display = "none";
     } else if (tipificacionN2Options[selectedValue]) {
-      mostrarOpciones("tipificacionn2", tipificacionN2Options[selectedValue]); // Mostrar Tipificación N2 si aplica
-      document.getElementById("tipificacionn2-container").style.display =
-        "block";
+      mostrarOpciones("tipificacionn2", tipificacionN2Options[selectedValue]);
+      document.getElementById("tipificacionn2-container").style.display = "block";
     } else {
-      document.getElementById("tipificacionn2-container").style.display =
-        "none"; // Ocultar Tipificación N2 si no aplica
+      document.getElementById("tipificacionn2-container").style.display = "none";
     }
   });
 };
+
 
 const handleTipificacionN2Change = (tipificacionN3Options) => {
   const tipificacionN2 = document.getElementById("tipificacionn2");
@@ -401,7 +452,9 @@ const handleTipificacionN2Change = (tipificacionN3Options) => {
     console.log("selectedValue N2:", selectedValue);
 console.log("Tiene opciones en tipificacionN3?", !!tipificacionN3Options[selectedValue]);
 
-});
+    // ✅ Verificar si se deben reactivar o seguir desactivados los campos de comunicación
+    actualizarEstadoCamposComunicacion();
+  });
 
   // Ocultar todos los popups si cambia tipificaciónN1 o resultado2
 ["tipificacionn1", "resultado2"].forEach((id) => {
@@ -453,9 +506,7 @@ guardarBtn.addEventListener("click", () => {
 // Función para manejar el cambio en Tipificación N3 y actualizar Resultado 4 o mostrar popups de documentos
 const handleTipificacionN3Change = () => {
   const tipificacionN3 = document.getElementById("tipificacionn3");
-  const tipificacionN4Container = document.getElementById(
-    "tipificacionn4-container"
-  );
+  const tipificacionN4Container = document.getElementById("tipificacionn4-container");
   const tipificacionN4 = document.getElementById("tipificacionn4");
   const statusFinalContainer = document.getElementById("statusfinal-container");
   const statusFinalInput = document.getElementById("statusfinal");
@@ -507,9 +558,14 @@ if (selectedValue === "con_experiencia") {
   } else {
     tipificacionN4.innerHTML = '<option value="" disabled selected>Selecciona</option>';
     tipificacionN4Container.style.display = "none";
-  }  
+  } 
+  
+  // ✅ Llamar función para desactivar los campos de comunicación
+  actualizarEstadoCamposComunicacion();
   });
 };
+
+document.getElementById("tipificacionn4").addEventListener("change", actualizarEstadoCamposComunicacion);
 
 // Función para resetear Resultado 4
 const resetResultado4 = () => {
@@ -528,9 +584,7 @@ document.getElementById("resultado2").addEventListener("change", function () {
     "tipificacionn1-container"
   );
   const tipificacionn1 = document.getElementById("tipificacionn1");
-  const tipificacionN4Container = document.getElementById(
-    "tipificacionn4-container"
-  ); // Contenedor de Tipificación N4 (Tipo de enseñanza)
+  const tipificacionN4Container = document.getElementById("tipificacionn4-container"); // Contenedor de Tipificación N4 (Tipo de enseñanza)
   const tipificacionN4 = document.getElementById("tipificacionn4"); // Select de Tipificación N4 (Tipo de enseñanza)
 
   // Limpiar los campos dependientes, incluyendo Descripción
@@ -675,13 +729,14 @@ const opcionesTipificacionN1 = {
     { value: "no_procede", text: "No procede" }
   ],
   seguimiento_inscripcion: [
-    { value: "aplica_carta_compromiso", text: "Aplica carta compromiso" },
+    // { value: "aplica_carta_compromiso", text: "Aplica carta compromiso" },
     { value: "inscrito_doc_faltante", text: "Inscrito / Documentación digital pendiente" }
   ],
 
 // NO EFECTIVO
   se_agenda_peticion: [
     { value: "seguimiento_inscripcion", text: "Seguimiento a inscripción" },
+    { value: "se_comparte_info", text: "Se comparte información por WhatsApp" },
   ],
   contesta_y_cuelga: [
     { value: "envio_whats", text: "Envío de WhatsApp" },
@@ -704,8 +759,8 @@ num_invalido: [
     { value: "envia_whatsapp", text: "Se envía WhatsApp" }
 ],
 sin_contacto: [
+    { value: "llamada", text: "Llamada" },
     { value: "whatsapp", text: "WhatsApp" },
-    { value: "llamada", text: "Llamada" }
 ],
 sin_respuesta: [
     { value: "buzon_directo", text: "Buzón directo" },
@@ -760,6 +815,9 @@ const opcionesTipificacionN3 = {
   ],
 
   // NO EFECTIVO
+  se_comparte_info: [
+    { value: "espera_de_resp", text: "En espera de respuesta" }
+  ],
   
   // NO INTERESADO
     inconformidad: [
