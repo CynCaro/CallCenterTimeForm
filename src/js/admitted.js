@@ -729,7 +729,7 @@ const opcionesTipificacionN1 = {
     { value: "no_procede", text: "No procede" }
   ],
   seguimiento_inscripcion: [
-    // { value: "aplica_carta_compromiso", text: "Aplica carta compromiso" },
+    { value: "aplica_carta_compromiso", text: "Aplica carta compromiso" },
     { value: "inscrito_doc_faltante", text: "Documentación digital pendiente" }
   ],
 
