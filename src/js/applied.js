@@ -63,6 +63,7 @@ const mostrarOpciones = (selectId, options) => {
 
 // Función para generar checkboxes dinámicamente en un contenedor
 const generarCheckboxes = (containerId, opciones) => {
+    console.log('Opciones recibidas:', opciones);
     const container = document.getElementById(containerId);
     container.innerHTML = ''; // Limpia el contenedor antes de agregar nuevos checkboxes
 
@@ -80,10 +81,11 @@ const generarCheckboxes = (containerId, opciones) => {
         container.appendChild(label);
         container.appendChild(document.createElement('br'));
     });
+    console.log(`✅ Checkboxes generados en #${containerId}`);
 };
 
 // Función para ocultar popups relacionados
-const ocultarTodosLosPopups = () => {
+const ocultarTodosLosPopups = (excepciones = []) => {
     const popups = [
         'documentos-popup',
         'documentos-container',
@@ -95,14 +97,16 @@ const ocultarTodosLosPopups = () => {
         'documentos-sin-documento-container',
         'informacion-popup',
         'informacion-container',
-        'comparacion-universidades-popup', // Nuevo: Popup de comparación de universidades
-        'comparacion-universidades-container' // Nuevo: Contenedor de comparación de universidades
+        'comparacion-universidades-popup',
+        'comparacion-universidades-container'
     ];
 
     popups.forEach(id => {
-        const element = document.getElementById(id);
-        if (element) {
-            element.style.display = 'none';
+        if (!excepciones.includes(id)) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.style.display = 'none';
+            }
         }
     });
 };
@@ -207,6 +211,7 @@ document.getElementById('tipocontacto').addEventListener('change', function () {
     const selectedValue = this.value;
     const resultado2Container = document.getElementById('resultado2-container');
     const resultado2 = document.getElementById('resultado2');
+    const resultado1 = document.getElementById('resultado1').value; // Detectar si es contactado o no_contactado
 
     reiniciarStatusFinal();
     ocultarTipificaciones();
@@ -214,11 +219,25 @@ document.getElementById('tipocontacto').addEventListener('change', function () {
     limpiarCamposDependientes();
 
     if (selectedValue === SEGUIMIENTO) {
-        mostrarOpciones('resultado2', OPCIONES_SEGUIMIENTO);
+        let opcionesFiltradas = [];
+
+        if (resultado1 === CONTACTADO) {
+            opcionesFiltradas = [
+                { value: 'interesado', text: 'Interesado' },
+                { value: 'no_efectivo', text: 'No efectivo' },
+                { value: 'no_interesado', text: 'No interesado' }
+            ];
+        } else if (resultado1 === NO_CONTACTADO) {
+            opcionesFiltradas = [
+                { value: 'no_contesta', text: 'No contesta' }
+            ];
+        }
+
+        mostrarOpciones('resultado2', opcionesFiltradas);
         resultado2Container.style.display = 'block';
     } else {
         resultado2Container.style.display = 'none';
-        resultado2.innerHTML = ''; // Limpia completamente las opciones
+        resultado2.innerHTML = '';
     }
 });
 
@@ -230,11 +249,16 @@ const handleTipificacionN1Change = (tipificacionN2Options) => {
     const fechaEnvio = document.getElementById('fechaproxact');  // Input para Fecha próxima comunicación
     const horaEnvio = document.getElementById('horaproxact');  // Input para Horario próxima comunicación
     const informacionPopup = document.getElementById('informacion-popup');  // Popup de Solo buscaba información
+    const comparacionUniversidadesContainer = document.getElementById('comparacion-universidades-popup'); // Contenedor del popup/comparación
 
 
     tipificacionN1.addEventListener('change', function () {
         const selectedText = this.options[this.selectedIndex].text;  // Obtener el texto de la opción seleccionada
         const selectedValue = this.value;  // Obtener el valor de la opción seleccionada (para Tipificación N2)
+
+    //     ocultarTodosLosPopups(excepciones);
+        limpiarCheckboxes('comparacion-universidades');
+        limpiarCheckboxes('informacion-popup');
 
         // Dividir el texto por el guion medio y tomar la parte después del guion
         const partes = selectedText.split('-');
@@ -276,23 +300,43 @@ const handleTipificacionN1Change = (tipificacionN2Options) => {
             statusFinalInput.disabled = true;  // Deshabilitar el campo Status Final si no es "Lost / Hold"
         }
 
+        // Mostrar popup solo si la opción contiene 'Ya se inscribió en otra institución'
+        if (selectedValue === 'inscripto_otro') {
+        console.log('✅ Se seleccionó inscripto_otro');
+
+        // Genera checkboxes 
+        generarCheckboxes('comparacion-universidades', [
+            { value: 'ibero', text: 'IBERO' },
+            { value: 'itam', text: 'ITAM' },
+            { value: 'otro', text: 'Otro' },
+            { value: 'panamericana', text: 'Panamericana' },
+            { value: 'tec', text: 'TEC' },
+            { value: 'uvm', text: 'UVM' }
+        ]);
+
+        // ✅ Ocultar todos los demás popups, excepto comparación
+        ocultarTodosLosPopups([
+            'comparacion-universidades-popup',
+            'comparacion-universidades-container'
+        ]);
+
+        // 🔥 Mostrar el popup
+        comparacionUniversidadesContainer.style.display = 'block';
+        console.log("✅ Popup mostrado:", comparacionUniversidadesContainer.style.display);
+
+        // Ocultar Tipificación N2
+        document.getElementById('tipificacionn2-container').style.display = 'none';
+        } else {
+    ocultarTodosLosPopups(); // Se ejecuta solo si no es 'inscripto_otro'
+}
+
         // Limpiar los campos dependientes
         limpiarCamposDependientes();
 
         // Limpiar y ocultar Tipificación N2 y N3 al cambiar Tipificación N1
         tipificacionN2.innerHTML = '<option value="" disabled selected>Selecciona</option>';
         document.getElementById('tipificacionn3').innerHTML = '<option value="" disabled selected>Selecciona</option>';
-        document.getElementById('tipificacionn3-container').style.display = 'none';  // Ocultamos Tipificación N3
-
-        // Ocultar otros popups (excepto el popup de Solo buscaba información)
-        ['documentos-popup', 'documentos-container', 'documentos-sin-apostillar-popup', 'documentos-sin-documento-popup',
-            'documentos-sin-apostillar-container', 'documentos-sin-documento-container', 'informacion-popup', 'informacion-container']
-            .forEach(id => {
-                if (id !== 'informacion-popup') {  // No ocultar el popup de "Solo buscaba información"
-                    document.getElementById(id).style.display = 'none';
-                    limpiarCheckboxes(id);  // Limpiar los checkboxes de estos popups
-                }
-            });
+        document.getElementById('tipificacionn3-container').style.display = 'none';
 
         // Ocultar el popup de "Solo buscaba información" y limpiar los checkboxes si cambia de opción
         if (informacionPopup.style.display === 'block' && selectedValue !== 'solo_informacion') {
@@ -305,7 +349,6 @@ const handleTipificacionN1Change = (tipificacionN2Options) => {
 
         // Mostrar el popup de "Solo buscaba información" si se selecciona esta opción
         if (selectedValue === 'solo_informacion') {
-            console.log("Mostrando el popup de Solo buscaba información");
             informacionPopup.style.display = 'block';  // Mostrar el popup
             document.getElementById('tipificacionn2-container').style.display = 'none';  // Ocultar Tipificación N2
         } else if (tipificacionN2Options[selectedValue]) {
@@ -330,7 +373,6 @@ const handleTipificacionN2Change = (tipificacionN3Options) => {
     const titulacionCheckbox = document.getElementById('titulacion_maestria'); // Checkbox "Titulación por maestría"
     const tipificacionN3Container = document.getElementById('tipificacionn3-container'); // Contenedor de Tipificación N3
     const tipificacionN3 = document.getElementById('tipificacionn3'); // Campo de Tipificación N3
-    const comparacionUniversidadesContainer = document.getElementById('comparacion-universidades-popup'); // Contenedor del popup/comparación
 
     tipificacionN2.addEventListener('change', function () {
         const selectedText = this.options[this.selectedIndex].text;  // Obtener texto de la opción seleccionada
@@ -352,20 +394,7 @@ const handleTipificacionN2Change = (tipificacionN3Options) => {
             document.getElementById(`${prefix}-popup`).style.display = 'none';  // Ocultar popup
             document.getElementById(`${prefix}-container`).style.display = 'none';  // Ocultar contenedor
             limpiarCheckboxes(`${prefix}-popup`);  // Limpiar checkboxes del popup
-        });
-
-        // Llamar a la función generarCheckboxes para mostrar 'comparacion_universidades'
-        if (selectedValue === 'comparacion_universidades') {
-            comparacionUniversidadesContainer.style.display = 'block'; // Muestra el popup
-            generarCheckboxes('comparacion-universidades', [
-                { value: 'ibero', text: 'IBERO' },
-                { value: 'itam', text: 'ITAM' },
-                { value: 'panamericana', text: 'Panamericana' },
-                { value: 'tec', text: 'TEC' },
-                { value: 'uvm', text: 'UVM' },
-                { value: 'otro', text: 'Otro' }
-            ]);
-        }               
+        });             
 
         // Manejar el status final basado en la selección
         if (statusFinalInput.getAttribute('data-from-n1') === 'false' || statusFinalInput.value === '') {
@@ -430,11 +459,6 @@ const handleTipificacionN2Change = (tipificacionN3Options) => {
             proximaComunicacion.disabled = false;
             statusFinalInput.disabled = true;  // Deshabilitar Status Final
         }
-    });
-    // Ocultar popups si cambia tipificacionN1 o resultado2
-    ['tipificacionn1', 'resultado2'].forEach(id => {
-        const element = document.getElementById(id);
-        element.addEventListener('change', () => ocultarTodosLosPopups());
     });
 };
 
@@ -530,6 +554,10 @@ document.getElementById('resultado2').addEventListener('change', function () {
     document.getElementById('informacion-popup').style.display = 'none';  // Ocultamos el popup de Solo buscaba información
     limpiarCheckboxes('informacion-popup');
     document.getElementById('informacion-container').style.display = 'none'; // Ocultamos el contenedor de Solo buscaba información
+    document.getElementById('comparacion-universidades-popup').style.display = 'none'; // Ocultar popup
+    document.getElementById('comparacion-universidades-container').style.display = 'none'; // Ocultar contenedor
+    limpiarCheckboxes('comparacion-universidades'); // Limpiar los checkboxes correctamente
+
 
     // Ocultar y limpiar Resultado 4 si se cambia Tipificación N2
     resetResultado4();
@@ -580,7 +608,7 @@ document.getElementById('resultado2').addEventListener('change', function () {
             <option value="pide_no_marcacion">Pide no se le marque de nuevo - Lost / Hold</option>
             <option value="sin_disponibilidad_tiempo">Sin disponibilidad de tiempo - Lost / Hold</option>
             <option value="solo_informacion">Solo buscaba información - Hold</option>
-            <option value="inscripto_otro">Ya se inscribió en otra institución - Lost / Hold</option> 
+            <option value="inscripto_otro">Ya se inscribió en otra institución - Hold</option> 
         `;
     }
 
@@ -742,14 +770,14 @@ const opcionesTipificacionN1 = {
         { value: 'temas_personales', text: 'Temas personales' },
         { value: 'tema_salud', text: 'Tema salud' },
     ],
-    'inscripto_otro': [
-        { value: 'ibero', text: 'IBERO' },
-        { value: 'itam', text: 'ITAM' },
-        { value: 'otro', text: 'Otro' },
-        { value: 'panamericana', text: 'Panamericana' },
-        { value: 'tec', text: 'TEC' },
-        { value: 'uvm', text: 'UVM' },
-    ],
+    // 'inscripto_otro': [
+    //     { value: 'ibero', text: 'IBERO' },
+    //     { value: 'itam', text: 'ITAM' },
+    //     { value: 'otro', text: 'Otro' },
+    //     { value: 'panamericana', text: 'Panamericana' },
+    //     { value: 'tec', text: 'TEC' },
+    //     { value: 'uvm', text: 'UVM' },
+    // ],
     'sin_disponibilidad_tiempo': [
         { value: 'actualmente_estudia', text: 'Actualmente estudia' },
         { value: 'temas_laborales', text: 'Temas laborales' },
@@ -860,6 +888,7 @@ const opcionesTipificacionN3 = {
         { value: 'sin_experiencia', text: 'Sin experiencia' }
     ],
     'extranjero': [
+        { value: 'completado', text: 'Completado' },
         { value: 'doc_sin_apostillar', text: 'Documento sin apostillar' },
         { value: 'sin_doc', text: 'Sin documento' }
     ],
@@ -897,7 +926,10 @@ const opcionesComunesTipificacionN4 = [
 // Opciones dinámicas para Tipificación N4
 const opcionesTipificacionN4 = {
     'modalidad': opcionesComunesTipificacionN4, // Asociamos la opción 'modalidad' con las opciones comunes de Tipificación N4
-    '2_ciclos_post': opcionesDosCiclosPost
+    '2_ciclos_post': opcionesDosCiclosPost,
+    'completado': [
+     { value: 'asignar_agente', text: 'Asignar agente de retención' }
+     ]
 };
 
 // Listener para los cambios en Tipificación N1

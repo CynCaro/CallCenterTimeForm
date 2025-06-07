@@ -297,7 +297,7 @@ input[type="date"], input[type="text"], input[type="time"] {
     font-weight: bold;
 }
 
-#doc-dig-popup p,#documentos-popup p, #seguimiento-popup p, #documentos-sin-apostillar-popup p, #documentos-sin-documento-popup p, #informacion-popup p {
+#doc-dig-popup p,#documentos-popup p, #seguimiento-popup p, #documentos-sin-apostillar-popup p, #documentos-sin-documento-popup p, #informacion-popup p, #comparacion-universidades-popup p {
     padding: 0; 
     padding-top: 5px;
     font-size: 1rem; /* Reduce el tamaño de la tipografía */
